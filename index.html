@@ -715,7 +715,14 @@
     musicConfig: JSON.parse(JSON.stringify(DEFAULT_MUSIC_CONFIG)),
     chatMessages: [],
     isChatOpen: false,
-    isChatTyping: false
+    isChatTyping: false,
+    // Status ID item yang sedang dalam mode edit (Semua Kelola)
+    editingPostId: null,
+    editingStaffId: null,
+    editingFacilityGalleryId: null,
+    editingSpmbId: null,
+    editingComplaintId: null,
+    editingUserId: null
   };
 
   function initMinimalPreviewData() {
@@ -758,6 +765,8 @@
         title: 'Siswa SMPN 71 Kota Bandung Raih Medali Emas Olimpiade Sains Nasional Tingkat Kota',
         content: 'Tim Olimpiade IPA dan Matematika SMPN 71 Kota Bandung berhasil menorehkan prestasi membanggakan pada ajang OSN tingkat Kota Bandung tahun ini melalui pembinaan intensif.',
         image_url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80',
+        file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+        file_name: 'Piagam_Penghargaan_OSN_2025.pdf',
         event_date: '2025-05-10',
         author_name: 'Humas SMPN 71'
       },
@@ -767,6 +776,8 @@
         title: 'Jadwal Pelaksanaan Sistem Penerimaan Murid Baru (SPMB) Tahun Ajaran Baru',
         content: 'Pendaftaran SPMB SMPN 71 Kota Bandung dibuka untuk Jalur Zonasi, Afirmasi, Prestasi, dan Perpindahan Tugas Orang Tua. Pastikan berkas asli telah dipindai.',
         image_url: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80',
+        file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+        file_name: 'Juknis_SPMB_SMPN71_2025.pdf',
         event_date: '2025-06-01',
         author_name: 'Panitia SPMB'
       },
@@ -776,6 +787,8 @@
         title: 'Gelar Karya Projek Penguatan Profil Pelajar Pancasila (P5) & Pentas Seni',
         content: 'Kegiatan pameran karya inovasi daur ulang, kuliner tradisional Sunda, dan apresiasi seni siswa kelas VII, VIII, dan IX di lapangan utama sekolah.',
         image_url: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80',
+        file_url: '',
+        file_name: '',
         event_date: '2025-06-20',
         author_name: 'Wakasek Kurikulum'
       },
@@ -785,6 +798,8 @@
         title: 'Implementasi Kurikulum Nasional & Modul Pembelajaran Digital Terpadu',
         content: 'SMPN 71 Kota Bandung menerapkan pembelajaran terdiferensiasi dengan dukungan Google Workspace for Education, Laboratorium Komputer, dan Klinik Numerasi-Literasi.',
         image_url: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80',
+        file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+        file_name: 'Panduan_Kurikulum_Merdeka_71.pdf',
         event_date: '2025-05-02',
         author_name: 'Tim Kurikulum'
       },
@@ -794,6 +809,8 @@
         title: 'Layanan Bimbingan Konseling (BK) Ramah Anak & Pembinaan Ekstrakurikuler',
         content: 'Tersedia layanan konseling minat bakat, pencegahan perundungan (Roots Indonesia), serta 12 cabang ekstrakurikuler unggulan seperti Pramuka, Paskibra, Futsal, Robotik, dan Angklung.',
         image_url: 'https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=800&q=80',
+        file_url: '',
+        file_name: '',
         event_date: '2025-05-05',
         author_name: 'Koordinator Kesiswaan'
       },
@@ -803,6 +820,8 @@
         title: 'Laporan Realisasi Penggunaan Dana BOS Reguler & Standar Pelayanan Publik',
         content: 'Dokumen informasi publik berkala terkait transparansi anggaran sekolah, RKAS, serta standar operasional prosedur layanan pendidikan gratis tanpa pungutan.',
         image_url: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
+        file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+        file_name: 'Laporan_Realisasi_BOS_Reguler_2025.pdf',
         event_date: '2025-04-28',
         author_name: 'Pejabat PPID Sekolah'
       }
@@ -853,6 +872,22 @@
         description: 'Mengenal lebih dekat budaya akademik, fasilitas modern, dan kegiatan siswa SMPN 71 Kota Bandung.',
         media_url: 'https://www.youtube.com/embed/ScMzIvxBSi4',
         condition_or_tag: 'Video Profil'
+      },
+      {
+        id: 'fg-4',
+        item_type: 'tiktok',
+        title: 'Keseruan Pentas Seni & Kreativitas Ekskul Siswa SMPN 71',
+        description: 'Kompilasi momen seru dan dokumentasi reels/video pendek siswa di TikTok resmi.',
+        media_url: 'https://www.tiktok.com/@smpn71bandung',
+        condition_or_tag: 'Video TikTok'
+      },
+      {
+        id: 'fg-5',
+        item_type: 'gdrive',
+        title: 'Dokumentasi Album Foto Resolusi Tinggi (Google Drive)',
+        description: 'Akses folder Google Drive resmi untuk mengunduh arsip foto kegiatan sekolah kualitas asli.',
+        media_url: 'https://drive.google.com/drive/folders/1SMPN71BandungDokumentasiResmi',
+        condition_or_tag: 'Google Drive'
       }
     ];
 
@@ -975,6 +1010,222 @@
     } catch (err) {
       showToast(err.message || 'Gagal mengunggah gambar.');
     }
+  }
+
+  // Helper Upload Dokumen PDF (.pdf) untuk Berita, Akademik, Layanan & PPID
+  function handlePdfUploadInput(event, targetUrlInputId, targetNameInputId, badgeContainerId) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
+      showToast('File harus berformat PDF (.pdf)');
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      showToast('Ukuran file PDF maksimal 10MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target.result;
+      const urlInput = document.getElementById(targetUrlInputId);
+      const nameInput = document.getElementById(targetNameInputId);
+      const badge = document.getElementById(badgeContainerId);
+      if (urlInput) urlInput.value = dataUrl;
+      if (nameInput) nameInput.value = file.name;
+      if (badge) {
+        badge.innerHTML = `
+          <div class="flex items-center justify-between p-2.5 rounded-xl bg-red-50 border border-red-200 text-xs">
+            <div class="flex items-center gap-2 text-red-800 font-bold truncate">
+              <svg class="w-4 h-4 text-red-600 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+              <span class="truncate">${escapeHtml(file.name)}</span>
+              <span class="text-[10px] text-red-600 font-normal">(${Math.round(file.size / 1024)} KB)</span>
+            </div>
+            <button type="button" onclick="window.app.clearPdfAttachment('${targetUrlInputId}', '${targetNameInputId}', '${badgeContainerId}')" class="text-red-600 hover:text-red-800 font-bold ml-2">Hapus</button>
+          </div>
+        `;
+        badge.classList.remove('hidden');
+      }
+      showToast('Lampiran PDF berhasil dimuat: ' + file.name);
+    };
+    reader.onerror = () => showToast('Gagal membaca file PDF');
+    reader.readAsDataURL(file);
+  }
+
+  function clearPdfAttachment(targetUrlInputId, targetNameInputId, badgeContainerId) {
+    const urlInput = document.getElementById(targetUrlInputId);
+    const nameInput = document.getElementById(targetNameInputId);
+    const badge = document.getElementById(badgeContainerId);
+    if (urlInput) urlInput.value = '';
+    if (nameInput) nameInput.value = '';
+    if (badge) {
+      badge.innerHTML = '';
+      badge.classList.add('hidden');
+    }
+    showToast('Lampiran PDF dihapus.');
+  }
+
+  // Helper Ekstraksi & Normalisasi Link TikTok
+  function extractTikTokVideoId(url) {
+    if (!url || typeof url !== 'string') return null;
+    const m = url.match(/\/video\/(\d+)/i);
+    return m ? m[1] : null;
+  }
+
+  // Helper Normalisasi Link Google Drive
+  function normalizeGoogleDriveUrl(url) {
+    if (!url || typeof url !== 'string') return { isFolder: false, previewUrl: null, originalUrl: '' };
+    const trimmed = url.trim();
+    const fileMatch = trimmed.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/i);
+    if (fileMatch && fileMatch[1]) {
+      return {
+        isFolder: false,
+        previewUrl: `https://drive.google.com/file/d/${fileMatch[1]}/preview`,
+        originalUrl: trimmed
+      };
+    }
+    const openMatch = trimmed.match(/drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/i);
+    if (openMatch && openMatch[1]) {
+      return {
+        isFolder: false,
+        previewUrl: `https://drive.google.com/file/d/${openMatch[1]}/preview`,
+        originalUrl: trimmed
+      };
+    }
+    return {
+      isFolder: trimmed.includes('/folders/'),
+      previewUrl: null,
+      originalUrl: trimmed
+    };
+  }
+
+  // Helper Tombol Download Lampiran PDF untuk Pengunjung
+  function renderPostPdfDownloadBtn(item) {
+    if (!item || !item.file_url) return '';
+    const fname = item.file_name || (item.title ? item.title.slice(0, 30) + '.pdf' : 'Dokumen-SMPN71.pdf');
+    return `
+      <div class="pt-2">
+        <a href="${escapeHtml(item.file_url)}" download="${escapeHtml(fname)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition shadow-sm hover:scale-[1.02]">
+          <svg class="w-4 h-4 text-red-600 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+          <span class="truncate max-w-[200px] sm:max-w-xs">Unduh Dokumen PDF ${item.file_name ? `(${escapeHtml(item.file_name)})` : ''}</span>
+          <i data-lucide="download" class="w-3.5 h-3.5 text-red-600 shrink-0"></i>
+        </a>
+      </div>
+    `;
+  }
+
+  // Helper Kartu Tampilan Fasilitas & Galeri (Mendukung Foto, YouTube, TikTok, dan Google Drive)
+  function renderGalleryCard(item) {
+    const isVideo = item.item_type === 'video';
+    const isTiktok = item.item_type === 'tiktok' || (item.media_url && item.media_url.includes('tiktok.com'));
+    const isGdrive = item.item_type === 'gdrive' || (item.media_url && item.media_url.includes('drive.google.com'));
+
+    let mediaHtml = '';
+    let badgeColor = 'bg-brand-700 text-white';
+    let badgeText = (item.item_type || 'FASILITAS').toUpperCase();
+
+    if (isTiktok) {
+      badgeColor = 'bg-black text-white';
+      badgeText = 'TIKTOK';
+      const ttId = extractTikTokVideoId(item.media_url);
+      if (ttId) {
+        mediaHtml = `
+          <div class="aspect-[9/16] sm:aspect-video w-full bg-black relative flex items-center justify-center overflow-hidden">
+            <iframe src="https://www.tiktok.com/embed/v2/${ttId}" class="w-full h-full border-0" allowfullscreen></iframe>
+          </div>
+        `;
+      } else {
+        mediaHtml = `
+          <div class="h-48 bg-gradient-to-br from-slate-900 to-black text-white p-5 flex flex-col justify-between relative overflow-hidden">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center">
+                <svg class="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+              </span>
+              <span class="font-bold text-xs uppercase text-pink-400">Video TikTok SMPN 71</span>
+            </div>
+            <p class="text-xs text-slate-300 line-clamp-2">${escapeHtml(item.description || item.title)}</p>
+            <a href="${escapeHtml(item.media_url)}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-white text-slate-900 font-bold text-xs inline-flex items-center gap-1.5 self-start hover:bg-slate-100 transition shadow-sm">
+              <svg class="w-3.5 h-3.5 fill-black" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+              <span>Tonton di TikTok</span>
+              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+        `;
+      }
+    } else if (isGdrive) {
+      badgeColor = 'bg-blue-600 text-white';
+      badgeText = 'GOOGLE DRIVE';
+      const driveInfo = normalizeGoogleDriveUrl(item.media_url);
+      if (driveInfo.previewUrl) {
+        mediaHtml = `
+          <div class="aspect-video w-full bg-slate-100 relative">
+            <iframe src="${escapeHtml(driveInfo.previewUrl)}" class="w-full h-full border-0" allow="autoplay"></iframe>
+          </div>
+        `;
+      } else {
+        mediaHtml = `
+          <div class="h-48 bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-blue-100 p-5 flex flex-col justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-sm">
+                <i data-lucide="folder" class="w-4 h-4"></i>
+              </div>
+              <span class="font-bold text-xs text-blue-800 uppercase">Google Drive Sekolah</span>
+            </div>
+            <p class="text-xs text-slate-600 line-clamp-2">${escapeHtml(item.description || item.title)}</p>
+            <a href="${escapeHtml(item.media_url)}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs inline-flex items-center gap-1.5 self-start transition shadow-sm">
+              <span>Buka di Google Drive</span>
+              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+        `;
+      }
+    } else if (isVideo) {
+      badgeColor = 'bg-red-600 text-white';
+      badgeText = 'YOUTUBE';
+      let embedUrl = item.media_url;
+      if (embedUrl.includes('watch?v=')) {
+        embedUrl = embedUrl.replace('watch?v=', 'embed/');
+      } else if (embedUrl.includes('youtu.be/')) {
+        embedUrl = embedUrl.replace('youtu.be/', 'www.youtube.com/embed/');
+      }
+      mediaHtml = `
+        <div class="aspect-video w-full bg-slate-900">
+          <iframe src="${escapeHtml(embedUrl)}" class="w-full h-full border-0" allowfullscreen></iframe>
+        </div>
+      `;
+    } else {
+      badgeColor = item.item_type === 'fasilitas' ? 'bg-emerald-700 text-white' : 'bg-brand-700 text-white';
+      badgeText = item.item_type === 'fasilitas' ? 'FASILITAS' : 'FOTO';
+      mediaHtml = `
+        <div class="h-48 bg-slate-100 relative overflow-hidden group">
+          <img src="${escapeHtml(item.media_url)}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=800&q=80'" />
+        </div>
+      `;
+    }
+
+    return `
+      <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+        <div>
+          ${mediaHtml}
+          <div class="p-4 space-y-1.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${badgeColor}">${badgeText}</span>
+              <span class="text-[11px] text-slate-500 font-semibold">${escapeHtml(item.condition_or_tag || '')}</span>
+            </div>
+            <h4 class="font-heading font-bold text-sm text-slate-900">${escapeHtml(item.title)}</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(item.description || '')}</p>
+          </div>
+        </div>
+        ${(isTiktok || isGdrive) ? `
+          <div class="px-4 pb-4 pt-1">
+            <a href="${escapeHtml(item.media_url)}" target="_blank" rel="noopener noreferrer" class="text-xs font-bold ${isTiktok ? 'text-pink-600 hover:text-pink-700' : 'text-blue-600 hover:text-blue-700'} inline-flex items-center gap-1">
+              <span>Buka Link ${isTiktok ? 'TikTok' : 'Google Drive'}</span>
+              <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+        ` : ''}
+      </div>
+    `;
   }
 
   // ============================================================================
@@ -1483,7 +1734,7 @@
     const pengumumanList = state.posts.filter(p => p.category === 'pengumuman').slice(0, 3);
     const agendaList = state.posts.filter(p => p.category === 'agenda').slice(0, 3);
     const fotoList = state.facilitiesGallery.filter(f => f.item_type === 'foto' || f.item_type === 'fasilitas').slice(0, 4);
-    const videoList = state.facilitiesGallery.filter(f => f.item_type === 'video').slice(0, 2);
+    const mediaExtraList = state.facilitiesGallery.filter(f => ['video', 'tiktok', 'gdrive'].includes(f.item_type)).slice(0, 2);
 
     const customBgStyle = (s.hero_bg_url && s.hero_bg_url.trim())
       ? `background-image: linear-gradient(135deg, rgba(232, 248, 238, 0.90) 0%, rgba(255, 255, 255, 0.88) 55%, rgba(209, 241, 222, 0.90) 100%), url('${escapeHtml(s.hero_bg_url)}'); background-size: cover; background-position: center;`
@@ -1714,6 +1965,7 @@
                     </div>
                     <h4 class="font-heading font-bold text-sm text-slate-900 line-clamp-2">${escapeHtml(item.title)}</h4>
                     <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">${escapeHtml(item.content)}</p>
+                    ${renderPostPdfDownloadBtn(item)}
                   </div>
                 </div>
                 <div class="px-5 pb-4 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
@@ -1744,6 +1996,7 @@
                     </div>
                     <div class="font-heading font-bold text-xs sm:text-sm text-slate-900">${escapeHtml(p.title)}</div>
                     <p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(p.content)}</p>
+                    ${renderPostPdfDownloadBtn(p)}
                   </div>
                 `).join('') : renderEmptyState('Belum ada pengumuman sekolah.')}
               </div>
@@ -1765,9 +2018,10 @@
                       <div class="text-[10px] uppercase text-yellow-300 font-bold">TANGGAL</div>
                       <div class="font-heading font-extrabold text-xs">${escapeHtml(a.event_date || '-')}</div>
                     </div>
-                    <div class="space-y-1">
+                    <div class="space-y-1 flex-1">
                       <div class="font-heading font-bold text-xs sm:text-sm text-slate-900">${escapeHtml(a.title)}</div>
                       <p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(a.content)}</p>
+                      ${renderPostPdfDownloadBtn(a)}
                     </div>
                   </div>
                 `).join('') : renderEmptyState('Belum ada agenda kegiatan terjadwal.')}
@@ -1781,7 +2035,7 @@
           <div class="flex flex-wrap items-end justify-between gap-4">
             <div>
               <span class="px-3 py-1 rounded-full bg-yellow-400 text-slate-900 font-extrabold text-xs">Dokumentasi & Sarana</span>
-              <h3 class="font-heading font-extrabold text-2xl text-white mt-2">Galeri Foto, Fasilitas & Video Sekolah</h3>
+              <h3 class="font-heading font-extrabold text-2xl text-white mt-2">Galeri Foto, Fasilitas, Video & TikTok Sekolah</h3>
             </div>
             <button onclick="window.app.navigate('galeri')" class="px-4 py-2 rounded-full bg-white text-brand-800 font-bold text-xs hover:bg-emerald-50 transition">
               Buka Galeri Lengkap
@@ -1803,19 +2057,9 @@
             `).join('') : `<div class="col-span-4 text-center py-6 text-xs text-emerald-100">Belum ada foto galeri.</div>`}
           </div>
 
-          ${videoList.length > 0 ? `
+          ${mediaExtraList.length > 0 ? `
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-              ${videoList.map(v => `
-                <div class="bg-slate-900 rounded-2xl overflow-hidden border border-emerald-500/30">
-                  <div class="aspect-video w-full">
-                    <iframe src="${escapeHtml(v.media_url)}" title="${escapeHtml(v.title)}" class="w-full h-full" allowfullscreen></iframe>
-                  </div>
-                  <div class="p-3.5 text-white">
-                    <div class="font-heading font-bold text-xs sm:text-sm">${escapeHtml(v.title)}</div>
-                    <p class="text-[11px] text-slate-300 mt-0.5">${escapeHtml(v.description)}</p>
-                  </div>
-                </div>
-              `).join('')}
+              ${mediaExtraList.map(v => renderGalleryCard(v)).join('')}
             </div>
           ` : ''}
         </section>
@@ -1979,6 +2223,7 @@
                 </div>
                 <h4 class="font-heading font-bold text-base text-slate-900">${escapeHtml(item.title)}</h4>
                 <p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(item.content)}</p>
+                ${renderPostPdfDownloadBtn(item)}
               </div>
             `).join('') : renderEmptyState('Belum ada informasi pembelajaran akademik.')}
           </div>
@@ -2008,6 +2253,7 @@
                   <div class="text-[11px] text-slate-400">${escapeHtml(item.event_date || '-')} • ${escapeHtml(item.author_name || 'Humas')}</div>
                   <h4 class="font-heading font-bold text-base text-slate-900">${escapeHtml(item.title)}</h4>
                   <p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(item.content)}</p>
+                  ${renderPostPdfDownloadBtn(item)}
                 </div>
               </div>
             </article>
@@ -2178,6 +2424,7 @@
                 <span class="px-2.5 py-0.5 rounded-full bg-brand-50 text-brand-700 font-bold text-[10px]">LAYANAN SISWA</span>
                 <h4 class="font-heading font-bold text-base text-slate-900">${escapeHtml(item.title)}</h4>
                 <p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(item.content)}</p>
+                ${renderPostPdfDownloadBtn(item)}
               </div>
             `).join('') : renderEmptyState('Belum ada artikel layanan peserta didik.')}
           </div>
@@ -2233,61 +2480,70 @@
         ${renderPageHeader('H. Fasilitas Sekolah', 'Sarana dan Prasarana Penunjang Pembelajaran Modern di SMP Negeri 71 Kota Bandung', 'layout-grid')}
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          ${list.length > 0 ? list.map(item => `
-            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-              <img src="${escapeHtml(item.media_url)}" alt="${escapeHtml(item.title)}" class="w-full h-48 object-cover" />
-              <div class="p-5 space-y-2">
-                <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-brand-700 font-bold text-[10px]">${escapeHtml(item.condition_or_tag || 'Kondisi Baik')}</span>
-                <h4 class="font-heading font-bold text-base text-slate-900">${escapeHtml(item.title)}</h4>
-                <p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(item.description)}</p>
-              </div>
-            </div>
-          `).join('') : `<div class="col-span-3">${renderEmptyState('Belum ada data fasilitas sekolah.')}</div>`}
+          ${list.length > 0 ? list.map(item => renderGalleryCard(item)).join('') : `<div class="col-span-3">${renderEmptyState('Belum ada data fasilitas sekolah.')}</div>`}
         </div>
       </div>
     `;
   }
 
   // ============================================================================
-  // I. GALERI SEKOLAH (FOTO & VIDEO)
+  // I. GALERI SEKOLAH (FOTO, VIDEO YOUTUBE, TIKTOK & GOOGLE DRIVE)
   // ============================================================================
   function renderGaleriView() {
     const photos = state.facilitiesGallery.filter(f => f.item_type === 'foto');
     const videos = state.facilitiesGallery.filter(f => f.item_type === 'video');
-    return `
-      <div class="space-y-8">
-        ${renderPageHeader('I. Galeri Dokumentasi Sekolah', 'Dokumentasi Visual Kegiatan Akademik, Kesiswaan, dan Video Profil SMPN 71 Kota Bandung', 'image')}
+    const tiktoks = state.facilitiesGallery.filter(f => f.item_type === 'tiktok');
+    const gdrives = state.facilitiesGallery.filter(f => f.item_type === 'gdrive');
 
+    return `
+      <div class="space-y-10">
+        ${renderPageHeader('I. Galeri Dokumentasi Sekolah', 'Dokumentasi Visual Kegiatan Akademik, Video YouTube, Konten TikTok Edukasi, dan Arsip Google Drive SMPN 71', 'image')}
+
+        <!-- 1. Album Foto Kegiatan -->
         <div class="space-y-4">
-          <h3 class="font-heading font-bold text-lg text-slate-900">Album Foto Kegiatan</h3>
+          <div class="flex items-center gap-2 border-b border-slate-200 pb-3">
+            <i data-lucide="camera" class="w-5 h-5 text-brand-700"></i>
+            <h3 class="font-heading font-bold text-lg text-slate-900">Album Foto Dokumentasi & Kegiatan</h3>
+            <span class="ml-auto px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-xs font-bold">${photos.length} Foto</span>
+          </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            ${photos.length > 0 ? photos.map(p => `
-              <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                <img src="${escapeHtml(p.media_url)}" alt="${escapeHtml(p.title)}" class="w-full h-48 object-cover" />
-                <div class="p-4">
-                  <span class="text-[10px] font-bold text-brand-700 uppercase">${escapeHtml(p.condition_or_tag || 'Dokumentasi')}</span>
-                  <h4 class="font-heading font-bold text-sm text-slate-900 mt-1">${escapeHtml(p.title)}</h4>
-                  <p class="text-xs text-slate-600 mt-1">${escapeHtml(p.description)}</p>
-                </div>
-              </div>
-            `).join('') : `<div class="col-span-3">${renderEmptyState('Belum ada foto kegiatan di galeri.')}</div>`}
+            ${photos.length > 0 ? photos.map(p => renderGalleryCard(p)).join('') : `<div class="col-span-3">${renderEmptyState('Belum ada foto kegiatan di galeri.')}</div>`}
           </div>
         </div>
 
+        <!-- 2. Galeri Video Dokumentasi YouTube -->
         <div class="space-y-4">
-          <h3 class="font-heading font-bold text-lg text-slate-900">Galeri Video Dokumentasi</h3>
+          <div class="flex items-center gap-2 border-b border-slate-200 pb-3">
+            <i data-lucide="video" class="w-5 h-5 text-red-600"></i>
+            <h3 class="font-heading font-bold text-lg text-slate-900">Galeri Video Dokumentasi (YouTube Channel)</h3>
+            <span class="ml-auto px-2.5 py-0.5 rounded-full bg-red-50 text-red-700 text-xs font-bold">${videos.length} Video</span>
+          </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            ${videos.length > 0 ? videos.map(v => `
-              <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                <div class="aspect-video w-full bg-slate-900">
-                  <iframe src="${escapeHtml(v.media_url)}" class="w-full h-full" allowfullscreen></iframe>
-                </div>
-                <div class="p-4">
-                  <h4 class="font-heading font-bold text-sm text-slate-900">${escapeHtml(v.title)}</h4>
-                  <p class="text-xs text-slate-600 mt-1">${escapeHtml(v.description)}</p>
-                </div>
-              </div>
-            `).join('') : `<div class="col-span-2">${renderEmptyState('Belum ada video dokumentasi di galeri.')}</div>`}
+            ${videos.length > 0 ? videos.map(v => renderGalleryCard(v)).join('') : `<div class="col-span-2">${renderEmptyState('Belum ada video dokumentasi di galeri.')}</div>`}
+          </div>
+        </div>
+
+        <!-- 3. Video TikTok Edukasi & Kreatif Sekolah -->
+        <div class="space-y-4">
+          <div class="flex items-center gap-2 border-b border-slate-200 pb-3">
+            <i data-lucide="play-circle" class="w-5 h-5 text-slate-900"></i>
+            <h3 class="font-heading font-bold text-lg text-slate-900">Video TikTok Edukasi & Kreatif Sekolah</h3>
+            <span class="ml-auto px-2.5 py-0.5 rounded-full bg-slate-900 text-yellow-300 text-xs font-bold">${tiktoks.length} TikTok</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            ${tiktoks.length > 0 ? tiktoks.map(t => renderGalleryCard(t)).join('') : `<div class="col-span-3">${renderEmptyState('Belum ada video TikTok sekolah yang diunggah.')}</div>`}
+          </div>
+        </div>
+
+        <!-- 4. Arsip Berkas & Dokumentasi Google Drive -->
+        <div class="space-y-4">
+          <div class="flex items-center gap-2 border-b border-slate-200 pb-3">
+            <i data-lucide="folder-git-2" class="w-5 h-5 text-blue-600"></i>
+            <h3 class="font-heading font-bold text-lg text-slate-900">Folder Arsip & Dokumentasi Google Drive</h3>
+            <span class="ml-auto px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 text-xs font-bold">${gdrives.length} Link Drive</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            ${gdrives.length > 0 ? gdrives.map(g => renderGalleryCard(g)).join('') : `<div class="col-span-3">${renderEmptyState('Belum ada tautan arsip Google Drive.')}</div>`}
           </div>
         </div>
       </div>
@@ -2308,13 +2564,14 @@
             <h3 class="font-heading font-bold text-lg text-slate-900">Daftar Informasi Publik (DIP) & Transparansi</h3>
             <div class="space-y-3">
               ${ppidPosts.length > 0 ? ppidPosts.map(doc => `
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
                   <div class="flex items-center justify-between text-[11px] text-slate-500">
                     <span class="px-2 py-0.5 rounded bg-brand-700 text-white font-bold">DOKUMEN PPID</span>
                     <span>Tanggal: ${escapeHtml(doc.event_date || '-')}</span>
                   </div>
                   <h4 class="font-heading font-bold text-sm text-slate-900">${escapeHtml(doc.title)}</h4>
                   <p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(doc.content)}</p>
+                  ${renderPostPdfDownloadBtn(doc)}
                 </div>
               `).join('') : renderEmptyState('Belum ada dokumen PPID terpublikasi.')}
             </div>
@@ -2886,150 +3143,402 @@
     }
 
     if (state.adminTab === 'postingan') {
+      const editingPost = state.editingPostId ? state.posts.find(p => p.id === state.editingPostId) : null;
       return `
         <div class="space-y-6">
-          <h3 class="font-heading font-bold text-lg text-slate-900">Kelola Berita, Pengumuman, Agenda, Akademik, Layanan Siswa & PPID</h3>
-          <form onsubmit="window.app.addPostForm(event)" class="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
-            <select name="category" required class="px-3 py-2 rounded-xl border border-slate-300 bg-white">
-              <option value="berita">Kategori: Berita Sekolah</option>
-              <option value="pengumuman">Kategori: Pengumuman</option>
-              <option value="agenda">Kategori: Agenda Kegiatan</option>
-              <option value="akademik">Kategori: Info Pembelajaran / Akademik</option>
-              <option value="layanan_siswa">Kategori: Layanan Peserta Didik</option>
-              <option value="ppid">Kategori: Dokumen PPID</option>
-            </select>
-            <input type="text" name="title" required placeholder="Judul Artikel / Informasi *" class="px-3 py-2 rounded-xl border border-slate-300 bg-white" />
-            <input type="date" name="event_date" required class="px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div>
+              <h3 class="font-heading font-bold text-lg text-slate-900">Kelola Berita, Pengumuman, Agenda, Akademik, Layanan Siswa & PPID</h3>
+              <p class="text-xs text-slate-500">Kelola publikasi informasi sekolah lengkap dengan upload foto cover (PNG/JPG/JPEG) dan dokumen PDF yang dapat diunduh pengunjung.</p>
+            </div>
+            ${editingPost ? `
+              <button onclick="window.app.cancelEditPost()" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5">
+                <i data-lucide="x" class="w-4 h-4"></i> Batal Mode Edit
+              </button>
+            ` : ''}
+          </div>
 
-            <!-- Upload Foto / Gambar PNG/JPG/JPEG untuk Berita, Akademik & PPID -->
-            <div class="md:col-span-2 space-y-1.5 bg-white p-3 rounded-xl border border-slate-200">
+          <!-- Form Tambah / Edit Postingan -->
+          <form onsubmit="window.app.addPostForm(event)" class="grid grid-cols-1 md:grid-cols-3 gap-3.5 p-5 rounded-2xl ${editingPost ? 'bg-amber-50/70 border-2 border-amber-300' : 'bg-slate-50 border border-slate-200'} text-xs">
+            ${editingPost ? `
+              <div class="md:col-span-3 p-3 rounded-xl bg-amber-100/80 border border-amber-300 flex items-center justify-between text-amber-900 font-bold">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="edit-3" class="w-4 h-4 text-amber-700"></i>
+                  <span>Sedang Mengedit: "${escapeHtml(editingPost.title)}"</span>
+                </div>
+                <span class="text-[11px] px-2 py-0.5 rounded bg-amber-200 text-amber-800">Mode Edit Aktif</span>
+              </div>
+            ` : ''}
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Kategori Konten *</label>
+              <select name="category" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white">
+                <option value="berita" ${editingPost?.category === 'berita' ? 'selected' : ''}>Kategori: Berita Sekolah</option>
+                <option value="pengumuman" ${editingPost?.category === 'pengumuman' ? 'selected' : ''}>Kategori: Pengumuman</option>
+                <option value="agenda" ${editingPost?.category === 'agenda' ? 'selected' : ''}>Kategori: Agenda Kegiatan</option>
+                <option value="akademik" ${editingPost?.category === 'akademik' ? 'selected' : ''}>Kategori: Info Pembelajaran / Akademik</option>
+                <option value="layanan_siswa" ${editingPost?.category === 'layanan_siswa' ? 'selected' : ''}>Kategori: Layanan Peserta Didik</option>
+                <option value="ppid" ${editingPost?.category === 'ppid' ? 'selected' : ''}>Kategori: Dokumen PPID</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Judul Artikel / Informasi *</label>
+              <input type="text" name="title" value="${escapeHtml(editingPost ? editingPost.title : '')}" required placeholder="Judul Artikel / Informasi *" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Tanggal Publikasi / Acara *</label>
+              <input type="date" name="event_date" value="${editingPost ? (editingPost.event_date || '') : ''}" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
+
+            <!-- Upload Foto / Gambar Sampul (Format PNG, JPG, JPEG) -->
+            <div class="md:col-span-2 space-y-1.5 bg-white p-3.5 rounded-xl border border-slate-200">
               <label class="block font-semibold text-slate-700">Upload Foto / Gambar Sampul (Format PNG, JPG, JPEG)</label>
               <div class="flex items-center gap-2">
                 <input type="file" accept="image/png,image/jpeg,image/jpg" onchange="window.app.handleImageUploadInput(event, 'post-image-url-input', 'post-image-preview', 900)" class="w-full text-[11px] file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-brand-50 file:text-brand-700 file:font-bold" />
-                <img id="post-image-preview" src="" alt="Preview" class="hidden w-11 h-11 rounded-lg object-cover border border-slate-300 shrink-0" />
+                <img id="post-image-preview" src="${escapeHtml(editingPost?.image_url || '')}" alt="Preview" class="${editingPost?.image_url ? '' : 'hidden'} w-11 h-11 rounded-lg object-cover border border-slate-300 shrink-0" />
               </div>
-              <input type="text" id="post-image-url-input" name="image_url" placeholder="Atau tempel URL foto sampul..." class="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-[11px]" />
+              <input type="text" id="post-image-url-input" name="image_url" value="${escapeHtml(editingPost ? editingPost.image_url : '')}" placeholder="Atau tempel URL foto sampul..." class="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-[11px]" />
             </div>
 
-            <div class="bg-white p-3 rounded-xl border border-slate-200 flex flex-col justify-center">
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 flex flex-col justify-center">
               <label class="block font-semibold text-slate-700 mb-1">Nama Penulis / Unit</label>
-              <input type="text" name="author_name" value="${escapeHtml(state.currentUser.full_name)}" placeholder="Nama Penulis" class="w-full px-3 py-2 rounded-lg border border-slate-300" />
+              <input type="text" name="author_name" value="${escapeHtml(editingPost ? editingPost.author_name : state.currentUser.full_name)}" placeholder="Nama Penulis" class="w-full px-3 py-2 rounded-lg border border-slate-300" />
             </div>
 
-            <textarea name="content" rows="3" required placeholder="Isi lengkap informasi / berita / materi..." class="md:col-span-3 px-3 py-2 rounded-xl border border-slate-300 bg-white"></textarea>
-            <button type="submit" class="md:col-span-3 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold shadow-sm transition">+ Publikasikan Konten & Foto Baru</button>
+            <!-- Upload Dokumen PDF (Bisa Di-download oleh Pengunjung) -->
+            <div class="md:col-span-3 space-y-2 bg-white p-3.5 rounded-xl border border-slate-200">
+              <div class="flex items-center justify-between">
+                <label class="block font-semibold text-slate-700 flex items-center gap-1.5">
+                  <i data-lucide="file-text" class="w-4 h-4 text-brand-700"></i>
+                  <span>Upload Lampiran Dokumen PDF (Format .pdf - Pengunjung Bisa Download)</span>
+                </label>
+                <button type="button" onclick="window.app.clearPdfAttachment('post-file-url-input', 'post-file-name-input', 'post-file-badge')" class="text-[11px] text-red-600 hover:underline flex items-center gap-1">
+                  <i data-lucide="trash" class="w-3 h-3"></i> Hapus Lampiran PDF
+                </button>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <input type="file" accept="application/pdf,.pdf" onchange="window.app.handlePdfUploadInput(event, 'post-file-url-input', 'post-file-name-input', 'post-file-badge')" class="w-full text-[11px] file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-brand-50 file:text-brand-700 file:font-bold border border-slate-200 rounded-lg p-1" />
+                </div>
+                <div>
+                  <input type="text" id="post-file-name-input" name="file_name" value="${escapeHtml(editingPost?.file_name || '')}" placeholder="Nama Tampilan Berkas (Contoh: Juknis_SPMB_2025.pdf)" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs" />
+                </div>
+              </div>
+              <input type="text" id="post-file-url-input" name="file_url" value="${escapeHtml(editingPost?.file_url || '')}" placeholder="Atau tempel Link Langsung File PDF / Google Drive PDF..." class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs" />
+              <div id="post-file-badge" class="${editingPost?.file_url ? '' : 'hidden'} text-xs text-emerald-800 bg-emerald-50 p-2.5 rounded-xl border border-emerald-200 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0">
+                  <i data-lucide="file-check-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                  <span class="truncate">File PDF Siap: <strong id="post-file-badge-text">${escapeHtml(editingPost?.file_name || 'Dokumen.pdf')}</strong></span>
+                </div>
+                ${editingPost?.file_url ? `
+                  <a href="${escapeHtml(editingPost.file_url)}" target="_blank" download="${escapeHtml(editingPost.file_name || 'dokumen.pdf')}" class="px-2.5 py-1 rounded-lg bg-emerald-700 text-white font-bold text-[10px] shrink-0 hover:bg-emerald-800">
+                    Cek Unduh
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+
+            <div class="md:col-span-3">
+              <label class="block font-semibold text-slate-700 mb-1">Isi Lengkap Informasi / Berita / Materi</label>
+              <textarea name="content" rows="3" required placeholder="Isi lengkap informasi / berita / materi..." class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white">${escapeHtml(editingPost ? editingPost.content : '')}</textarea>
+            </div>
+
+            <div class="md:col-span-3 flex flex-wrap gap-2">
+              <button type="submit" class="flex-1 py-2.5 rounded-xl ${editingPost ? 'bg-amber-500 hover:bg-amber-600 text-slate-900' : 'bg-brand-700 hover:bg-brand-800 text-white'} font-bold shadow-sm transition flex items-center justify-center gap-2">
+                <i data-lucide="${editingPost ? 'check-circle' : 'plus-circle'}" class="w-4 h-4"></i>
+                <span>${editingPost ? 'Simpan Perubahan Postingan' : '+ Publikasikan Konten, Foto & Dokumen PDF Baru'}</span>
+              </button>
+              ${editingPost ? `
+                <button type="button" onclick="window.app.cancelEditPost()" class="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold transition">
+                  Batal Edit
+                </button>
+              ` : ''}
+            </div>
           </form>
 
-          <div class="space-y-2.5">
-            ${state.posts.map(p => `
-              <div class="p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between gap-3 text-xs">
-                <div class="flex items-center gap-3 min-w-0">
-                  <img src="${escapeHtml(p.image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=200&q=60')}" alt="Thumb" class="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" />
-                  <div class="min-w-0">
-                    <span class="px-2 py-0.5 rounded bg-brand-50 text-brand-700 font-bold uppercase text-[10px]">${escapeHtml(p.category)}</span>
-                    <span class="font-bold text-slate-900 ml-1.5">${escapeHtml(p.title)}</span>
-                    <div class="text-[11px] text-slate-500 mt-0.5">${escapeHtml(p.event_date || '-')} • ${escapeHtml(p.author_name || '')}</div>
+          <!-- Daftar Postingan dengan Tombol Edit & Hapus -->
+          <div class="space-y-3">
+            <h4 class="font-heading font-bold text-sm text-slate-900">Daftar Konten Terpublikasi (${state.posts.length} Artikel/Dokumen)</h4>
+            <div class="space-y-2.5">
+              ${state.posts.map(p => `
+                <div class="p-3.5 rounded-2xl border ${state.editingPostId === p.id ? 'border-amber-400 bg-amber-50/50' : 'border-slate-200 bg-white'} flex flex-wrap items-center justify-between gap-3 text-xs">
+                  <div class="flex items-center gap-3 min-w-0 flex-1">
+                    <img src="${escapeHtml(p.image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=200&q=60')}" alt="Thumb" class="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" />
+                    <div class="min-w-0">
+                      <div class="flex flex-wrap items-center gap-1.5">
+                        <span class="px-2 py-0.5 rounded bg-brand-50 text-brand-700 font-bold uppercase text-[10px]">${escapeHtml(p.category)}</span>
+                        ${p.file_url ? `
+                          <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px] flex items-center gap-1">
+                            <i data-lucide="paperclip" class="w-3 h-3 text-emerald-600"></i> ${escapeHtml(p.file_name || 'Ada PDF')}
+                          </span>
+                        ` : ''}
+                      </div>
+                      <span class="font-bold text-slate-900 mt-1 block truncate">${escapeHtml(p.title)}</span>
+                      <div class="text-[11px] text-slate-500 mt-0.5">${escapeHtml(p.event_date || '-')} • Oleh: ${escapeHtml(p.author_name || '')}</div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <button onclick="window.app.startEditPost('${p.id}')" class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold flex items-center gap-1 transition">
+                      <i data-lucide="edit-2" class="w-3.5 h-3.5"></i> Edit
+                    </button>
+                    <button onclick="window.app.deletePost('${p.id}')" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-bold flex items-center gap-1 transition">
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus
+                    </button>
                   </div>
                 </div>
-                <button onclick="window.app.deletePost('${p.id}')" class="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 font-bold hover:bg-red-100 shrink-0">Hapus</button>
-              </div>
-            `).join('')}
+              `).join('')}
+            </div>
           </div>
         </div>
       `;
     }
 
     if (state.adminTab === 'gtk') {
+      const editingStaff = state.editingStaffId ? state.staff.find(s => s.id === state.editingStaffId) : null;
       return `
         <div class="space-y-6">
-          <h3 class="font-heading font-bold text-lg text-slate-900">Kelola Direktori Guru & Tenaga Kependidikan</h3>
-          <form onsubmit="window.app.addStaffForm(event)" class="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
-            <input type="text" name="full_name" required placeholder="Nama Lengkap & Gelar *" class="px-3 py-2 rounded-xl border border-slate-300 bg-white" />
-            <input type="text" name="nip" placeholder="NIP / NUPTK" class="px-3 py-2 rounded-xl border border-slate-300 bg-white" />
-            <select name="category" class="px-3 py-2 rounded-xl border border-slate-300 bg-white">
-              <option value="Pendidik">Pendidik (Guru)</option>
-              <option value="Tenaga Kependidikan">Tenaga Kependidikan (Staf TU)</option>
-            </select>
-            <input type="text" name="position" required placeholder="Jabatan (mis: Guru IPA / Staf TU) *" class="px-3 py-2 rounded-xl border border-slate-300 bg-white" />
-            <input type="text" name="subject" placeholder="Mata Pelajaran / Bidang" class="px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div>
+              <h3 class="font-heading font-bold text-lg text-slate-900">Kelola Direktori Guru & Tenaga Kependidikan</h3>
+              <p class="text-xs text-slate-500">Kelola data dewan guru dan staf tata usaha lengkap dengan foto portrait proporsional, NIP, serta opsi Edit dan Hapus.</p>
+            </div>
+            ${editingStaff ? `
+              <button onclick="window.app.cancelEditStaff()" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5">
+                <i data-lucide="x" class="w-4 h-4"></i> Batal Mode Edit
+              </button>
+            ` : ''}
+          </div>
+
+          <!-- Form Tambah / Edit GTK -->
+          <form onsubmit="window.app.addStaffForm(event)" class="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 rounded-2xl ${editingStaff ? 'bg-amber-50/70 border-2 border-amber-300' : 'bg-slate-50 border border-slate-200'} text-xs">
+            ${editingStaff ? `
+              <div class="md:col-span-3 p-3 rounded-xl bg-amber-100/80 border border-amber-300 flex items-center justify-between text-amber-900 font-bold">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="edit-3" class="w-4 h-4 text-amber-700"></i>
+                  <span>Sedang Mengedit Data GTK: "${escapeHtml(editingStaff.full_name)}"</span>
+                </div>
+                <span class="text-[11px] px-2 py-0.5 rounded bg-amber-200 text-amber-800">Mode Edit Aktif</span>
+              </div>
+            ` : ''}
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Nama Lengkap & Gelar *</label>
+              <input type="text" name="full_name" value="${escapeHtml(editingStaff ? editingStaff.full_name : '')}" required placeholder="Nama Lengkap & Gelar *" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">NIP / NUPTK</label>
+              <input type="text" name="nip" value="${escapeHtml(editingStaff ? (editingStaff.nip || '') : '')}" placeholder="NIP / NUPTK" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Kategori Jabatan</label>
+              <select name="category" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white">
+                <option value="Pendidik" ${editingStaff?.category === 'Pendidik' ? 'selected' : ''}>Pendidik (Guru)</option>
+                <option value="Tenaga Kependidikan" ${editingStaff?.category === 'Tenaga Kependidikan' ? 'selected' : ''}>Tenaga Kependidikan (Staf TU)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Jabatan Struktural / Tugas *</label>
+              <input type="text" name="position" value="${escapeHtml(editingStaff ? editingStaff.position : '')}" required placeholder="Jabatan (mis: Guru IPA / Staf TU) *" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Mata Pelajaran / Bidang</label>
+              <input type="text" name="subject" value="${escapeHtml(editingStaff ? (editingStaff.subject || '') : '')}" placeholder="Mata Pelajaran / Bidang" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
 
             <!-- Upload Foto Guru & Tendik (PNG/JPG/JPEG) -->
             <div class="space-y-1.5 bg-white p-2.5 rounded-xl border border-slate-200">
               <label class="block font-semibold text-slate-700 text-[11px]">Upload Foto Profil (PNG/JPG/JPEG)</label>
               <div class="flex items-center gap-2">
                 <input type="file" accept="image/png,image/jpeg,image/jpg" onchange="window.app.handleImageUploadInput(event, 'staff-photo-url-input', 'staff-photo-preview', 500)" class="w-full text-[11px] file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-brand-50 file:text-brand-700 file:font-bold" />
-                <img id="staff-photo-preview" src="" alt="Preview" class="hidden w-9 h-12 rounded-xl object-cover object-top border border-brand-600 shrink-0" style="object-position: 50% 10%;" />
+                <img id="staff-photo-preview" src="${escapeHtml(editingStaff?.photo_url || '')}" alt="Preview" class="${editingStaff?.photo_url ? '' : 'hidden'} w-9 h-12 rounded-xl object-cover object-top border border-brand-600 shrink-0" style="object-position: 50% 10%;" />
               </div>
-              <input type="text" id="staff-photo-url-input" name="photo_url" placeholder="Atau URL Foto Profil" class="w-full px-2.5 py-1 rounded-lg border border-slate-200 text-[11px]" />
+              <input type="text" id="staff-photo-url-input" name="photo_url" value="${escapeHtml(editingStaff ? editingStaff.photo_url : '')}" placeholder="Atau tempel URL Foto Profil" class="w-full px-2.5 py-1 rounded-lg border border-slate-200 text-[11px]" />
             </div>
 
-            <button type="submit" class="md:col-span-3 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold shadow-sm transition">+ Tambah Data & Foto GTK</button>
+            <div class="md:col-span-3 flex flex-wrap gap-2 pt-1">
+              <button type="submit" class="flex-1 py-2.5 rounded-xl ${editingStaff ? 'bg-amber-500 hover:bg-amber-600 text-slate-900' : 'bg-brand-700 hover:bg-brand-800 text-white'} font-bold shadow-sm transition flex items-center justify-center gap-2">
+                <i data-lucide="${editingStaff ? 'check-circle' : 'plus-circle'}" class="w-4 h-4"></i>
+                <span>${editingStaff ? 'Simpan Perubahan Data GTK' : '+ Tambah Data & Foto GTK'}</span>
+              </button>
+              ${editingStaff ? `
+                <button type="button" onclick="window.app.cancelEditStaff()" class="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold transition">
+                  Batal Edit
+                </button>
+              ` : ''}
+            </div>
           </form>
 
-          <div class="space-y-2.5">
-            ${state.staff.map(st => `
-              <div class="p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between gap-3 text-xs">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-13 aspect-[3/4] rounded-xl overflow-hidden border border-brand-600 shrink-0 bg-slate-50 flex items-center justify-center">
-                    <img src="${escapeHtml(st.photo_url || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=60')}" alt="Foto" class="w-full h-full object-cover object-top" style="object-position: 50% 10%;" onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=60'" />
+          <!-- Daftar Data GTK dengan Tombol Edit & Hapus -->
+          <div class="space-y-3">
+            <h4 class="font-heading font-bold text-sm text-slate-900">Daftar Guru & Tendik (${state.staff.length} Orang)</h4>
+            <div class="space-y-2.5">
+              ${state.staff.map(st => `
+                <div class="p-3.5 rounded-2xl border ${state.editingStaffId === st.id ? 'border-amber-400 bg-amber-50/50' : 'border-slate-200 bg-white'} flex flex-wrap items-center justify-between gap-3 text-xs">
+                  <div class="flex items-center gap-3 min-w-0 flex-1">
+                    <div class="w-10 h-13 aspect-[3/4] rounded-xl overflow-hidden border border-brand-600 shrink-0 bg-slate-50 flex items-center justify-center">
+                      <img src="${escapeHtml(st.photo_url || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=60')}" alt="Foto" class="w-full h-full object-cover object-top" style="object-position: 50% 10%;" onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=60'" />
+                    </div>
+                    <div class="min-w-0">
+                      <span class="font-bold text-slate-900 block truncate">${escapeHtml(st.full_name)}</span>
+                      <span class="text-slate-500">${escapeHtml(st.position)} (${escapeHtml(st.category)}) ${st.subject ? '• ' + escapeHtml(st.subject) : ''}</span>
+                      <div class="text-[10px] text-slate-400 font-mono">NIP: ${escapeHtml(st.nip || '-')}</div>
+                    </div>
                   </div>
-                  <div>
-                    <span class="font-bold text-slate-900">${escapeHtml(st.full_name)}</span>
-                    <span class="text-slate-500"> — ${escapeHtml(st.position)} (${escapeHtml(st.category)})</span>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <button onclick="window.app.startEditStaff('${st.id}')" class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold flex items-center gap-1 transition">
+                      <i data-lucide="edit-2" class="w-3.5 h-3.5"></i> Edit
+                    </button>
+                    <button onclick="window.app.deleteStaff('${st.id}')" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-bold flex items-center gap-1 transition">
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus
+                    </button>
                   </div>
                 </div>
-                <button onclick="window.app.deleteStaff('${st.id}')" class="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 font-bold">Hapus</button>
-              </div>
-            `).join('')}
+              `).join('')}
+            </div>
           </div>
         </div>
       `;
     }
 
     if (state.adminTab === 'fasilitas_galeri') {
+      const editingFG = state.editingFacilityGalleryId ? state.facilitiesGallery.find(f => f.id === state.editingFacilityGalleryId) : null;
       return `
         <div class="space-y-6">
-          <h3 class="font-heading font-bold text-lg text-slate-900">Kelola Fasilitas Sekolah & Galeri Foto/Video</h3>
-          <form onsubmit="window.app.addFacilityGalleryForm(event)" class="grid grid-cols-1 md:grid-cols-2 gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
-            <select name="item_type" class="px-3 py-2 rounded-xl border border-slate-300 bg-white">
-              <option value="fasilitas">Fasilitas Sekolah</option>
-              <option value="foto">Galeri Foto Kegiatan</option>
-              <option value="video">Galeri Video (Embed URL YouTube)</option>
-            </select>
-            <input type="text" name="title" required placeholder="Judul Fasilitas / Album *" class="px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div>
+              <h3 class="font-heading font-bold text-lg text-slate-900">Kelola Fasilitas Sekolah & Galeri Foto/Video/TikTok/Google Drive</h3>
+              <p class="text-xs text-slate-500">Upload Foto Fasilitas & Galeri (PNG, JPG, JPEG), tautan video TikTok edukasi, link arsip Google Drive, atau video YouTube dengan sinkronisasi instan.</p>
+            </div>
+            ${editingFG ? `
+              <button onclick="window.app.cancelEditFacilityGallery()" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5">
+                <i data-lucide="x" class="w-4 h-4"></i> Batal Mode Edit
+              </button>
+            ` : ''}
+          </div>
 
-            <!-- Upload Foto Fasilitas / Galeri (PNG/JPG/JPEG) -->
-            <div class="space-y-1.5 bg-white p-3 rounded-xl border border-slate-200">
-              <label class="block font-semibold text-slate-700">Upload Foto Fasilitas / Galeri (PNG, JPG, JPEG)</label>
-              <div class="flex items-center gap-2">
-                <input type="file" accept="image/png,image/jpeg,image/jpg" onchange="window.app.handleImageUploadInput(event, 'fg-media-url-input', 'fg-media-preview', 900)" class="w-full text-[11px] file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-brand-50 file:text-brand-700 file:font-bold" />
-                <img id="fg-media-preview" src="" alt="Preview" class="hidden w-11 h-11 rounded-lg object-cover border border-slate-300 shrink-0" />
+          <!-- Form Tambah / Edit Fasilitas & Galeri -->
+          <form onsubmit="window.app.addFacilityGalleryForm(event)" class="grid grid-cols-1 md:grid-cols-2 gap-3.5 p-5 rounded-2xl ${editingFG ? 'bg-amber-50/70 border-2 border-amber-300' : 'bg-slate-50 border border-slate-200'} text-xs">
+            ${editingFG ? `
+              <div class="md:col-span-2 p-3 rounded-xl bg-amber-100/80 border border-amber-300 flex items-center justify-between text-amber-900 font-bold">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="edit-3" class="w-4 h-4 text-amber-700"></i>
+                  <span>Sedang Mengedit: "${escapeHtml(editingFG.title)}"</span>
+                </div>
+                <span class="text-[11px] px-2 py-0.5 rounded bg-amber-200 text-amber-800">Mode Edit Aktif</span>
               </div>
-              <input type="text" id="fg-media-url-input" name="media_url" required placeholder="Atau tempel URL Gambar / Embed Video YouTube *" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-[11px]" />
+            ` : ''}
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Pilih Jenis Item Media *</label>
+              <select name="item_type" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white font-semibold">
+                <option value="fasilitas" ${editingFG?.item_type === 'fasilitas' ? 'selected' : ''}>Fasilitas Sekolah (Sarana & Prasarana)</option>
+                <option value="foto" ${editingFG?.item_type === 'foto' ? 'selected' : ''}>Galeri Foto Kegiatan (Dokumentasi)</option>
+                <option value="video" ${editingFG?.item_type === 'video' ? 'selected' : ''}>Galeri Video YouTube (Embed / Link)</option>
+                <option value="tiktok" ${editingFG?.item_type === 'tiktok' ? 'selected' : ''}>Video TikTok Edukasi (Link TikTok Sekolah)</option>
+                <option value="gdrive" ${editingFG?.item_type === 'gdrive' ? 'selected' : ''}>Google Drive (Arsip Folder / Berkas / Virtual Tour)</option>
+              </select>
             </div>
 
-            <div class="bg-white p-3 rounded-xl border border-slate-200 flex flex-col justify-center">
-              <label class="block font-semibold text-slate-700 mb-1">Label Kondisi / Kategori</label>
-              <input type="text" name="condition_or_tag" placeholder="Contoh: Kondisi Sangat Baik / Kegiatan Sekolah" class="w-full px-3 py-2 rounded-lg border border-slate-300" />
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Judul Fasilitas / Album / Video / Dokumen *</label>
+              <input type="text" name="title" value="${escapeHtml(editingFG ? editingFG.title : '')}" required placeholder="Contoh: Laboratorium Komputer / Dokumentasi OSIS / Link TikTok Kegiatan" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
             </div>
 
-            <textarea name="description" rows="2" placeholder="Deskripsi singkat..." class="md:col-span-2 px-3 py-2 rounded-xl border border-slate-300 bg-white"></textarea>
-            <button type="submit" class="md:col-span-2 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold shadow-sm transition">+ Simpan Fasilitas / Galeri</button>
+            <!-- Upload Foto Fasilitas / Galeri (PNG/JPG/JPEG) & Link Media -->
+            <div class="space-y-1.5 bg-white p-3.5 rounded-xl border border-slate-200">
+              <label class="block font-semibold text-slate-700">1. Upload Foto Fasilitas / Galeri (Format PNG, JPG, JPEG)</label>
+              <div class="flex items-center gap-2">
+                <input type="file" accept="image/png,image/jpeg,image/jpg" onchange="window.app.handleImageUploadInput(event, 'fg-media-url-input', 'fg-media-preview', 900)" class="w-full text-[11px] file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-brand-50 file:text-brand-700 file:font-bold border border-slate-200 rounded-lg p-1" />
+                <img id="fg-media-preview" src="${escapeHtml(editingFG?.media_url || '')}" alt="Preview" class="${editingFG?.media_url && editingFG?.item_type !== 'video' ? '' : 'hidden'} w-11 h-11 rounded-lg object-cover border border-slate-300 shrink-0" />
+              </div>
+            </div>
+
+            <div class="space-y-1.5 bg-white p-3.5 rounded-xl border border-slate-200">
+              <label class="block font-semibold text-slate-700">2. Atau Tempel Link TikTok, Google Drive, YouTube, atau URL Foto *</label>
+              <input type="text" id="fg-media-url-input" name="media_url" value="${escapeHtml(editingFG ? editingFG.media_url : '')}" required placeholder="https://www.tiktok.com/@... atau https://drive.google.com/... atau https://youtube.com/..." class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs" />
+              <p class="text-[10px] text-slate-500">Mendukung link langsung foto, embed video YouTube, video link TikTok, serta shared link folder/file Google Drive.</p>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Label Kondisi / Kategori / Tag</label>
+              <input type="text" name="condition_or_tag" value="${escapeHtml(editingFG ? (editingFG.condition_or_tag || '') : '')}" placeholder="Contoh: Sangat Baik / TikTok Edukasi / Berkas Drive / Dokumentasi" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Deskripsi Singkat</label>
+              <textarea name="description" rows="2" placeholder="Deskripsi informasi fasilitas, video, atau tautan berkas..." class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white">${escapeHtml(editingFG ? (editingFG.description || '') : '')}</textarea>
+            </div>
+
+            <div class="md:col-span-2 flex flex-wrap gap-2 pt-1">
+              <button type="submit" class="flex-1 py-2.5 rounded-xl ${editingFG ? 'bg-amber-500 hover:bg-amber-600 text-slate-900' : 'bg-brand-700 hover:bg-brand-800 text-white'} font-bold shadow-sm transition flex items-center justify-center gap-2">
+                <i data-lucide="${editingFG ? 'check-circle' : 'plus-circle'}" class="w-4 h-4"></i>
+                <span>${editingFG ? 'Simpan Perubahan Fasilitas/Galeri' : '+ Simpan Fasilitas / Galeri'}</span>
+              </button>
+              ${editingFG ? `
+                <button type="button" onclick="window.app.cancelEditFacilityGallery()" class="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold transition">
+                  Batal Edit
+                </button>
+              ` : ''}
+            </div>
           </form>
 
-          <div class="space-y-2.5">
-            ${state.facilitiesGallery.map(fg => `
-              <div class="p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between gap-3 text-xs">
-                <div class="flex items-center gap-3 min-w-0">
-                  ${fg.item_type !== 'video' ? `<img src="${escapeHtml(fg.media_url)}" alt="Thumb" class="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" />` : `<div class="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0"><i data-lucide="video" class="w-5 h-5"></i></div>`}
-                  <div class="min-w-0">
-                    <span class="px-2 py-0.5 rounded bg-emerald-50 text-brand-700 font-bold uppercase text-[10px]">${escapeHtml(fg.item_type)}</span>
-                    <span class="font-bold text-slate-900 ml-2">${escapeHtml(fg.title)}</span>
+          <!-- Daftar Fasilitas & Galeri dengan Tombol Edit & Hapus -->
+          <div class="space-y-3">
+            <h4 class="font-heading font-bold text-sm text-slate-900">Daftar Fasilitas & Galeri Terdaftar (${state.facilitiesGallery.length} Item)</h4>
+            <div class="space-y-2.5">
+              ${state.facilitiesGallery.map(fg => {
+                const isTikTok = fg.item_type === 'tiktok';
+                const isGDrive = fg.item_type === 'gdrive';
+                const isVideo = fg.item_type === 'video';
+                return `
+                  <div class="p-3.5 rounded-2xl border ${state.editingFacilityGalleryId === fg.id ? 'border-amber-400 bg-amber-50/50' : 'border-slate-200 bg-white'} flex flex-wrap items-center justify-between gap-3 text-xs">
+                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                      ${isVideo ? `
+                        <div class="w-12 h-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0 border border-red-200">
+                          <i data-lucide="video" class="w-5 h-5"></i>
+                        </div>
+                      ` : isTikTok ? `
+                        <div class="w-12 h-12 rounded-xl bg-slate-900 text-yellow-300 flex items-center justify-center shrink-0 border border-slate-700">
+                          <i data-lucide="play-circle" class="w-5 h-5"></i>
+                        </div>
+                      ` : isGDrive ? `
+                        <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 border border-blue-200">
+                          <i data-lucide="folder-git-2" class="w-5 h-5"></i>
+                        </div>
+                      ` : `
+                        <img src="${escapeHtml(fg.media_url)}" alt="Thumb" class="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" onerror="this.src='https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=200&q=60'" />
+                      `}
+                      <div class="min-w-0">
+                        <div class="flex flex-wrap items-center gap-1.5">
+                          <span class="px-2 py-0.5 rounded ${
+                            isTikTok ? 'bg-slate-900 text-yellow-300' :
+                            isGDrive ? 'bg-blue-100 text-blue-800' :
+                            isVideo ? 'bg-red-100 text-red-700' : 'bg-emerald-50 text-brand-700'
+                          } font-bold uppercase text-[10px]">${escapeHtml(fg.item_type)}</span>
+                          <span class="text-slate-400 text-[11px]">${escapeHtml(fg.condition_or_tag || '')}</span>
+                        </div>
+                        <span class="font-bold text-slate-900 mt-0.5 block truncate">${escapeHtml(fg.title)}</span>
+                        <div class="text-[11px] text-slate-400 truncate max-w-md">${escapeHtml(fg.media_url)}</div>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                      <button onclick="window.app.startEditFacilityGallery('${fg.id}')" class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold flex items-center gap-1 transition">
+                        <i data-lucide="edit-2" class="w-3.5 h-3.5"></i> Edit
+                      </button>
+                      <button onclick="window.app.deleteFacilityGallery('${fg.id}')" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-bold flex items-center gap-1 transition">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <button onclick="window.app.deleteFacilityGallery('${fg.id}')" class="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 font-bold">Hapus</button>
-              </div>
-            `).join('')}
+                `;
+              }).join('')}
+            </div>
           </div>
         </div>
       `;
@@ -3037,26 +3546,96 @@
 
     if (state.adminTab === 'spmb') {
       return `
-        <div class="space-y-4">
-          <h3 class="font-heading font-bold text-lg text-slate-900">Verifikasi & Seleksi Pendaftar SPMB</h3>
+        <div class="space-y-6">
+          <div class="border-b border-slate-100 pb-3">
+            <h3 class="font-heading font-bold text-lg text-slate-900">Kelola & Verifikasi Pendaftaran SPMB Online</h3>
+            <p class="text-xs text-slate-500">Ubah status seleksi secara cepat atau gunakan tombol Edit dan Hapus untuk pembaruan lengkap data calon murid baru.</p>
+          </div>
+
           <div class="space-y-3">
-            ${state.spmbList.length > 0 ? state.spmbList.map(r => `
-              <div class="p-4 rounded-2xl border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
-                <div>
-                  <div class="font-bold text-slate-900">${escapeHtml(r.full_name)} <span class="text-slate-400">(${escapeHtml(r.reg_number)})</span></div>
-                  <div class="text-slate-500">NISN: ${escapeHtml(r.nisn)} • Asal: ${escapeHtml(r.origin_school)} • Jalur: ${escapeHtml(r.track)} • Nilai: ${Number(r.average_score)}</div>
+            ${state.spmbList.length > 0 ? state.spmbList.map(r => {
+              const isEditing = state.editingSpmbId === r.id;
+              if (isEditing) {
+                return `
+                  <form onsubmit="window.app.saveSpmbForm(event, '${r.id}')" class="p-5 rounded-2xl bg-amber-50/80 border-2 border-amber-300 space-y-3 text-xs">
+                    <div class="flex items-center justify-between font-bold text-amber-900">
+                      <div class="flex items-center gap-2">
+                        <i data-lucide="edit-3" class="w-4 h-4 text-amber-700"></i>
+                        <span>Edit Data Calon Murid: ${escapeHtml(r.full_name)} (${escapeHtml(r.reg_number)})</span>
+                      </div>
+                      <span class="text-[10px] px-2 py-0.5 rounded bg-amber-200 text-amber-800">Mode Edit SPMB</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label class="block font-semibold mb-1">NISN *</label>
+                        <input type="text" name="nisn" value="${escapeHtml(r.nisn)}" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+                      </div>
+                      <div>
+                        <label class="block font-semibold mb-1">Nama Lengkap *</label>
+                        <input type="text" name="full_name" value="${escapeHtml(r.full_name)}" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+                      </div>
+                      <div>
+                        <label class="block font-semibold mb-1">Sekolah Asal (SD/MI) *</label>
+                        <input type="text" name="origin_school" value="${escapeHtml(r.origin_school)}" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+                      </div>
+                      <div>
+                        <label class="block font-semibold mb-1">Jalur Pendaftaran *</label>
+                        <select name="track" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white">
+                          <option value="Zonasi" ${r.track === 'Zonasi' ? 'selected' : ''}>Jalur Zonasi</option>
+                          <option value="Afirmasi" ${r.track === 'Afirmasi' ? 'selected' : ''}>Jalur Afirmasi</option>
+                          <option value="Prestasi" ${r.track === 'Prestasi' ? 'selected' : ''}>Jalur Prestasi</option>
+                          <option value="Mutasi" ${r.track === 'Mutasi' ? 'selected' : ''}>Perpindahan Tugas Orang Tua</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block font-semibold mb-1">WhatsApp Orang Tua/Wali *</label>
+                        <input type="text" name="parent_phone" value="${escapeHtml(r.parent_phone)}" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+                      </div>
+                      <div>
+                        <label class="block font-semibold mb-1">Rata-rata Nilai Rapor *</label>
+                        <input type="number" step="0.01" name="average_score" value="${Number(r.average_score)}" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+                      </div>
+                      <div class="sm:col-span-3">
+                        <label class="block font-semibold mb-1">Status Verifikasi & Seleksi</label>
+                        <select name="status" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white font-bold">
+                          <option value="Menunggu Verifikasi" ${r.status === 'Menunggu Verifikasi' ? 'selected' : ''}>Menunggu Verifikasi</option>
+                          <option value="Diterima" ${r.status === 'Diterima' ? 'selected' : ''}>Diterima</option>
+                          <option value="Cadangan" ${r.status === 'Cadangan' ? 'selected' : ''}>Cadangan</option>
+                          <option value="Ditolak" ${r.status === 'Ditolak' ? 'selected' : ''}>Ditolak</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="flex gap-2 justify-end pt-2">
+                      <button type="button" onclick="window.app.cancelEditSpmb()" class="px-4 py-2 rounded-xl bg-slate-200 text-slate-700 font-bold hover:bg-slate-300 transition">Batal</button>
+                      <button type="submit" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold shadow-sm transition">Simpan Perubahan SPMB</button>
+                    </div>
+                  </form>
+                `;
+              }
+
+              return `
+                <div class="p-4 rounded-2xl border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs bg-white">
+                  <div class="space-y-0.5">
+                    <div class="font-bold text-slate-900 text-sm">${escapeHtml(r.full_name)} <span class="text-slate-400 font-mono text-xs">(${escapeHtml(r.reg_number)})</span></div>
+                    <div class="text-slate-500">NISN: ${escapeHtml(r.nisn)} • Asal: ${escapeHtml(r.origin_school)} • Jalur: ${escapeHtml(r.track)} • Nilai: <strong>${Number(r.average_score)}</strong> • WA: ${escapeHtml(r.parent_phone)}</div>
+                  </div>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <select onchange="window.app.updateSpmbStatus('${r.id}', this.value)" class="px-2.5 py-1.5 rounded-xl border border-slate-300 bg-white font-semibold">
+                      <option value="Menunggu Verifikasi" ${r.status === 'Menunggu Verifikasi' ? 'selected' : ''}>Menunggu Verifikasi</option>
+                      <option value="Diterima" ${r.status === 'Diterima' ? 'selected' : ''}>Diterima</option>
+                      <option value="Cadangan" ${r.status === 'Cadangan' ? 'selected' : ''}>Cadangan</option>
+                      <option value="Ditolak" ${r.status === 'Ditolak' ? 'selected' : ''}>Ditolak</option>
+                    </select>
+                    <button onclick="window.app.startEditSpmb('${r.id}')" class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold flex items-center gap-1 transition">
+                      <i data-lucide="edit-2" class="w-3.5 h-3.5"></i> Edit
+                    </button>
+                    <button onclick="window.app.deleteSpmb('${r.id}')" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-bold flex items-center gap-1 transition">
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus
+                    </button>
+                  </div>
                 </div>
-                <div class="flex items-center gap-2">
-                  <select onchange="window.app.updateSpmbStatus('${r.id}', this.value)" class="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white font-semibold">
-                    <option value="Menunggu Verifikasi" ${r.status === 'Menunggu Verifikasi' ? 'selected' : ''}>Menunggu Verifikasi</option>
-                    <option value="Diterima" ${r.status === 'Diterima' ? 'selected' : ''}>Diterima</option>
-                    <option value="Cadangan" ${r.status === 'Cadangan' ? 'selected' : ''}>Cadangan</option>
-                    <option value="Ditolak" ${r.status === 'Ditolak' ? 'selected' : ''}>Ditolak</option>
-                  </select>
-                  <button onclick="window.app.deleteSpmb('${r.id}')" class="px-2.5 py-1.5 rounded-lg bg-red-50 text-red-600 font-bold">Hapus</button>
-                </div>
-              </div>
-            `).join('') : renderEmptyState('Belum ada data pendaftar SPMB.')}
+              `;
+            }).join('') : renderEmptyState('Belum ada data pendaftar SPMB.')}
           </div>
         </div>
       `;
@@ -3064,55 +3643,185 @@
 
     if (state.adminTab === 'pengaduan') {
       return `
-        <div class="space-y-4">
-          <h3 class="font-heading font-bold text-lg text-slate-900">Tindak Lanjut Pengaduan & Permohonan PPID</h3>
+        <div class="space-y-6">
+          <div class="border-b border-slate-100 pb-3">
+            <h3 class="font-heading font-bold text-lg text-slate-900">Kelola Pengaduan, Aspirasi & Permohonan PPID</h3>
+            <p class="text-xs text-slate-500">Tindak lanjuti aspirasi masyarakat secara transparan dengan opsi Balas Cepat, Edit Lengkap, dan Hapus data.</p>
+          </div>
+
           <div class="space-y-3">
-            ${state.complaints.length > 0 ? state.complaints.map(c => `
-              <div class="p-4 rounded-2xl border border-slate-200 space-y-2 text-xs">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-slate-900">${escapeHtml(c.sender_name)} (${escapeHtml(c.sender_contact)}) — ${escapeHtml(c.category)}</span>
-                  <button onclick="window.app.deleteComplaint('${c.id}')" class="text-red-600 font-bold">Hapus</button>
+            ${state.complaints.length > 0 ? state.complaints.map(c => {
+              const isEditing = state.editingComplaintId === c.id;
+              if (isEditing) {
+                return `
+                  <form onsubmit="window.app.saveComplaintEditForm(event, '${c.id}')" class="p-5 rounded-2xl bg-amber-50/80 border-2 border-amber-300 space-y-3 text-xs">
+                    <div class="flex items-center justify-between font-bold text-amber-900">
+                      <div class="flex items-center gap-2">
+                        <i data-lucide="edit-3" class="w-4 h-4 text-amber-700"></i>
+                        <span>Edit Pengaduan / PPID dari: ${escapeHtml(c.sender_name)}</span>
+                      </div>
+                      <span class="text-[10px] px-2 py-0.5 rounded bg-amber-200 text-amber-800">Mode Edit Pengaduan</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label class="block font-semibold mb-1">Nama Pengirim *</label>
+                        <input type="text" name="sender_name" value="${escapeHtml(c.sender_name)}" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+                      </div>
+                      <div>
+                        <label class="block font-semibold mb-1">Kontak Pengirim *</label>
+                        <input type="text" name="sender_contact" value="${escapeHtml(c.sender_contact)}" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+                      </div>
+                      <div>
+                        <label class="block font-semibold mb-1">Kategori Pesan</label>
+                        <select name="category" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white">
+                          <option value="Pengaduan" ${c.category === 'Pengaduan' ? 'selected' : ''}>Pengaduan Layanan</option>
+                          <option value="Saran" ${c.category === 'Saran' ? 'selected' : ''}>Saran & Masukan</option>
+                          <option value="Permohonan PPID" ${c.category === 'Permohonan PPID' ? 'selected' : ''}>Permohonan PPID</option>
+                        </select>
+                      </div>
+                      <div class="sm:col-span-3">
+                        <label class="block font-semibold mb-1">Isi Pesan / Aspirasi *</label>
+                        <textarea name="message" rows="2" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white">${escapeHtml(c.message)}</textarea>
+                      </div>
+                      <div class="sm:col-span-2">
+                        <label class="block font-semibold mb-1">Tanggapan Resmi Sekolah</label>
+                        <input type="text" name="response" value="${escapeHtml(c.response || '')}" placeholder="Tanggapan resmi..." class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+                      </div>
+                      <div>
+                        <label class="block font-semibold mb-1">Status</label>
+                        <select name="status" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white font-bold">
+                          <option value="Baru" ${c.status === 'Baru' ? 'selected' : ''}>Baru</option>
+                          <option value="Diproses" ${c.status === 'Diproses' ? 'selected' : ''}>Diproses</option>
+                          <option value="Selesai" ${c.status === 'Selesai' ? 'selected' : ''}>Selesai</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="flex gap-2 justify-end pt-2">
+                      <button type="button" onclick="window.app.cancelEditComplaint()" class="px-4 py-2 rounded-xl bg-slate-200 text-slate-700 font-bold hover:bg-slate-300 transition">Batal</button>
+                      <button type="submit" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold shadow-sm transition">Simpan Perubahan Pengaduan</button>
+                    </div>
+                  </form>
+                `;
+              }
+
+              return `
+                <div class="p-4 rounded-2xl border border-slate-200 space-y-2.5 text-xs bg-white">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <span class="font-bold text-slate-900 text-sm">${escapeHtml(c.sender_name)}</span>
+                      <span class="text-slate-500">(${escapeHtml(c.sender_contact)}) — <strong>${escapeHtml(c.category)}</strong></span>
+                      <span class="ml-2 px-2 py-0.5 rounded-full text-[10px] font-bold ${c.status === 'Selesai' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${escapeHtml(c.status)}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <button onclick="window.app.startEditComplaint('${c.id}')" class="px-2.5 py-1 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold flex items-center gap-1 transition">
+                        <i data-lucide="edit-2" class="w-3.5 h-3.5"></i> Edit
+                      </button>
+                      <button onclick="window.app.deleteComplaint('${c.id}')" class="px-2.5 py-1 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-bold flex items-center gap-1 transition">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus
+                      </button>
+                    </div>
+                  </div>
+                  <p class="text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200">"${escapeHtml(c.message)}"</p>
+                  <div class="flex gap-2">
+                    <input id="resp-${c.id}" type="text" value="${escapeHtml(c.response || '')}" placeholder="Tulis tanggapan resmi sekolah..." class="flex-1 px-3 py-2 rounded-xl border border-slate-300" />
+                    <button onclick="window.app.replyComplaint('${c.id}')" class="px-4 py-2 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold transition">Simpan Balasan</button>
+                  </div>
                 </div>
-                <p class="text-slate-600 bg-slate-50 p-2.5 rounded-xl">"${escapeHtml(c.message)}"</p>
-                <div class="flex gap-2">
-                  <input id="resp-${c.id}" type="text" value="${escapeHtml(c.response || '')}" placeholder="Tulis tanggapan resmi sekolah..." class="flex-1 px-3 py-1.5 rounded-lg border border-slate-300" />
-                  <button onclick="window.app.replyComplaint('${c.id}')" class="px-3.5 py-1.5 rounded-lg bg-brand-700 text-white font-bold">Simpan Balasan</button>
-                </div>
-              </div>
-            `).join('') : renderEmptyState('Belum ada pesan pengaduan masuk.')}
+              `;
+            }).join('') : renderEmptyState('Belum ada pesan pengaduan masuk.')}
           </div>
         </div>
       `;
     }
 
     if (state.adminTab === 'pengguna') {
+      const editingUser = state.editingUserId ? state.users.find(u => u.id === state.editingUserId) : null;
       return `
         <div class="space-y-6">
-          <h3 class="font-heading font-bold text-lg text-slate-900">Kelola Akun Staf Multi-Role (Tabel Database)</h3>
-          <form onsubmit="window.app.addUserForm(event)" class="grid grid-cols-1 md:grid-cols-4 gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
-            <input type="text" name="username" required placeholder="Username Login *" class="px-3 py-2 rounded-xl border border-slate-300" />
-            <input type="text" name="password" required placeholder="Password *" class="px-3 py-2 rounded-xl border border-slate-300" />
-            <input type="text" name="full_name" required placeholder="Nama Lengkap Pejabat/Staf *" class="px-3 py-2 rounded-xl border border-slate-300" />
-            <select name="role" class="px-3 py-2 rounded-xl border border-slate-300 bg-white">
-              <option value="kepsek">Kepala Sekolah</option>
-              <option value="operator">Operator Sekolah</option>
-              <option value="guru">Guru</option>
-              <option value="spmb">Panitia SPMB</option>
-              <option value="humas">Humas</option>
-            </select>
-            <button type="submit" class="md:col-span-4 py-2.5 rounded-xl bg-brand-700 text-white font-bold">+ Tambah Akun Pengelola Multi-Role</button>
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div>
+              <h3 class="font-heading font-bold text-lg text-slate-900">Kelola Akun Staf Multi-Role (Tabel Database)</h3>
+              <p class="text-xs text-slate-500">Kelola kredensial akun staf untuk Kepala Sekolah, Operator, Guru, Panitia SPMB, dan Humas dengan opsi Edit dan Hapus.</p>
+            </div>
+            ${editingUser ? `
+              <button onclick="window.app.cancelEditUser()" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5">
+                <i data-lucide="x" class="w-4 h-4"></i> Batal Mode Edit
+              </button>
+            ` : ''}
+          </div>
+
+          <!-- Form Tambah / Edit Pengguna -->
+          <form onsubmit="window.app.addUserForm(event)" class="grid grid-cols-1 md:grid-cols-4 gap-3 p-4 rounded-2xl ${editingUser ? 'bg-amber-50/70 border-2 border-amber-300' : 'bg-slate-50 border border-slate-200'} text-xs">
+            ${editingUser ? `
+              <div class="md:col-span-4 p-3 rounded-xl bg-amber-100/80 border border-amber-300 flex items-center justify-between text-amber-900 font-bold">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="edit-3" class="w-4 h-4 text-amber-700"></i>
+                  <span>Sedang Mengedit Akun: "${escapeHtml(editingUser.username)}"</span>
+                </div>
+                <span class="text-[11px] px-2 py-0.5 rounded bg-amber-200 text-amber-800">Mode Edit Akun</span>
+              </div>
+            ` : ''}
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Username Login *</label>
+              <input type="text" name="username" value="${escapeHtml(editingUser ? editingUser.username : '')}" required placeholder="Username Login *" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Password *</label>
+              <input type="text" name="password" value="${escapeHtml(editingUser ? editingUser.password : '')}" required placeholder="Password *" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Nama Lengkap Pejabat/Staf *</label>
+              <input type="text" name="full_name" value="${escapeHtml(editingUser ? editingUser.full_name : '')}" required placeholder="Nama Lengkap Pejabat/Staf *" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Hak Akses Role *</label>
+              <select name="role" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white font-bold">
+                <option value="kepsek" ${editingUser?.role === 'kepsek' ? 'selected' : ''}>Kepala Sekolah</option>
+                <option value="operator" ${editingUser?.role === 'operator' ? 'selected' : ''}>Operator Sekolah</option>
+                <option value="guru" ${editingUser?.role === 'guru' ? 'selected' : ''}>Guru</option>
+                <option value="spmb" ${editingUser?.role === 'spmb' ? 'selected' : ''}>Panitia SPMB</option>
+                <option value="humas" ${editingUser?.role === 'humas' ? 'selected' : ''}>Humas</option>
+              </select>
+            </div>
+
+            <div class="md:col-span-4 flex flex-wrap gap-2 pt-1">
+              <button type="submit" class="flex-1 py-2.5 rounded-xl ${editingUser ? 'bg-amber-500 hover:bg-amber-600 text-slate-900' : 'bg-brand-700 hover:bg-brand-800 text-white'} font-bold transition flex items-center justify-center gap-2">
+                <i data-lucide="${editingUser ? 'check-circle' : 'plus-circle'}" class="w-4 h-4"></i>
+                <span>${editingUser ? 'Simpan Perubahan Akun Pengelola' : '+ Tambah Akun Pengelola Multi-Role'}</span>
+              </button>
+              ${editingUser ? `
+                <button type="button" onclick="window.app.cancelEditUser()" class="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold transition">
+                  Batal Edit
+                </button>
+              ` : ''}
+            </div>
           </form>
 
-          <div class="space-y-2">
-            ${state.users.map(u => `
-              <div class="p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between text-xs">
-                <div>
-                  <span class="font-bold text-slate-900">${escapeHtml(u.full_name)}</span>
-                  <span class="text-slate-500"> (Username: <code>${escapeHtml(u.username)}</code> • Role: <strong>${escapeHtml(u.role.toUpperCase())}</strong>)</span>
+          <!-- Daftar Akun dengan Tombol Edit & Hapus -->
+          <div class="space-y-3">
+            <h4 class="font-heading font-bold text-sm text-slate-900">Daftar Akun Staf Terdaftar (${state.users.length} Akun)</h4>
+            <div class="space-y-2.5">
+              ${state.users.map(u => `
+                <div class="p-3.5 rounded-2xl border ${state.editingUserId === u.id ? 'border-amber-400 bg-amber-50/50' : 'border-slate-200 bg-white'} flex flex-wrap items-center justify-between gap-3 text-xs">
+                  <div>
+                    <span class="font-bold text-slate-900 text-sm">${escapeHtml(u.full_name)}</span>
+                    <span class="text-slate-500 ml-1">(Username: <code class="bg-slate-100 px-1.5 py-0.5 rounded font-mono text-slate-800">${escapeHtml(u.username)}</code> • Role: <strong class="text-brand-700">${escapeHtml(u.role.toUpperCase())}</strong>)</span>
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <button onclick="window.app.startEditUser('${u.id}')" class="px-3 py-1 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold flex items-center gap-1 transition">
+                      <i data-lucide="edit-2" class="w-3.5 h-3.5"></i> Edit
+                    </button>
+                    <button onclick="window.app.deleteUser('${u.id}')" class="px-3 py-1 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-bold flex items-center gap-1 transition">
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus
+                    </button>
+                  </div>
                 </div>
-                <button onclick="window.app.deleteUser('${u.id}')" class="px-3 py-1 rounded-lg bg-red-50 text-red-600 font-bold">Hapus</button>
-              </div>
-            `).join('')}
+              `).join('')}
+            </div>
           </div>
         </div>
       `;
@@ -3319,6 +4028,16 @@
   }
 
   // CRUD Posts
+  function startEditPost(id) {
+    state.editingPostId = id;
+    renderCurrentView();
+  }
+
+  function cancelEditPost() {
+    state.editingPostId = null;
+    renderCurrentView();
+  }
+
   async function addPostForm(e) {
     e.preventDefault();
     const f = e.target;
@@ -3327,9 +4046,36 @@
       title: f.title.value.trim(),
       event_date: f.event_date.value,
       image_url: f.image_url.value.trim() || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80',
+      file_url: (f.file_url?.value || '').trim(),
+      file_name: (f.file_name?.value || '').trim(),
       author_name: f.author_name.value.trim(),
       content: f.content.value.trim()
     };
+
+    if (state.editingPostId) {
+      const idx = state.posts.findIndex(p => p.id === state.editingPostId);
+      if (idx !== -1) {
+        state.posts[idx] = { ...state.posts[idx], ...payload };
+      }
+      const editId = state.editingPostId;
+      state.editingPostId = null;
+      saveCacheToStorage();
+      renderCurrentView();
+
+      if (IS_PREVIEW) {
+        showToast('Perubahan postingan & file PDF berhasil diperbarui!');
+        return;
+      }
+      try {
+        const { error } = await supabase.from('posts').update(payload).eq('id', editId);
+        if (error) throw error;
+        await loadAllData();
+        showToast('Perubahan postingan tersimpan di Supabase!');
+      } catch (err) {
+        showToast('Perubahan tersimpan lokal (Supabase: ' + err.message + ')');
+      }
+      return;
+    }
 
     state.posts.unshift({ id: 'p-' + Date.now(), ...payload });
     saveCacheToStorage();
@@ -3337,7 +4083,7 @@
     renderCurrentView();
 
     if (IS_PREVIEW) {
-      showToast('Konten baru berhasil dipublikasikan!');
+      showToast('Konten, foto & lampiran PDF berhasil dipublikasikan!');
       return;
     }
 
@@ -3352,6 +4098,7 @@
   }
 
   async function deletePost(id) {
+    if (state.editingPostId === id) state.editingPostId = null;
     state.posts = state.posts.filter(p => p.id !== id);
     saveCacheToStorage();
     renderCurrentView();
@@ -3371,6 +4118,16 @@
   }
 
   // CRUD Staff
+  function startEditStaff(id) {
+    state.editingStaffId = id;
+    renderCurrentView();
+  }
+
+  function cancelEditStaff() {
+    state.editingStaffId = null;
+    renderCurrentView();
+  }
+
   async function addStaffForm(e) {
     e.preventDefault();
     const f = e.target;
@@ -3382,6 +4139,31 @@
       subject: f.subject.value.trim(),
       photo_url: f.photo_url.value.trim() || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=500&q=80'
     };
+
+    if (state.editingStaffId) {
+      const idx = state.staff.findIndex(s => s.id === state.editingStaffId);
+      if (idx !== -1) {
+        state.staff[idx] = { ...state.staff[idx], ...payload };
+      }
+      const editId = state.editingStaffId;
+      state.editingStaffId = null;
+      saveCacheToStorage();
+      renderCurrentView();
+
+      if (IS_PREVIEW) {
+        showToast('Data Guru/Tendik berhasil diperbarui!');
+        return;
+      }
+      try {
+        const { error } = await supabase.from('staff_directory').update(payload).eq('id', editId);
+        if (error) throw error;
+        await loadAllData();
+        showToast('Data GTK berhasil diperbarui di Supabase!');
+      } catch (err) {
+        showToast('Data GTK tersimpan lokal (Supabase: ' + err.message + ')');
+      }
+      return;
+    }
 
     state.staff.push({ id: 'st-' + Date.now(), ...payload });
     saveCacheToStorage();
@@ -3404,6 +4186,7 @@
   }
 
   async function deleteStaff(id) {
+    if (state.editingStaffId === id) state.editingStaffId = null;
     state.staff = state.staff.filter(s => s.id !== id);
     saveCacheToStorage();
     renderCurrentView();
@@ -3422,7 +4205,17 @@
     }
   }
 
-  // CRUD Facilities & Gallery
+  // CRUD Facilities & Gallery (Foto, Video YouTube, TikTok, Google Drive)
+  function startEditFacilityGallery(id) {
+    state.editingFacilityGalleryId = id;
+    renderCurrentView();
+  }
+
+  function cancelEditFacilityGallery() {
+    state.editingFacilityGalleryId = null;
+    renderCurrentView();
+  }
+
   async function addFacilityGalleryForm(e) {
     e.preventDefault();
     const f = e.target;
@@ -3434,13 +4227,38 @@
       description: f.description.value.trim()
     };
 
+    if (state.editingFacilityGalleryId) {
+      const idx = state.facilitiesGallery.findIndex(x => x.id === state.editingFacilityGalleryId);
+      if (idx !== -1) {
+        state.facilitiesGallery[idx] = { ...state.facilitiesGallery[idx], ...payload };
+      }
+      const editId = state.editingFacilityGalleryId;
+      state.editingFacilityGalleryId = null;
+      saveCacheToStorage();
+      renderCurrentView();
+
+      if (IS_PREVIEW) {
+        showToast('Fasilitas/galeri berhasil diperbarui!');
+        return;
+      }
+      try {
+        const { error } = await supabase.from('facilities_gallery').update(payload).eq('id', editId);
+        if (error) throw error;
+        await loadAllData();
+        showToast('Perubahan tersimpan di Supabase!');
+      } catch (err) {
+        showToast('Tersimpan di browser (Supabase: ' + err.message + ')');
+      }
+      return;
+    }
+
     state.facilitiesGallery.unshift({ id: 'fg-' + Date.now(), ...payload });
     saveCacheToStorage();
     f.reset();
     renderCurrentView();
 
     if (IS_PREVIEW) {
-      showToast('Item fasilitas/galeri ditambahkan!');
+      showToast('Item fasilitas/galeri/TikTok/Drive berhasil ditambahkan!');
       return;
     }
 
@@ -3455,6 +4273,7 @@
   }
 
   async function deleteFacilityGallery(id) {
+    if (state.editingFacilityGalleryId === id) state.editingFacilityGalleryId = null;
     state.facilitiesGallery = state.facilitiesGallery.filter(x => x.id !== id);
     saveCacheToStorage();
     renderCurrentView();
@@ -3474,6 +4293,49 @@
   }
 
   // CRUD SPMB
+  function startEditSpmb(id) {
+    state.editingSpmbId = id;
+    renderCurrentView();
+  }
+
+  function cancelEditSpmb() {
+    state.editingSpmbId = null;
+    renderCurrentView();
+  }
+
+  async function saveSpmbForm(e, id) {
+    e.preventDefault();
+    const f = e.target;
+    const payload = {
+      nisn: f.nisn.value.trim(),
+      full_name: f.full_name.value.trim(),
+      origin_school: f.origin_school.value.trim(),
+      track: f.track.value,
+      parent_phone: f.parent_phone.value.trim(),
+      average_score: Number(f.average_score.value || 0),
+      status: f.status.value
+    };
+
+    const item = state.spmbList.find(r => r.id === id);
+    if (item) Object.assign(item, payload);
+    state.editingSpmbId = null;
+    saveCacheToStorage();
+    renderCurrentView();
+
+    if (IS_PREVIEW) {
+      showToast('Data pendaftar SPMB berhasil diperbarui!');
+      return;
+    }
+    try {
+      const { error } = await supabase.from('spmb_registrations').update(payload).eq('id', id);
+      if (error) throw error;
+      await loadAllData();
+      showToast('Data SPMB diperbarui di Supabase!');
+    } catch (err) {
+      showToast('Status diperbarui di browser (Supabase: ' + err.message + ')');
+    }
+  }
+
   async function submitSpmbForm(e) {
     e.preventDefault();
     const f = e.target;
@@ -3544,6 +4406,7 @@
   }
 
   async function deleteSpmb(id) {
+    if (state.editingSpmbId === id) state.editingSpmbId = null;
     state.spmbList = state.spmbList.filter(r => r.id !== id);
     saveCacheToStorage();
     renderCurrentView();
@@ -3563,6 +4426,48 @@
   }
 
   // CRUD Complaints & PPID Requests
+  function startEditComplaint(id) {
+    state.editingComplaintId = id;
+    renderCurrentView();
+  }
+
+  function cancelEditComplaint() {
+    state.editingComplaintId = null;
+    renderCurrentView();
+  }
+
+  async function saveComplaintEditForm(e, id) {
+    e.preventDefault();
+    const f = e.target;
+    const payload = {
+      sender_name: f.sender_name.value.trim(),
+      sender_contact: f.sender_contact.value.trim(),
+      category: f.category.value,
+      message: f.message.value.trim(),
+      response: f.response.value.trim(),
+      status: f.status.value
+    };
+
+    const item = state.complaints.find(c => c.id === id);
+    if (item) Object.assign(item, payload);
+    state.editingComplaintId = null;
+    saveCacheToStorage();
+    renderCurrentView();
+
+    if (IS_PREVIEW) {
+      showToast('Data pengaduan berhasil diperbarui!');
+      return;
+    }
+    try {
+      const { error } = await supabase.from('public_complaints').update(payload).eq('id', id);
+      if (error) throw error;
+      await loadAllData();
+      showToast('Perubahan pengaduan disimpan ke Supabase!');
+    } catch (err) {
+      showToast('Pengaduan tersimpan di browser (Supabase: ' + err.message + ')');
+    }
+  }
+
   async function submitComplaintForm(e, forcedCategory = null) {
     e.preventDefault();
     const f = e.target;
@@ -3621,6 +4526,7 @@
   }
 
   async function deleteComplaint(id) {
+    if (state.editingComplaintId === id) state.editingComplaintId = null;
     state.complaints = state.complaints.filter(c => c.id !== id);
     saveCacheToStorage();
     renderCurrentView();
@@ -3640,6 +4546,16 @@
   }
 
   // CRUD Users Multi-Role
+  function startEditUser(id) {
+    state.editingUserId = id;
+    renderCurrentView();
+  }
+
+  function cancelEditUser() {
+    state.editingUserId = null;
+    renderCurrentView();
+  }
+
   async function addUserForm(e) {
     e.preventDefault();
     const f = e.target;
@@ -3650,6 +4566,31 @@
       role: f.role.value,
       is_active: true
     };
+
+    if (state.editingUserId) {
+      const idx = state.users.findIndex(u => u.id === state.editingUserId);
+      if (idx !== -1) {
+        state.users[idx] = { ...state.users[idx], ...payload };
+      }
+      const editId = state.editingUserId;
+      state.editingUserId = null;
+      saveCacheToStorage();
+      renderCurrentView();
+
+      if (IS_PREVIEW) {
+        showToast('Akun staf multi-role berhasil diperbarui!');
+        return;
+      }
+      try {
+        const { error } = await supabase.from('school_users').update(payload).eq('id', editId);
+        if (error) throw error;
+        await loadAllData();
+        showToast('Perubahan akun staf disimpan ke Supabase!');
+      } catch (err) {
+        showToast('Gagal memperbarui akun: ' + err.message);
+      }
+      return;
+    }
 
     state.users.push({ id: 'u-' + Date.now(), ...payload });
     saveCacheToStorage();
@@ -3672,6 +4613,7 @@
   }
 
   async function deleteUser(id) {
+    if (state.editingUserId === id) state.editingUserId = null;
     if (IS_PREVIEW) {
       state.users = state.users.filter(u => u.id !== id);
       renderCurrentView();
@@ -4748,6 +5690,8 @@
     scrollNav,
     openAdminPortalWithProgress,
     handleImageUploadInput,
+    handlePdfUploadInput,
+    clearPdfAttachment,
     quickLogin,
     logout,
     setAdminTab,
@@ -4756,21 +5700,41 @@
     handleAdminAuthLogin,
     handleStaffLogin,
     saveSettingsForm,
+    // Posts CRUD & Edit
     addPostForm,
     deletePost,
+    startEditPost,
+    cancelEditPost,
+    // Staff GTK CRUD & Edit
     addStaffForm,
     deleteStaff,
+    startEditStaff,
+    cancelEditStaff,
+    // Facilities & Gallery (Foto, YouTube, TikTok, Google Drive) CRUD & Edit
     addFacilityGalleryForm,
     deleteFacilityGallery,
+    startEditFacilityGallery,
+    cancelEditFacilityGallery,
+    // SPMB CRUD & Edit
     submitSpmbForm,
     searchSpmbStatus,
     updateSpmbStatus,
     deleteSpmb,
+    startEditSpmb,
+    cancelEditSpmb,
+    saveSpmbForm,
+    // Complaints & PPID CRUD & Edit
     submitComplaintForm,
     replyComplaint,
     deleteComplaint,
+    startEditComplaint,
+    cancelEditComplaint,
+    saveComplaintEditForm,
+    // Users Multi-Role CRUD & Edit
     addUserForm,
     deleteUser,
+    startEditUser,
+    cancelEditUser,
     // Music Player & Admin Music Management API
     unlockAutoplayMusic,
     toggleMusicPlay,
