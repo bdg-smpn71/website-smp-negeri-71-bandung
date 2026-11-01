@@ -74,8 +74,6 @@
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior-y: contain;
-      transform: translateZ(0);
-      backface-visibility: hidden;
     }
 
     img,
@@ -228,6 +226,44 @@
 
       .main-content-area {
         padding-bottom: 5.75rem;
+      }
+    }
+
+    /* SISTEM POSISI FLOATING KANAN PALING BAWAH (BOTTOM-RIGHT CORNER) */
+    #floating-music-root {
+      position: fixed !important;
+      right: 0.75rem !important;
+      bottom: 5.25rem !important;
+      z-index: 10000005 !important;
+      pointer-events: none !important;
+      transform: none !important;
+    }
+
+    #chatbot-window {
+      position: fixed !important;
+      right: 0.75rem !important;
+      bottom: 8.75rem !important;
+      z-index: 10000008 !important;
+      transform: none !important;
+    }
+
+    @media (min-width: 640px) {
+      #floating-music-root {
+        right: 1.25rem !important;
+      }
+      #chatbot-window {
+        right: 1.25rem !important;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      #floating-music-root {
+        bottom: 1.25rem !important;
+        right: 1.5rem !important;
+      }
+      #chatbot-window {
+        bottom: 4.85rem !important;
+        right: 1.5rem !important;
       }
     }
   </style>
@@ -554,8 +590,7 @@
             </div>
           </div>
           <div class="border-t border-slate-800 py-4 text-center text-xs text-slate-500 px-4">
-            &copy; <span id="footer-year"></span> SMP Negeri 71 Kota Bandung. Hak Cipta Dilindungi. Terintegrasi Sistem
-            Multi-Role CMS.
+            &copy; <span id="footer-year"></span> SMP Negeri 71 Kota Bandung. Hak Cipta Dilindungi.
           </div>
         </footer>
       </div>
@@ -616,192 +651,192 @@
         <div id="mobile-drawer-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
       </div>
     </div>
+  </div>
 
-    <!-- ========================================================================== -->
-    <!-- FLOATING SMART WIDGETS DOCK: MUSIK LATAR & AI CHAT BOT (POJOK KANAN BAWAH)  -->
-    <!-- ========================================================================== -->
-    <div id="floating-music-root"
-      class="fixed bottom-20 lg:bottom-5 right-3 sm:right-5 z-40 flex flex-col items-end gap-2.5 pointer-events-none">
-      <!-- Banner Prompt "Aktifkan Musik" jika Autoplay diblokir Browser -->
-      <button id="autoplay-unlock-btn" onclick="window.app.unlockAutoplayMusic()"
-        class="hidden pointer-events-auto px-4 py-2 rounded-full bg-gradient-to-r from-brand-700 via-brand-600 to-emerald-600 hover:from-brand-800 hover:to-brand-700 text-white shadow-xl border-2 border-yellow-300 flex items-center gap-2 text-xs font-heading font-bold transition-all duration-300 hover:scale-105 animate-bounce mb-1">
-        <span class="w-5 h-5 rounded-full bg-yellow-400 text-slate-900 flex items-center justify-center shrink-0">
-          <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
-        </span>
-        <span>Aktifkan Musik Sambutan</span>
+  <!-- ========================================================================== -->
+  <!-- FLOATING SMART WIDGETS DOCK: MUSIK LATAR & AI CHAT BOT (POJOK KANAN BAWAH)  -->
+  <!-- ========================================================================== -->
+  <div id="floating-music-root"
+    class="flex flex-col items-end gap-2.5 pointer-events-none">
+    <!-- Banner Prompt "Aktifkan Musik" jika Autoplay diblokir Browser -->
+    <button id="autoplay-unlock-btn" onclick="window.app.unlockAutoplayMusic()"
+      class="hidden pointer-events-auto px-4 py-2 rounded-full bg-gradient-to-r from-brand-700 via-brand-600 to-emerald-600 hover:from-brand-800 hover:to-brand-700 text-white shadow-xl border-2 border-yellow-300 flex items-center gap-2 text-xs font-heading font-bold transition-all duration-300 hover:scale-105 animate-bounce mb-1">
+      <span class="w-5 h-5 rounded-full bg-yellow-400 text-slate-900 flex items-center justify-center shrink-0">
+        <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+      </span>
+      <span>Aktifkan Musik Sambutan</span>
+    </button>
+
+    <!-- Panel Lengkap Floating Music Player (Glassmorphism, Mengapung Rapi di Atas Tombol Aksi) -->
+    <div id="music-player-card"
+      class="hidden pointer-events-auto glass-panel rounded-3xl p-3 sm:p-3.5 shadow-2xl border border-emerald-200/90 w-72 sm:w-80 max-w-[calc(100vw-1.5rem)] transition-all duration-300">
+      <div class="flex items-center justify-between gap-2 mb-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <!-- Ikon Not Musik & Equalizer -->
+          <div
+            class="w-9 h-9 rounded-2xl bg-gradient-to-br from-brand-700 to-emerald-600 text-white flex items-center justify-center shadow-sm shrink-0 relative">
+            <i data-lucide="music" class="w-4 h-4 text-yellow-300"></i>
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-1.5">
+              <span id="music-status-dot" class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+              <span id="music-status-text"
+                class="text-[10px] font-bold uppercase tracking-wider text-brand-700">Siap Diputar</span>
+              <!-- Animasi Equalizer -->
+              <div class="flex items-end gap-0.5 h-3.5 ml-1" id="music-equalizer">
+                <span class="w-0.5 sm:w-1 bg-brand-600 rounded-full eq-bar-1 eq-paused"></span>
+                <span class="w-0.5 sm:w-1 bg-yellow-500 rounded-full eq-bar-2 eq-paused"></span>
+                <span class="w-0.5 sm:w-1 bg-brand-700 rounded-full eq-bar-3 eq-paused"></span>
+                <span class="w-0.5 sm:w-1 bg-emerald-500 rounded-full eq-bar-4 eq-paused"></span>
+              </div>
+            </div>
+            <div id="music-title-display" class="font-heading font-bold text-xs text-slate-900 truncate mt-0.5">
+              Harmoni Instrumental SMPN 71 Bandung
+            </div>
+          </div>
+        </div>
+
+        <!-- Tombol Sembunyikan Player -->
+        <button onclick="window.app.toggleMusicPlayerMinimize(true)" title="Sembunyikan Panel Musik"
+          class="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition shrink-0">
+          <i data-lucide="chevron-down" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Kontrol Play/Pause, Mute/Unmute, dan Slider Volume -->
+      <div class="flex items-center gap-2 bg-slate-50/90 px-2.5 py-1.5 rounded-2xl border border-slate-200/80">
+        <button id="music-play-btn" onclick="window.app.toggleMusicPlay()" title="Putar / Jeda Musik"
+          class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-brand-700 hover:bg-brand-800 text-white flex items-center justify-center shadow-sm transition shrink-0">
+          <i id="music-play-icon" data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+        </button>
+
+        <button id="music-mute-btn" onclick="window.app.toggleMusicMute()" title="Bisukan / Suarakan"
+          class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 flex items-center justify-center transition shrink-0">
+          <i id="music-mute-icon" data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+        </button>
+
+        <div class="flex-1 flex items-center gap-2 min-w-0">
+          <input id="music-volume-slider" type="range" min="0" max="100" value="25"
+            oninput="window.app.changeMusicVolume(this.value)"
+            class="w-full accent-brand-700 h-1.5 bg-slate-200 rounded-lg cursor-pointer" />
+          <span id="music-volume-label"
+            class="text-[10px] font-bold text-slate-600 w-7 text-right shrink-0">25%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Baris Tombol Aksi di Pojok Kanan Bawah: Tombol Musik Ringkas + Tombol AI Chatbot -->
+    <div class="flex items-center gap-2 pointer-events-auto">
+      <!-- Tombol Mini Musik (Selalu Berada di Pojok Kanan Bawah) -->
+      <button id="music-player-minimized" onclick="window.app.toggleMusicPlayerMinimize()"
+        title="Buka / Tutup Pengaturan Musik Latar"
+        class="glass-panel px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-2xl shadow-xl border border-emerald-200 hover:bg-emerald-50 text-brand-700 flex items-center gap-1.5 sm:gap-2 transition-all duration-300 hover:scale-105 active:scale-95">
+        <div class="relative flex items-center justify-center">
+          <i data-lucide="music" class="w-4 h-4 text-brand-700"></i>
+          <span id="music-mini-dot"
+            class="w-2 h-2 rounded-full bg-emerald-500 absolute -top-1 -right-1 hidden animate-ping"></span>
+        </div>
+        <span class="text-xs font-heading font-bold">Musik</span>
       </button>
 
-      <!-- Panel Lengkap Floating Music Player (Glassmorphism, Mengapung Rapi di Atas Tombol Aksi) -->
-      <div id="music-player-card"
-        class="pointer-events-auto glass-panel rounded-3xl p-3 sm:p-3.5 shadow-2xl border border-emerald-200/90 w-[calc(100vw-2rem)] max-w-xs sm:w-80 transition-all duration-300">
-        <div class="flex items-center justify-between gap-2 mb-2">
-          <div class="flex items-center gap-2.5 min-w-0">
-            <!-- Ikon Not Musik & Equalizer -->
-            <div
-              class="w-9 h-9 rounded-2xl bg-gradient-to-br from-brand-700 to-emerald-600 text-white flex items-center justify-center shadow-sm shrink-0 relative">
-              <i data-lucide="music" class="w-4 h-4 text-yellow-300"></i>
-            </div>
-            <div class="min-w-0 flex-1">
-              <div class="flex items-center gap-1.5">
-                <span id="music-status-dot" class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                <span id="music-status-text"
-                  class="text-[10px] font-bold uppercase tracking-wider text-brand-700">Siap Diputar</span>
-                <!-- Animasi Equalizer -->
-                <div class="flex items-end gap-0.5 h-3.5 ml-1" id="music-equalizer">
-                  <span class="w-0.5 sm:w-1 bg-brand-600 rounded-full eq-bar-1 eq-paused"></span>
-                  <span class="w-0.5 sm:w-1 bg-yellow-500 rounded-full eq-bar-2 eq-paused"></span>
-                  <span class="w-0.5 sm:w-1 bg-brand-700 rounded-full eq-bar-3 eq-paused"></span>
-                  <span class="w-0.5 sm:w-1 bg-emerald-500 rounded-full eq-bar-4 eq-paused"></span>
-                </div>
-              </div>
-              <div id="music-title-display" class="font-heading font-bold text-xs text-slate-900 truncate mt-0.5">
-                Harmoni Instrumental SMPN 71 Bandung
-              </div>
-            </div>
-          </div>
-
-          <!-- Tombol Sembunyikan Player -->
-          <button onclick="window.app.toggleMusicPlayerMinimize(true)" title="Sembunyikan Panel Musik"
-            class="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition shrink-0">
-            <i data-lucide="chevron-down" class="w-4 h-4"></i>
-          </button>
+      <!-- Tombol Pembuka Chatbot Interaktif Modern -->
+      <button id="chatbot-trigger-btn" onclick="window.app.toggleChatbot()" title="Tanya Asisten AI SMPN 71 Bandung"
+        class="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl bg-gradient-to-br from-brand-700 via-brand-600 to-emerald-800 hover:from-brand-800 hover:to-slate-900 text-white shadow-xl border-2 border-white flex items-center gap-2 transition-all duration-300 hover:scale-105 active:scale-95">
+        <div class="relative flex items-center justify-center">
+          <i data-lucide="bot" class="w-4 h-4 sm:w-5 sm:h-5 text-yellow-300"></i>
+          <span
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-400 border border-white absolute -top-0.5 -right-0.5"></span>
         </div>
+        <div class="text-left pr-0.5">
+          <div class="text-[8px] sm:text-[9px] uppercase tracking-wider text-yellow-300 font-extrabold leading-none">AI Online</div>
+          <div class="font-heading font-bold text-[11px] sm:text-xs leading-tight">Asisten 71</div>
+        </div>
+      </button>
+    </div>
+  </div>
 
-        <!-- Kontrol Play/Pause, Mute/Unmute, dan Slider Volume -->
-        <div class="flex items-center gap-2 bg-slate-50/90 px-2.5 py-1.5 rounded-2xl border border-slate-200/80">
-          <button id="music-play-btn" onclick="window.app.toggleMusicPlay()" title="Putar / Jeda Musik"
-            class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-brand-700 hover:bg-brand-800 text-white flex items-center justify-center shadow-sm transition shrink-0">
-            <i id="music-play-icon" data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
-          </button>
+  <!-- Container Tersembunyi untuk YouTube IFrame Audio Player & HTML5 Audio -->
+  <div class="fixed -left-[9999px] -top-[9999px] w-1 h-1 overflow-hidden pointer-events-none opacity-0"
+    aria-hidden="true">
+    <audio id="global-html5-audio" preload="auto"></audio>
+    <div id="youtube-audio-Frame-holder"></div>
+  </div>
 
-          <button id="music-mute-btn" onclick="window.app.toggleMusicMute()" title="Bisukan / Suarakan"
-            class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 flex items-center justify-center transition shrink-0">
-            <i id="music-mute-icon" data-lucide="volume-2" class="w-3.5 h-3.5"></i>
-          </button>
-
-          <div class="flex-1 flex items-center gap-2 min-w-0">
-            <input id="music-volume-slider" type="range" min="0" max="100" value="25"
-              oninput="window.app.changeMusicVolume(this.value)"
-              class="w-full accent-brand-700 h-1.5 bg-slate-200 rounded-lg cursor-pointer" />
-            <span id="music-volume-label"
-              class="text-[10px] font-bold text-slate-600 w-7 text-right shrink-0">25%</span>
+  <!-- ========================================================================== -->
+  <!-- WINDOW CHATBOT INTERAKTIF MODERN & CANGGIH (SINKRON DATA SEKOLAH)          -->
+  <!-- ========================================================================== -->
+  <div id="chatbot-window"
+    class="hidden w-[calc(100vw-1.5rem)] max-w-sm sm:w-96 max-h-[65vh] sm:max-h-[520px] glass-panel rounded-3xl shadow-2xl border border-emerald-200 overflow-hidden flex flex-col transition-all duration-300 pointer-events-auto">
+    <!-- Header Chatbot -->
+    <div
+      class="bg-gradient-to-r from-brand-700 via-brand-800 to-slate-900 text-white p-4 flex items-center justify-between gap-3 shrink-0">
+      <div class="flex items-center gap-3 min-w-0">
+        <div
+          class="w-10 h-10 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center shrink-0">
+          <i data-lucide="sparkles" class="w-5 h-5 text-yellow-300"></i>
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5">
+            <h3 class="font-heading font-extrabold text-sm truncate">Asisten Cerdas SMPN 71</h3>
+            <span class="px-1.5 py-0.5 rounded bg-yellow-400 text-slate-900 font-extrabold text-[9px]">AI LIVE</span>
           </div>
+          <p class="text-[11px] text-emerald-100 truncate">Tersinkronisasi Data Sekolah & SPMB</p>
         </div>
       </div>
-
-      <!-- Baris Tombol Aksi di Pojok Kanan Bawah: Tombol Musik Ringkas + Tombol AI Chatbot -->
-      <div class="flex items-center gap-2 pointer-events-auto">
-        <!-- Tombol Mini untuk Menampilkan Player Saat Disembunyikan -->
-        <button id="music-player-minimized" onclick="window.app.toggleMusicPlayerMinimize(false)"
-          title="Buka Pengaturan Musik Latar"
-          class="hidden glass-panel px-3.5 py-2.5 rounded-2xl shadow-xl border border-emerald-200 hover:bg-emerald-50 text-brand-700 items-center gap-2 transition-all duration-300 hover:scale-105 active:scale-95">
-          <div class="relative flex items-center justify-center">
-            <i data-lucide="music" class="w-4 h-4 text-brand-700"></i>
-            <span id="music-mini-dot"
-              class="w-2 h-2 rounded-full bg-emerald-500 absolute -top-1 -right-1 hidden animate-ping"></span>
-          </div>
-          <span class="text-xs font-heading font-bold">Musik</span>
+      <div class="flex items-center gap-1">
+        <button onclick="window.app.resetChatHistory()" title="Bersihkan Percakapan"
+          class="p-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition">
+          <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
         </button>
-
-        <!-- Tombol Pembuka Chatbot Interaktif Modern -->
-        <button id="chatbot-trigger-btn" onclick="window.app.toggleChatbot()" title="Tanya Asisten AI SMPN 71 Bandung"
-          class="px-4 py-2.5 rounded-2xl bg-gradient-to-br from-brand-700 via-brand-600 to-emerald-800 hover:from-brand-800 hover:to-slate-900 text-white shadow-2xl border-2 border-white flex items-center gap-2 transition-all duration-300 hover:scale-105 active:scale-95">
-          <div class="relative flex items-center justify-center">
-            <i data-lucide="bot" class="w-5 h-5 text-yellow-300"></i>
-            <span
-              class="w-2.5 h-2.5 rounded-full bg-emerald-400 border border-white absolute -top-0.5 -right-0.5"></span>
-          </div>
-          <div class="text-left hidden sm:block pr-1">
-            <div class="text-[9px] uppercase tracking-wider text-yellow-300 font-extrabold leading-none">AI Online</div>
-            <div class="font-heading font-bold text-xs leading-tight">Asisten 71</div>
-          </div>
+        <button onclick="window.app.toggleChatbot(false)" title="Tutup Chatbot"
+          class="p-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
     </div>
 
-    <!-- Container Tersembunyi untuk YouTube IFrame Audio Player & HTML5 Audio -->
-    <div class="fixed -left-[9999px] -top-[9999px] w-1 h-1 overflow-hidden pointer-events-none opacity-0"
-      aria-hidden="true">
-      <audio id="global-html5-audio" preload="auto"></audio>
-      <div id="youtube-audio-Frame-holder"></div>
+    <!-- Quick Action Chips -->
+    <div
+      class="px-3.5 py-2 bg-emerald-50/80 border-b border-emerald-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
+      <button onclick="window.app.sendQuickChat('Bagaimana cara daftar dan jalur SPMB SMPN 71 Bandung?')"
+        class="px-2.5 py-1 rounded-full bg-white hover:bg-brand-700 hover:text-white text-brand-800 border border-emerald-200 text-[11px] font-semibold whitespace-nowrap transition">📋
+        Info SPMB</button>
+      <button onclick="window.app.sendQuickChat('Cek status pendaftaran SPMB terbaru')"
+        class="px-2.5 py-1 rounded-full bg-white hover:bg-brand-700 hover:text-white text-brand-800 border border-emerald-200 text-[11px] font-semibold whitespace-nowrap transition">🔍
+        Cek Status SPMB</button>
+      <button onclick="window.app.sendQuickChat('Apa visi, misi, dan nama kepala sekolah SMPN 71?')"
+        class="px-2.5 py-1 rounded-full bg-white hover:bg-brand-700 hover:text-white text-brand-800 border border-emerald-200 text-[11px] font-semibold whitespace-nowrap transition">🏫
+        Profil & Visi Misi</button>
+      <button onclick="window.app.sendQuickChat('Apa saja berita dan agenda kegiatan terbaru?')"
+        class="px-2.5 py-1 rounded-full bg-white hover:bg-brand-700 hover:text-white text-brand-800 border border-emerald-200 text-[11px] font-semibold whitespace-nowrap transition">📰
+        Berita & Agenda</button>
+      <button onclick="window.app.sendQuickChat('Berapa jumlah siswa, guru, dan kontak sosial media sekolah?')"
+        class="px-2.5 py-1 rounded-full bg-white hover:bg-brand-700 hover:text-white text-brand-800 border border-emerald-200 text-[11px] font-semibold whitespace-nowrap transition">📞
+        Kontak & Statistik</button>
     </div>
 
-    <!-- ========================================================================== -->
-    <!-- WINDOW CHATBOT INTERAKTIF MODERN & CANGGIH (SINKRON DATA SEKOLAH)          -->
-    <!-- ========================================================================== -->
-    <div id="chatbot-window"
-      class="hidden fixed bottom-36 lg:bottom-20 right-3 sm:right-5 z-50 w-[calc(100vw-1.5rem)] sm:w-96 max-h-[75vh] glass-panel rounded-3xl shadow-2xl border border-emerald-200 overflow-hidden flex flex-col transition-all duration-300">
-      <!-- Header Chatbot -->
-      <div
-        class="bg-gradient-to-r from-brand-700 via-brand-800 to-slate-900 text-white p-4 flex items-center justify-between gap-3 shrink-0">
-        <div class="flex items-center gap-3 min-w-0">
-          <div
-            class="w-10 h-10 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center shrink-0">
-            <i data-lucide="sparkles" class="w-5 h-5 text-yellow-300"></i>
-          </div>
-          <div class="min-w-0">
-            <div class="flex items-center gap-1.5">
-              <h3 class="font-heading font-extrabold text-sm truncate">Asisten Cerdas SMPN 71</h3>
-              <span class="px-1.5 py-0.5 rounded bg-yellow-400 text-slate-900 font-extrabold text-[9px]">AI LIVE</span>
-            </div>
-            <p class="text-[11px] text-emerald-100 truncate">Tersinkronisasi Data Sekolah & SPMB</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-1">
-          <button onclick="window.app.resetChatHistory()" title="Bersihkan Percakapan"
-            class="p-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition">
-            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-          </button>
-          <button onclick="window.app.toggleChatbot(false)" title="Tutup Chatbot"
-            class="p-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition">
-            <i data-lucide="x" class="w-4 h-4"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Quick Action Chips -->
-      <div
-        class="px-3.5 py-2 bg-emerald-50/80 border-b border-emerald-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
-        <button onclick="window.app.sendQuickChat('Bagaimana cara daftar dan jalur SPMB SMPN 71 Bandung?')"
-          class="px-2.5 py-1 rounded-full bg-white hover:bg-brand-700 hover:text-white text-brand-800 border border-emerald-200 text-[11px] font-semibold whitespace-nowrap transition">📋
-          Info SPMB</button>
-        <button onclick="window.app.sendQuickChat('Cek status pendaftaran SPMB terbaru')"
-          class="px-2.5 py-1 rounded-full bg-white hover:bg-brand-700 hover:text-white text-brand-800 border border-emerald-200 text-[11px] font-semibold whitespace-nowrap transition">🔍
-          Cek Status SPMB</button>
-        <button onclick="window.app.sendQuickChat('Apa visi, misi, dan nama kepala sekolah SMPN 71?')"
-          class="px-2.5 py-1 rounded-full bg-white hover:bg-brand-700 hover:text-white text-brand-800 border border-emerald-200 text-[11px] font-semibold whitespace-nowrap transition">🏫
-          Profil & Visi Misi</button>
-        <button onclick="window.app.sendQuickChat('Apa saja berita dan agenda kegiatan terbaru?')"
-          class="px-2.5 py-1 rounded-full bg-white hover:bg-brand-700 hover:text-white text-brand-800 border border-emerald-200 text-[11px] font-semibold whitespace-nowrap transition">📰
-          Berita & Agenda</button>
-        <button onclick="window.app.sendQuickChat('Berapa jumlah siswa, guru, dan kontak sosial media sekolah?')"
-          class="px-2.5 py-1 rounded-full bg-white hover:bg-brand-700 hover:text-white text-brand-800 border border-emerald-200 text-[11px] font-semibold whitespace-nowrap transition">📞
-          Kontak & Statistik</button>
-      </div>
-
-      <!-- Area Pesan Percakapan -->
-      <div id="chatbot-messages" class="p-4 space-y-3 overflow-y-auto flex-1 max-h-[46vh] bg-slate-50/60 text-xs">
-        <!-- Dirender dinamis oleh JS -->
-      </div>
-
-      <!-- Form Input Pesan Chatbot -->
-      <form onsubmit="window.app.submitChatMessage(event)"
-        class="p-3 bg-white border-t border-slate-200 flex items-center gap-2 shrink-0">
-        <input id="chatbot-input" type="text" required placeholder="Tanyakan SPMB, NISN, profil, berita..."
-          class="flex-1 px-3.5 py-2.5 rounded-2xl bg-slate-100 focus:bg-white border border-slate-200 focus:border-brand-700 text-xs focus:outline-none" />
-        <button type="submit" id="chatbot-send-btn"
-          class="w-10 h-10 rounded-2xl bg-brand-700 hover:bg-brand-800 text-white flex items-center justify-center shadow-sm transition shrink-0">
-          <i data-lucide="send" class="w-4 h-4"></i>
-        </button>
-      </form>
+    <!-- Area Pesan Percakapan -->
+    <div id="chatbot-messages" class="p-4 space-y-3 overflow-y-auto flex-1 max-h-[44vh] bg-slate-50/60 text-xs">
+      <!-- Dirender dinamis oleh JS -->
     </div>
 
-    <!-- TOAST NOTIFICATION -->
-    <div id="toast-box" class="fixed bottom-20 lg:bottom-6 left-6 z-50 hidden transform transition-all duration-300">
-      <div class="glass-emerald text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 text-xs font-medium">
-        <i data-lucide="check-circle-2" class="w-4 h-4 text-yellow-300 shrink-0"></i>
-        <span id="toast-message">Berhasil disimpan</span>
-      </div>
+    <!-- Form Input Pesan Chatbot -->
+    <form onsubmit="window.app.submitChatMessage(event)"
+      class="p-3 bg-white border-t border-slate-200 flex items-center gap-2 shrink-0">
+      <input id="chatbot-input" type="text" required placeholder="Tanyakan SPMB, NISN, profil, berita..."
+        class="flex-1 px-3.5 py-2.5 rounded-2xl bg-slate-100 focus:bg-white border border-slate-200 focus:border-brand-700 text-xs focus:outline-none" />
+      <button type="submit" id="chatbot-send-btn"
+        class="w-10 h-10 rounded-2xl bg-brand-700 hover:bg-brand-800 text-white flex items-center justify-center shadow-sm transition shrink-0">
+        <i data-lucide="send" class="w-4 h-4"></i>
+      </button>
+    </form>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-box" class="fixed bottom-20 lg:bottom-6 left-6 z-[10000010] hidden transform transition-all duration-300">
+    <div class="glass-emerald text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 text-xs font-medium">
+      <i data-lucide="check-circle-2" class="w-4 h-4 text-yellow-300 shrink-0"></i>
+      <span id="toast-message">Berhasil disimpan</span>
     </div>
   </div>
 
@@ -934,8 +969,9 @@
       };
       state.musicConfig = state.settings.music_config;
 
-      // Maksimal 1-2 baris per kategori/fitur sesuai aturan ketat
+      // Data Lengkap & Mutakhir Langsung Tampil Saat Website Dibuka (Berita, Pengumuman, Agenda, Galeri, Video & TikTok)
       state.posts = [
+        // 3 BERITA SEKOLAH TERUPDATE
         {
           id: 'p-1',
           category: 'berita',
@@ -943,63 +979,132 @@
           content: 'Tim Olimpiade IPA dan Matematika SMPN 71 Kota Bandung berhasil menorehkan prestasi membanggakan pada ajang OSN tingkat Kota Bandung tahun ini melalui pembinaan intensif.',
           image_url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80',
           file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-          file_name: 'Piagam_Penghargaan_OSN_2025.pdf',
-          event_date: '2025-05-10',
+          file_name: 'Piagam_Penghargaan_OSN_2026.pdf',
+          event_date: '2026-05-10',
           author_name: 'Humas SMPN 71'
         },
         {
           id: 'p-2',
-          category: 'pengumuman',
-          title: 'Jadwal Pelaksanaan Sistem Penerimaan Murid Baru (SPMB) Tahun Ajaran Baru',
-          content: 'Pendaftaran SPMB SMPN 71 Kota Bandung dibuka untuk Jalur Zonasi, Afirmasi, Prestasi, dan Perpindahan Tugas Orang Tua. Pastikan berkas asli telah dipindai.',
-          image_url: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80',
+          category: 'berita',
+          title: 'Peluncuran Program Kelas Digital Cerdas & Fasilitas Laboratorium Modern Terpadu',
+          content: 'SMPN 71 Bandung meresmikan integrasi modul pembelajaran digital interaktif dan 40 unit PC modern untuk mendukung akselerasi Kurikulum Nasional berbasis teknologi.',
+          image_url: 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=800&q=80',
           file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-          file_name: 'Juknis_SPMB_SMPN71_2025.pdf',
-          event_date: '2025-06-01',
-          author_name: 'Panitia SPMB'
+          file_name: 'Modul_Kelas_Digital_71.pdf',
+          event_date: '2026-05-18',
+          author_name: 'Tim Kurikulum'
         },
         {
           id: 'p-3',
-          category: 'agenda',
-          title: 'Gelar Karya Projek Penguatan Profil Pelajar Pancasila (P5) & Pentas Seni',
-          content: 'Kegiatan pameran karya inovasi daur ulang, kuliner tradisional Sunda, dan apresiasi seni siswa kelas VII, VIII, dan IX di lapangan utama sekolah.',
+          category: 'berita',
+          title: 'SMPN 71 Bandung Sabet Juara Umum Pasanggiri Seni Budaya Tradisional Sunda',
+          content: 'Kontingen ekstrakurikuler seni tari Jaipong dan rampak angklung SMPN 71 berhasil mempertahankan gelar Juara Umum pada festival seni pelajar se-Kota Bandung.',
           image_url: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80',
           file_url: '',
           file_name: '',
-          event_date: '2025-06-20',
+          event_date: '2026-05-25',
+          author_name: 'Pembina Kesiswaan'
+        },
+        // 3 PENGUMUMAN RESMI SEKOLAH
+        {
+          id: 'p-4',
+          category: 'pengumuman',
+          title: 'Jadwal Pelaksanaan Sistem Penerimaan Murid Baru (SPMB) Tahun Ajaran 2026/2027',
+          content: 'Pendaftaran SPMB SMPN 71 Kota Bandung dibuka untuk Jalur Zonasi, Afirmasi, Prestasi, dan Perpindahan Tugas Orang Tua. Pastikan seluruh berkas persyaratan telah dipindai.',
+          image_url: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80',
+          file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+          file_name: 'Juknis_SPMB_SMPN71_2026.pdf',
+          event_date: '2026-06-01',
+          author_name: 'Panitia SPMB'
+        },
+        {
+          id: 'p-5',
+          category: 'pengumuman',
+          title: 'Edaran Pelaksanaan Asesmen Sumatif Akhir Jenjang & Program Pengayaan Terpadu',
+          content: 'Seluruh peserta didik kelas VII, VIII, dan IX diwajibkan mempersiapkan perangkat asesmen mandiri serta mematuhi tata tertib asesmen yang telah ditetapkan pihak sekolah.',
+          image_url: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80',
+          file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+          file_name: 'Jadwal_Asesmen_Akhir_Jenjang.pdf',
+          event_date: '2026-06-08',
           author_name: 'Wakasek Kurikulum'
         },
         {
-          id: 'p-4',
+          id: 'p-6',
+          category: 'pengumuman',
+          title: 'Undangan Sosialisasi Parenting & Pertemuan Komite Sekolah Semester Genap',
+          content: 'Mengundang seluruh orang tua/wali murid untuk menghadiri pemaparan evaluasi hasil belajar, pembinaan karakter ramah anak, dan transparansi program sekolah.',
+          image_url: 'https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=800&q=80',
+          file_url: '',
+          file_name: '',
+          event_date: '2026-06-15',
+          author_name: 'Humas & Komite'
+        },
+        // 3 AGENDA KEGIATAN SEKOLAH
+        {
+          id: 'p-7',
+          category: 'agenda',
+          title: 'Gelar Karya Projek Penguatan Profil Pelajar Pancasila (P5) & Pentas Seni Siswa',
+          content: 'Kegiatan pameran produk kewirausahaan daur ulang, kuliner tradisional Sunda, dan apresiasi seni siswa kelas VII, VIII, dan IX di lapangan utama sekolah.',
+          image_url: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80',
+          file_url: '',
+          file_name: '',
+          event_date: '2026-06-20',
+          author_name: 'Tim Fasilitator P5'
+        },
+        {
+          id: 'p-8',
+          category: 'agenda',
+          title: 'Latihan Dasar Kepemimpinan Siswa (LDKS) & Musyawarah Besar Pengurus OSIS 71',
+          content: 'Pembekalan kepemimpinan, manajemen organisasi siswa, kedisiplinan, dan perumusan kalender kerja OSIS SMPN 71 Kota Bandung periode 2026/2027.',
+          image_url: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80',
+          file_url: '',
+          file_name: '',
+          event_date: '2026-06-27',
+          author_name: 'Pembina OSIS'
+        },
+        {
+          id: 'p-9',
+          category: 'agenda',
+          title: 'Pekan Literasi Digital & Bedah Buku Karya Siswa di Graha Literasi SMPN 71',
+          content: 'Festival literasi tahunan sekolah menghadirkan bedah buku antologi puisi karya siswa, lokakarya penulisan kreatif, serta penghargaan duta baca sekolah.',
+          image_url: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
+          file_url: '',
+          file_name: '',
+          event_date: '2026-07-04',
+          author_name: 'Koordinator Literasi'
+        },
+        // POS TAMBAHAN UNTUK MENU LAIN
+        {
+          id: 'p-10',
           category: 'akademik',
           title: 'Implementasi Kurikulum Nasional & Modul Pembelajaran Digital Terpadu',
           content: 'SMPN 71 Kota Bandung menerapkan pembelajaran terdiferensiasi dengan dukungan Google Workspace for Education, Laboratorium Komputer, dan Klinik Numerasi-Literasi.',
           image_url: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80',
           file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
           file_name: 'Panduan_Kurikulum_Merdeka_71.pdf',
-          event_date: '2025-05-02',
+          event_date: '2026-05-02',
           author_name: 'Tim Kurikulum'
         },
         {
-          id: 'p-5',
+          id: 'p-11',
           category: 'layanan_siswa',
-          title: 'Layanan Bimbingan Konseling (BK) Ramah Anak & Pembinaan Ekstrakurikuler',
+          title: 'Layanan Bimbingan Konseling (BK) Ramah Anak & Pembinaan 12 Ekstrakurikuler',
           content: 'Tersedia layanan konseling minat bakat, pencegahan perundungan (Roots Indonesia), serta 12 cabang ekstrakurikuler unggulan seperti Pramuka, Paskibra, Futsal, Robotik, dan Angklung.',
           image_url: 'https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=800&q=80',
           file_url: '',
           file_name: '',
-          event_date: '2025-05-05',
+          event_date: '2026-05-05',
           author_name: 'Koordinator Kesiswaan'
         },
         {
-          id: 'p-6',
+          id: 'p-12',
           category: 'ppid',
           title: 'Laporan Realisasi Penggunaan Dana BOS Reguler & Standar Pelayanan Publik',
           content: 'Dokumen informasi publik berkala terkait transparansi anggaran sekolah, RKAS, serta standar operasional prosedur layanan pendidikan gratis tanpa pungutan.',
           image_url: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
           file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-          file_name: 'Laporan_Realisasi_BOS_Reguler_2025.pdf',
-          event_date: '2025-04-28',
+          file_name: 'Laporan_Realisasi_BOS_Reguler_2026.pdf',
+          event_date: '2026-04-28',
           author_name: 'Pejabat PPID Sekolah'
         }
       ];
@@ -1025,6 +1130,7 @@
         }
       ];
 
+      // DOKUMENTASI, FASILITAS, FOTO, VIDEO & TIKTOK SEKOLAH
       state.facilitiesGallery = [
         {
           id: 'fg-1',
@@ -1036,35 +1142,51 @@
         },
         {
           id: 'fg-2',
+          item_type: 'fasilitas',
+          title: 'Perpustakaan Digital Graha Literasi 71',
+          description: 'Ruang baca berpendingin udara dengan koleksi ribuan buku fisik dan e-book digital Kurikulum Nasional.',
+          media_url: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=800&q=80',
+          condition_or_tag: 'Fasilitas Unggulan'
+        },
+        {
+          id: 'fg-3',
           item_type: 'foto',
           title: 'Upacara Peringatan Hari Pendidikan Nasional & Apresiasi Siswa Berprestasi',
-          description: 'Penyerahan piala kejuaraan tingkat Kota Bandung oleh Kepala Sekolah di lapangan utama.',
+          description: 'Penyerahan piala kejuaraan tingkat Kota Bandung oleh Kepala Sekolah di lapangan utama sekolah.',
           media_url: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80',
           condition_or_tag: 'Kegiatan Sekolah'
         },
         {
-          id: 'fg-3',
+          id: 'fg-4',
+          item_type: 'foto',
+          title: 'Pentas Apresiasi Seni Budaya & Kolosal Musik Tradisional Angklung',
+          description: 'Dokumentasi harmoni angklung kolosal dan tarian daerah Sunda yang dibawakan murid kelas VII & VIII.',
+          media_url: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80',
+          condition_or_tag: 'Dokumentasi Ekskul'
+        },
+        {
+          id: 'fg-5',
           item_type: 'video',
           title: 'Video Profil Resmi SMP Negeri 71 Kota Bandung',
           description: 'Mengenal lebih dekat budaya akademik, fasilitas modern, dan kegiatan siswa SMPN 71 Kota Bandung.',
           media_url: 'https://www.youtube.com/embed/ScMzIvxBSi4',
-          condition_or_tag: 'Video Profil'
+          condition_or_tag: 'Video Profil YouTube'
         },
         {
-          id: 'fg-4',
+          id: 'fg-6',
           item_type: 'tiktok',
           title: 'Keseruan Pentas Seni & Kreativitas Ekskul Siswa SMPN 71',
           description: 'Kompilasi momen seru dan dokumentasi reels/video pendek siswa di TikTok resmi.',
           media_url: 'https://www.tiktok.com/@smpn71bandung',
-          condition_or_tag: 'Video TikTok'
+          condition_or_tag: 'Video TikTok Resmi'
         },
         {
-          id: 'fg-5',
+          id: 'fg-7',
           item_type: 'gdrive',
           title: 'Dokumentasi Album Foto Resolusi Tinggi (Google Drive)',
           description: 'Akses folder Google Drive resmi untuk mengunduh arsip foto kegiatan sekolah kualitas asli.',
           media_url: 'https://drive.google.com/drive/folders/1SMPN71BandungDokumentasiResmi',
-          condition_or_tag: 'Google Drive'
+          condition_or_tag: 'Google Drive Sekolah'
         }
       ];
 
@@ -1445,7 +1567,7 @@
     // ============================================================================
     // SINKRONISASI DATA SUPABASE, REALTIME CHANNEL & CACHE LOKAL MUTAKHIR
     // ============================================================================
-    const CACHE_VERSION = '2026.11.02_v6_fresh_sync';
+    const CACHE_VERSION = '2026.11.02_v7_corner_sync';
 
     // Periksa versi cache agar saat aplikasi dibuka tidak menampilkan data demo/stale sebelumnya
     function checkCacheVersion() {
@@ -1563,7 +1685,7 @@
           state.settings = { ...(state.settings || {}), ...settingsRes.data };
         } else if (!state.settings) {
           // Fallback konfigurasi awal jika tabel database baru dibuat
-          initMinimalPreviewData();
+          initMinimalPreviewData(true);
         }
 
         if (state.settings && state.settings.music_config && typeof state.settings.music_config === 'object') {
@@ -1576,13 +1698,34 @@
           };
         }
 
-        // Selalu ganti state jika data tabel Supabase dikembalikan (meskipun tabel kosong [])
-        if (Array.isArray(postsRes.data)) state.posts = postsRes.data;
-        if (Array.isArray(staffRes.data)) state.staff = staffRes.data;
-        if (Array.isArray(fgRes.data)) state.facilitiesGallery = fgRes.data;
-        if (Array.isArray(spmbRes.data)) state.spmbList = spmbRes.data;
-        if (Array.isArray(complaintsRes.data)) state.complaints = complaintsRes.data;
-        if (Array.isArray(usersRes.data)) state.users = usersRes.data;
+        // Sinkronkan data jika tabel Supabase memiliki baris; jika masih kosong di cloud, pertahankan data mutakhir lokal
+        if (Array.isArray(postsRes.data) && postsRes.data.length > 0) {
+          state.posts = postsRes.data;
+        } else if (!state.posts || state.posts.length === 0) {
+          initMinimalPreviewData(true);
+        }
+
+        if (Array.isArray(staffRes.data) && staffRes.data.length > 0) {
+          state.staff = staffRes.data;
+        }
+
+        if (Array.isArray(fgRes.data) && fgRes.data.length > 0) {
+          state.facilitiesGallery = fgRes.data;
+        } else if (!state.facilitiesGallery || state.facilitiesGallery.length === 0) {
+          initMinimalPreviewData(true);
+        }
+
+        if (Array.isArray(spmbRes.data) && spmbRes.data.length > 0) {
+          state.spmbList = spmbRes.data;
+        }
+
+        if (Array.isArray(complaintsRes.data) && complaintsRes.data.length > 0) {
+          state.complaints = complaintsRes.data;
+        }
+
+        if (Array.isArray(usersRes.data) && usersRes.data.length > 0) {
+          state.users = usersRes.data;
+        }
 
         // Simpan pembaruan mutakhir ke cache lokal
         saveCacheToStorage();
@@ -5551,15 +5694,24 @@
     function toggleMusicPlayerMinimize(minimize) {
       const card = document.getElementById('music-player-card');
       const miniBtn = document.getElementById('music-player-minimized');
-      if (!card || !miniBtn) return;
-      if (minimize) {
+      if (!card) return;
+      const isCardOpen = !card.classList.contains('hidden');
+      const shouldMinimize = typeof minimize === 'boolean' ? minimize : isCardOpen;
+
+      if (shouldMinimize) {
         card.classList.add('hidden');
-        miniBtn.classList.remove('hidden');
-        miniBtn.classList.add('flex');
+        if (miniBtn) {
+          miniBtn.classList.remove('bg-emerald-100', 'border-emerald-500', 'ring-2', 'ring-emerald-400');
+        }
       } else {
+        // Otomatis minimalkan chatbot jika sedang terbuka agar tampilan rapi & tidak bertumpuk
+        if (state.isChatOpen) {
+          toggleChatbot(false);
+        }
         card.classList.remove('hidden');
-        miniBtn.classList.add('hidden');
-        miniBtn.classList.remove('flex');
+        if (miniBtn) {
+          miniBtn.classList.add('bg-emerald-100', 'border-emerald-500', 'ring-2', 'ring-emerald-400');
+        }
       }
     }
 
@@ -5774,18 +5926,24 @@
 
     function toggleChatbot(forceState) {
       const win = document.getElementById('chatbot-window');
+      const triggerBtn = document.getElementById('chatbot-trigger-btn');
       if (!win) return;
       state.isChatOpen = typeof forceState === 'boolean' ? forceState : !state.isChatOpen;
       if (state.isChatOpen) {
         win.classList.remove('hidden');
-        if (window.innerWidth < 768) {
-          toggleMusicPlayerMinimize(true);
+        // Otomatis minimalkan music player card agar tidak menumpuk di pojok kanan bawah
+        toggleMusicPlayerMinimize(true);
+        if (triggerBtn) {
+          triggerBtn.classList.add('ring-2', 'ring-yellow-400', 'scale-105');
         }
         if (state.chatMessages.length === 0) initChatbotGreeting();
         renderChatbotMessages();
         setTimeout(() => document.getElementById('chatbot-input')?.focus(), 100);
       } else {
         win.classList.add('hidden');
+        if (triggerBtn) {
+          triggerBtn.classList.remove('ring-2', 'ring-yellow-400', 'scale-105');
+        }
       }
     }
 
@@ -6095,7 +6253,9 @@
       if (IS_PREVIEW) {
         if (previewBanner) previewBanner.classList.remove('hidden');
         loadCacheFromStorage();
-        if (!state.settings) initMinimalPreviewData(true);
+        if (!state.settings || !state.posts || state.posts.length === 0 || !state.facilitiesGallery || state.facilitiesGallery.length === 0) {
+          initMinimalPreviewData(true);
+        }
         renderHeaderAndFooter();
         renderNavigation();
         renderCurrentView();
@@ -6107,7 +6267,7 @@
 
         // 2. Muat cache data lokal agar tampilan Beranda langsung muncul seketika (0 ms)
         loadCacheFromStorage();
-        if (!state.settings) {
+        if (!state.settings || !state.posts || state.posts.length === 0 || !state.facilitiesGallery || state.facilitiesGallery.length === 0) {
           initMinimalPreviewData(true);
         }
 
@@ -6131,6 +6291,7 @@
       // Smart Autoplay System saat pertama kali website dibuka (Volume 25%, Loop, Single Instance WAV/MP3/YT)
       attachSmartAutoplayUnlockListeners();
       syncMusicPlayerWithConfig(true);
+      toggleMusicPlayerMinimize(true);
       registerInlineServiceWorker();
     }
 
