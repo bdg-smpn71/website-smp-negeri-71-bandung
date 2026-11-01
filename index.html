@@ -251,6 +251,7 @@
       #floating-music-root {
         right: 1.25rem !important;
       }
+
       #chatbot-window {
         right: 1.25rem !important;
       }
@@ -261,6 +262,7 @@
         bottom: 1.25rem !important;
         right: 1.5rem !important;
       }
+
       #chatbot-window {
         bottom: 4.85rem !important;
         right: 1.5rem !important;
@@ -656,8 +658,7 @@
   <!-- ========================================================================== -->
   <!-- FLOATING SMART WIDGETS DOCK: MUSIK LATAR & AI CHAT BOT (POJOK KANAN BAWAH)  -->
   <!-- ========================================================================== -->
-  <div id="floating-music-root"
-    class="flex flex-col items-end gap-2.5 pointer-events-none">
+  <div id="floating-music-root" class="flex flex-col items-end gap-2.5 pointer-events-none">
     <!-- Banner Prompt "Aktifkan Musik" jika Autoplay diblokir Browser -->
     <button id="autoplay-unlock-btn" onclick="window.app.unlockAutoplayMusic()"
       class="hidden pointer-events-auto px-4 py-2 rounded-full bg-gradient-to-r from-brand-700 via-brand-600 to-emerald-600 hover:from-brand-800 hover:to-brand-700 text-white shadow-xl border-2 border-yellow-300 flex items-center gap-2 text-xs font-heading font-bold transition-all duration-300 hover:scale-105 animate-bounce mb-1">
@@ -680,8 +681,8 @@
           <div class="min-w-0 flex-1">
             <div class="flex items-center gap-1.5">
               <span id="music-status-dot" class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-              <span id="music-status-text"
-                class="text-[10px] font-bold uppercase tracking-wider text-brand-700">Siap Diputar</span>
+              <span id="music-status-text" class="text-[10px] font-bold uppercase tracking-wider text-brand-700">Siap
+                Diputar</span>
               <!-- Animasi Equalizer -->
               <div class="flex items-end gap-0.5 h-3.5 ml-1" id="music-equalizer">
                 <span class="w-0.5 sm:w-1 bg-brand-600 rounded-full eq-bar-1 eq-paused"></span>
@@ -719,8 +720,7 @@
           <input id="music-volume-slider" type="range" min="0" max="100" value="25"
             oninput="window.app.changeMusicVolume(this.value)"
             class="w-full accent-brand-700 h-1.5 bg-slate-200 rounded-lg cursor-pointer" />
-          <span id="music-volume-label"
-            class="text-[10px] font-bold text-slate-600 w-7 text-right shrink-0">25%</span>
+          <span id="music-volume-label" class="text-[10px] font-bold text-slate-600 w-7 text-right shrink-0">25%</span>
         </div>
       </div>
     </div>
@@ -748,7 +748,8 @@
             class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-400 border border-white absolute -top-0.5 -right-0.5"></span>
         </div>
         <div class="text-left pr-0.5">
-          <div class="text-[8px] sm:text-[9px] uppercase tracking-wider text-yellow-300 font-extrabold leading-none">AI Online</div>
+          <div class="text-[8px] sm:text-[9px] uppercase tracking-wider text-yellow-300 font-extrabold leading-none">AI
+            Online</div>
           <div class="font-heading font-bold text-[11px] sm:text-xs leading-tight">Asisten 71</div>
         </div>
       </button>
@@ -771,8 +772,7 @@
     <div
       class="bg-gradient-to-r from-brand-700 via-brand-800 to-slate-900 text-white p-4 flex items-center justify-between gap-3 shrink-0">
       <div class="flex items-center gap-3 min-w-0">
-        <div
-          class="w-10 h-10 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center shrink-0">
+        <div class="w-10 h-10 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center shrink-0">
           <i data-lucide="sparkles" class="w-5 h-5 text-yellow-300"></i>
         </div>
         <div class="min-w-0">
@@ -833,7 +833,8 @@
   </div>
 
   <!-- TOAST NOTIFICATION -->
-  <div id="toast-box" class="fixed bottom-20 lg:bottom-6 left-6 z-[10000010] hidden transform transition-all duration-300">
+  <div id="toast-box"
+    class="fixed bottom-20 lg:bottom-6 left-6 z-[10000010] hidden transform transition-all duration-300">
     <div class="glass-emerald text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 text-xs font-medium">
       <i data-lucide="check-circle-2" class="w-4 h-4 text-yellow-300 shrink-0"></i>
       <span id="toast-message">Berhasil disimpan</span>
@@ -938,7 +939,44 @@
     };
 
     function initMinimalPreviewData(force = true) {
-      if (!IS_PREVIEW && !force && state.settings) return;
+      if (!IS_PREVIEW) {
+        if (!state.settings) {
+          state.settings = {
+            school_name: 'SMP Negeri 71 Kota Bandung',
+            logo_url: '',
+            hero_bg_url: '',
+            highlight_1: 'Terakreditasi A Unggul',
+            highlight_2: 'Kelas Digital Cerdas',
+            highlight_3: 'Sekolah Ramah Anak',
+            principal_name: 'Kepala SMP Negeri 71 Kota Bandung',
+            principal_photo: '',
+            principal_welcome: 'Selamat datang di website resmi SMP Negeri 71 Kota Bandung.',
+            short_profile: 'SMP Negeri 71 Kota Bandung merupakan sekolah menengah pertama negeri di Kota Bandung.',
+            vision: 'Terwujudnya Peserta Didik SMP Negeri 71 Kota Bandung yang Beriman, Berkarakter Mulia, Unggul dalam Prestasi, dan Berwawasan Lingkungan.',
+            mission: '1. Melaksanakan pembelajaran aktif, kreatif, dan berbasis digital.\n2. Mengembangkan potensi peserta didik secara optimal.',
+            stat_students: 0,
+            stat_teachers: 0,
+            stat_classes: 0,
+            stat_achievements: 0,
+            address: 'Jl. Pendidikan Raya No. 71, Kota Bandung, Jawa Barat 40292',
+            phone: '(022) 7100071',
+            email: 'info@smpn71bandung.sch.id',
+            maps_url: 'https://www.google.com/maps?q=SMP+Negeri+71+Kota+Bandung&output=embed',
+            instagram_url: 'https://www.instagram.com/smpn71bandung',
+            youtube_url: 'https://www.youtube.com/@smpn71bandung',
+            tiktok_url: 'https://www.tiktok.com/@smpn71bandung',
+            music_config: JSON.parse(JSON.stringify(DEFAULT_MUSIC_CONFIG))
+          };
+          state.musicConfig = state.settings.music_config;
+        }
+        if (!Array.isArray(state.posts)) state.posts = [];
+        if (!Array.isArray(state.staff)) state.staff = [];
+        if (!Array.isArray(state.facilitiesGallery)) state.facilitiesGallery = [];
+        if (!Array.isArray(state.spmbList)) state.spmbList = [];
+        if (!Array.isArray(state.complaints)) state.complaints = [];
+        if (!Array.isArray(state.users)) state.users = [];
+        return;
+      }
 
       state.settings = {
         id: '11111111-1111-1111-1111-111111111111',
@@ -1567,7 +1605,7 @@
     // ============================================================================
     // SINKRONISASI DATA SUPABASE, REALTIME CHANNEL & CACHE LOKAL MUTAKHIR
     // ============================================================================
-    const CACHE_VERSION = '2026.11.02_v7_corner_sync';
+    const CACHE_VERSION = '2026.11.02_v8_realtime_sync';
 
     // Periksa versi cache agar saat aplikasi dibuka tidak menampilkan data demo/stale sebelumnya
     function checkCacheVersion() {
@@ -1582,6 +1620,11 @@
           localStorage.removeItem('smpn71_cache_complaints');
           localStorage.removeItem('smpn71_cache_users');
           localStorage.setItem('smpn71_cache_version', CACHE_VERSION);
+          if (typeof window !== 'undefined' && 'caches' in window) {
+            caches.keys().then((keys) => {
+              keys.forEach((k) => caches.delete(k));
+            }).catch(() => {});
+          }
         }
       } catch (e) { }
     }
@@ -1641,7 +1684,7 @@
       });
     }
 
-    // Fungsi Pemuat Data Mutakhir Langsung dari Supabase
+    // Fungsi Pemuat Data Mutakhir Langsung dari Supabase (Single Source of Truth)
     async function loadAllData(isInitial = false) {
       if (IS_PREVIEW) {
         if (!state.settings) initMinimalPreviewData();
@@ -1653,7 +1696,7 @@
       }
 
       if (!supabase) {
-        if (!state.settings) initMinimalPreviewData();
+        if (!state.settings) initMinimalPreviewData(false);
         renderHeaderAndFooter();
         renderNavigation();
         renderCurrentView();
@@ -1661,7 +1704,6 @@
       }
 
       try {
-
         // Ambil data terbaru secara simultan (Promise.all paralel) dari seluruh tabel Supabase
         const [
           settingsRes,
@@ -1684,8 +1726,7 @@
         if (settingsRes.data) {
           state.settings = { ...(state.settings || {}), ...settingsRes.data };
         } else if (!state.settings) {
-          // Fallback konfigurasi awal jika tabel database baru dibuat
-          initMinimalPreviewData(true);
+          initMinimalPreviewData(false);
         }
 
         if (state.settings && state.settings.music_config && typeof state.settings.music_config === 'object') {
@@ -1698,39 +1739,35 @@
           };
         }
 
-        // Sinkronkan data jika tabel Supabase memiliki baris; jika masih kosong di cloud, pertahankan data mutakhir lokal
-        if (Array.isArray(postsRes.data) && postsRes.data.length > 0) {
+        // Database Supabase sebagai Sumber Data Utama (Single Source of Truth)
+        if (Array.isArray(postsRes.data)) {
           state.posts = postsRes.data;
-        } else if (!state.posts || state.posts.length === 0) {
-          initMinimalPreviewData(true);
         }
 
-        if (Array.isArray(staffRes.data) && staffRes.data.length > 0) {
+        if (Array.isArray(staffRes.data)) {
           state.staff = staffRes.data;
         }
 
-        if (Array.isArray(fgRes.data) && fgRes.data.length > 0) {
+        if (Array.isArray(fgRes.data)) {
           state.facilitiesGallery = fgRes.data;
-        } else if (!state.facilitiesGallery || state.facilitiesGallery.length === 0) {
-          initMinimalPreviewData(true);
         }
 
-        if (Array.isArray(spmbRes.data) && spmbRes.data.length > 0) {
+        if (Array.isArray(spmbRes.data)) {
           state.spmbList = spmbRes.data;
         }
 
-        if (Array.isArray(complaintsRes.data) && complaintsRes.data.length > 0) {
+        if (Array.isArray(complaintsRes.data)) {
           state.complaints = complaintsRes.data;
         }
 
-        if (Array.isArray(usersRes.data) && usersRes.data.length > 0) {
+        if (Array.isArray(usersRes.data)) {
           state.users = usersRes.data;
         }
 
         // Simpan pembaruan mutakhir ke cache lokal
         saveCacheToStorage();
       } catch (err) {
-        console.warn('Gagal memuat langsung dari Supabase, memulihkan data dari cache:', err);
+        console.warn('Pemuatan data Supabase terganggu, memulihkan data dari cache:', err);
         loadCacheFromStorage();
       } finally {
         state.isLoading = false;
@@ -1742,7 +1779,7 @@
     }
 
     // ============================================================================
-    // SINKRONISASI DUA ARAH REAL-TIME (SUPABASE WEBSOCKET CHANNEL)
+    // SINKRONISASI DUA ARAH REAL-TIME (SUPABASE WEBSOCKET CHANNEL & BROADCAST)
     // Setiap ada perubahan/edit/hapus/tambah dari perangkat mana pun, langsung tampil!
     // ============================================================================
     let realtimeChannel = null;
@@ -1783,6 +1820,7 @@
               if (Array.isArray(data)) state.posts = data;
             }
             saveCacheToStorage();
+            renderHeaderAndFooter();
             renderCurrentView();
           })
           .on('postgres_changes', { event: '*', schema: 'public', table: 'facilities_gallery' }, async (payload) => {
@@ -1855,11 +1893,69 @@
             saveCacheToStorage();
             renderCurrentView();
           })
+          .on('broadcast', { event: 'version_sync' }, () => {
+            loadAllData(false);
+          })
           .subscribe();
       } catch (e) {
         console.warn('Realtime channel warning:', e);
       }
     }
+
+    // Helper broadcast pembaruan real-time ke semua tab & browser
+    function broadcastRealtimeUpdate(eventName = 'data_updated') {
+      try {
+        if (realtimeChannel) {
+          realtimeChannel.send({
+            type: 'broadcast',
+            event: 'version_sync',
+            payload: { event: eventName, timestamp: Date.now() }
+          });
+        }
+      } catch (e) { }
+
+      try {
+        if (typeof BroadcastChannel !== 'undefined') {
+          const bc = new BroadcastChannel('smpn71_local_sync');
+          bc.postMessage({ type: eventName, timestamp: Date.now() });
+          bc.close();
+        }
+      } catch (e) { }
+    }
+
+    // Listener BroadcastChannel & Storage Event untuk Sinkronisasi Antar-Tab
+    try {
+      if (typeof BroadcastChannel !== 'undefined') {
+        const localBc = new BroadcastChannel('smpn71_local_sync');
+        localBc.onmessage = () => {
+          loadCacheFromStorage();
+          renderHeaderAndFooter();
+          renderNavigation();
+          renderCurrentView();
+        };
+      }
+    } catch (e) { }
+
+    window.addEventListener('storage', (e) => {
+      if (e.key && e.key.startsWith('smpn71_cache_')) {
+        loadCacheFromStorage();
+        renderHeaderAndFooter();
+        renderNavigation();
+        renderCurrentView();
+      }
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && !IS_PREVIEW && supabase) {
+        loadAllData(false);
+      }
+    });
+
+    window.addEventListener('online', () => {
+      if (!IS_PREVIEW && supabase) {
+        loadAllData(false);
+      }
+    });
 
     // Periksa session aktif Supabase Auth (untuk Admin Utama)
     async function checkActiveSession() {
@@ -4435,6 +4531,10 @@
       showToast('Anda telah keluar dari sesi pengelola.');
     }
 
+    function isUuid(id) {
+      return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(id || ''));
+    }
+
     // CRUD Settings + Logo + Background + Highlights + Maps + Social Media Links
     async function saveSettingsForm(e) {
       e.preventDefault();
@@ -4477,15 +4577,19 @@
       }
 
       try {
-        if (state.settings?.id) {
-          const { error } = await supabase.from('school_settings').update(payload).eq('id', state.settings.id);
+        const { data: existing } = await supabase.from('school_settings').select('id').limit(1).maybeSingle();
+        if (existing?.id) {
+          state.settings.id = existing.id;
+          const { error } = await supabase.from('school_settings').update(payload).eq('id', existing.id);
           if (error) throw error;
         } else {
-          const { error } = await supabase.from('school_settings').insert([payload]);
+          const { data: inserted, error } = await supabase.from('school_settings').insert([payload]).select().maybeSingle();
           if (error) throw error;
+          if (inserted?.id) state.settings.id = inserted.id;
         }
         saveCacheToStorage();
-        await loadAllData();
+        await loadAllData(false);
+        broadcastRealtimeUpdate('settings_updated');
         showToast('Seluruh pengaturan sekolah tersimpan ke Supabase!');
       } catch (err) {
         showToast('Pengaturan tersimpan di browser (Supabase: ' + err.message + ')');
@@ -4518,11 +4622,11 @@
       };
 
       if (state.editingPostId) {
-        const idx = state.posts.findIndex(p => p.id === state.editingPostId);
+        const editId = state.editingPostId;
+        const idx = state.posts.findIndex(p => p.id === editId);
         if (idx !== -1) {
           state.posts[idx] = { ...state.posts[idx], ...payload };
         }
-        const editId = state.editingPostId;
         state.editingPostId = null;
         saveCacheToStorage();
         renderCurrentView();
@@ -4532,9 +4636,12 @@
           return;
         }
         try {
-          const { error } = await supabase.from('posts').update(payload).eq('id', editId);
-          if (error) throw error;
-          await loadAllData();
+          if (isUuid(editId)) {
+            const { error } = await supabase.from('posts').update(payload).eq('id', editId);
+            if (error) throw error;
+          }
+          await loadAllData(false);
+          broadcastRealtimeUpdate('posts_updated');
           showToast('Perubahan postingan tersimpan di Supabase!');
         } catch (err) {
           showToast('Perubahan tersimpan lokal (Supabase: ' + err.message + ')');
@@ -4542,7 +4649,8 @@
         return;
       }
 
-      state.posts.unshift({ id: 'p-' + Date.now(), ...payload });
+      const tempId = 'p-' + Date.now();
+      state.posts.unshift({ id: tempId, ...payload });
       saveCacheToStorage();
       f.reset();
       renderCurrentView();
@@ -4553,9 +4661,15 @@
       }
 
       try {
-        const { error } = await supabase.from('posts').insert([payload]);
+        const { data: inserted, error } = await supabase.from('posts').insert([payload]).select().maybeSingle();
         if (error) throw error;
-        await loadAllData();
+        if (inserted) {
+          const idx = state.posts.findIndex(p => p.id === tempId);
+          if (idx !== -1) state.posts[idx] = inserted;
+        }
+        saveCacheToStorage();
+        await loadAllData(false);
+        broadcastRealtimeUpdate('posts_inserted');
         showToast('Konten tersimpan di database Supabase!');
       } catch (err) {
         showToast('Konten tersimpan lokal (Supabase: ' + err.message + ')');
@@ -4573,10 +4687,13 @@
         return;
       }
       try {
-        const { error } = await supabase.from('posts').delete().eq('id', id);
-        if (error) throw error;
-        await loadAllData();
-        showToast('Konten dihapus dari Supabase.');
+        if (isUuid(id)) {
+          const { error } = await supabase.from('posts').delete().eq('id', id);
+          if (error) throw error;
+        }
+        await loadAllData(false);
+        broadcastRealtimeUpdate('posts_deleted');
+        showToast('Konten dihapus dari database Supabase.');
       } catch (err) {
         showToast('Gagal menghapus: ' + err.message);
       }
@@ -4606,11 +4723,11 @@
       };
 
       if (state.editingStaffId) {
-        const idx = state.staff.findIndex(s => s.id === state.editingStaffId);
+        const editId = state.editingStaffId;
+        const idx = state.staff.findIndex(s => s.id === editId);
         if (idx !== -1) {
           state.staff[idx] = { ...state.staff[idx], ...payload };
         }
-        const editId = state.editingStaffId;
         state.editingStaffId = null;
         saveCacheToStorage();
         renderCurrentView();
@@ -4620,9 +4737,12 @@
           return;
         }
         try {
-          const { error } = await supabase.from('staff_directory').update(payload).eq('id', editId);
-          if (error) throw error;
-          await loadAllData();
+          if (isUuid(editId)) {
+            const { error } = await supabase.from('staff_directory').update(payload).eq('id', editId);
+            if (error) throw error;
+          }
+          await loadAllData(false);
+          broadcastRealtimeUpdate('staff_updated');
           showToast('Data GTK berhasil diperbarui di Supabase!');
         } catch (err) {
           showToast('Data GTK tersimpan lokal (Supabase: ' + err.message + ')');
@@ -4630,7 +4750,8 @@
         return;
       }
 
-      state.staff.push({ id: 'st-' + Date.now(), ...payload });
+      const tempId = 'st-' + Date.now();
+      state.staff.push({ id: tempId, ...payload });
       saveCacheToStorage();
       f.reset();
       renderCurrentView();
@@ -4641,9 +4762,15 @@
       }
 
       try {
-        const { error } = await supabase.from('staff_directory').insert([payload]);
+        const { data: inserted, error } = await supabase.from('staff_directory').insert([payload]).select().maybeSingle();
         if (error) throw error;
-        await loadAllData();
+        if (inserted) {
+          const idx = state.staff.findIndex(s => s.id === tempId);
+          if (idx !== -1) state.staff[idx] = inserted;
+        }
+        saveCacheToStorage();
+        await loadAllData(false);
+        broadcastRealtimeUpdate('staff_inserted');
         showToast('Data GTK tersimpan di Supabase!');
       } catch (err) {
         showToast('Data GTK tersimpan lokal (Supabase: ' + err.message + ')');
@@ -4661,9 +4788,12 @@
         return;
       }
       try {
-        const { error } = await supabase.from('staff_directory').delete().eq('id', id);
-        if (error) throw error;
-        await loadAllData();
+        if (isUuid(id)) {
+          const { error } = await supabase.from('staff_directory').delete().eq('id', id);
+          if (error) throw error;
+        }
+        await loadAllData(false);
+        broadcastRealtimeUpdate('staff_deleted');
         showToast('Data GTK dihapus dari Supabase.');
       } catch (err) {
         showToast('Gagal menghapus GTK: ' + err.message);
@@ -4693,11 +4823,11 @@
       };
 
       if (state.editingFacilityGalleryId) {
-        const idx = state.facilitiesGallery.findIndex(x => x.id === state.editingFacilityGalleryId);
+        const editId = state.editingFacilityGalleryId;
+        const idx = state.facilitiesGallery.findIndex(x => x.id === editId);
         if (idx !== -1) {
           state.facilitiesGallery[idx] = { ...state.facilitiesGallery[idx], ...payload };
         }
-        const editId = state.editingFacilityGalleryId;
         state.editingFacilityGalleryId = null;
         saveCacheToStorage();
         renderCurrentView();
@@ -4707,9 +4837,12 @@
           return;
         }
         try {
-          const { error } = await supabase.from('facilities_gallery').update(payload).eq('id', editId);
-          if (error) throw error;
-          await loadAllData();
+          if (isUuid(editId)) {
+            const { error } = await supabase.from('facilities_gallery').update(payload).eq('id', editId);
+            if (error) throw error;
+          }
+          await loadAllData(false);
+          broadcastRealtimeUpdate('facilities_updated');
           showToast('Perubahan tersimpan di Supabase!');
         } catch (err) {
           showToast('Tersimpan di browser (Supabase: ' + err.message + ')');
@@ -4717,7 +4850,8 @@
         return;
       }
 
-      state.facilitiesGallery.unshift({ id: 'fg-' + Date.now(), ...payload });
+      const tempId = 'fg-' + Date.now();
+      state.facilitiesGallery.unshift({ id: tempId, ...payload });
       saveCacheToStorage();
       f.reset();
       renderCurrentView();
@@ -4728,9 +4862,15 @@
       }
 
       try {
-        const { error } = await supabase.from('facilities_gallery').insert([payload]);
+        const { data: inserted, error } = await supabase.from('facilities_gallery').insert([payload]).select().maybeSingle();
         if (error) throw error;
-        await loadAllData();
+        if (inserted) {
+          const idx = state.facilitiesGallery.findIndex(x => x.id === tempId);
+          if (idx !== -1) state.facilitiesGallery[idx] = inserted;
+        }
+        saveCacheToStorage();
+        await loadAllData(false);
+        broadcastRealtimeUpdate('facilities_inserted');
         showToast('Item tersimpan di Supabase!');
       } catch (err) {
         showToast('Item tersimpan lokal (Supabase: ' + err.message + ')');
@@ -4748,9 +4888,12 @@
         return;
       }
       try {
-        const { error } = await supabase.from('facilities_gallery').delete().eq('id', id);
-        if (error) throw error;
-        await loadAllData();
+        if (isUuid(id)) {
+          const { error } = await supabase.from('facilities_gallery').delete().eq('id', id);
+          if (error) throw error;
+        }
+        await loadAllData(false);
+        broadcastRealtimeUpdate('facilities_deleted');
         showToast('Item dihapus dari Supabase.');
       } catch (err) {
         showToast('Gagal menghapus: ' + err.message);
@@ -4792,9 +4935,12 @@
         return;
       }
       try {
-        const { error } = await supabase.from('spmb_registrations').update(payload).eq('id', id);
-        if (error) throw error;
-        await loadAllData();
+        if (isUuid(id)) {
+          const { error } = await supabase.from('spmb_registrations').update(payload).eq('id', id);
+          if (error) throw error;
+        }
+        await loadAllData(false);
+        broadcastRealtimeUpdate('spmb_updated');
         showToast('Data SPMB diperbarui di Supabase!');
       } catch (err) {
         showToast('Status diperbarui di browser (Supabase: ' + err.message + ')');
@@ -4816,7 +4962,8 @@
         status: 'Menunggu Verifikasi'
       };
 
-      state.spmbList.unshift({ id: 'spmb-' + Date.now(), ...payload });
+      const tempId = 'spmb-' + Date.now();
+      state.spmbList.unshift({ id: tempId, ...payload });
       saveCacheToStorage();
       f.reset();
       renderCurrentView();
@@ -4827,9 +4974,15 @@
       }
 
       try {
-        const { error } = await supabase.from('spmb_registrations').insert([payload]);
+        const { data: inserted, error } = await supabase.from('spmb_registrations').insert([payload]).select().maybeSingle();
         if (error) throw error;
-        await loadAllData();
+        if (inserted) {
+          const idx = state.spmbList.findIndex(s => s.id === tempId);
+          if (idx !== -1) state.spmbList[idx] = inserted;
+        }
+        saveCacheToStorage();
+        await loadAllData(false);
+        broadcastRealtimeUpdate('spmb_inserted');
         showToast(`Terdaftar! Nomor Registrasi: ${regNo}`);
       } catch (err) {
         showToast(`Tersimpan lokal (Supabase: ${err.message}). No. Registrasi: ${regNo}`);
@@ -4861,9 +5014,12 @@
         return;
       }
       try {
-        const { error } = await supabase.from('spmb_registrations').update({ status }).eq('id', id);
-        if (error) throw error;
-        await loadAllData();
+        if (isUuid(id)) {
+          const { error } = await supabase.from('spmb_registrations').update({ status }).eq('id', id);
+          if (error) throw error;
+        }
+        await loadAllData(false);
+        broadcastRealtimeUpdate('spmb_status_updated');
         showToast('Status SPMB diperbarui di Supabase!');
       } catch (err) {
         showToast('Status diperbarui di browser (Supabase: ' + err.message + ')');
@@ -4881,9 +5037,12 @@
         return;
       }
       try {
-        const { error } = await supabase.from('spmb_registrations').delete().eq('id', id);
-        if (error) throw error;
-        await loadAllData();
+        if (isUuid(id)) {
+          const { error } = await supabase.from('spmb_registrations').delete().eq('id', id);
+          if (error) throw error;
+        }
+        await loadAllData(false);
+        broadcastRealtimeUpdate('spmb_deleted');
         showToast('Pendaftar dihapus dari Supabase.');
       } catch (err) {
         showToast('Gagal menghapus: ' + err.message);
@@ -4924,9 +5083,12 @@
         return;
       }
       try {
-        const { error } = await supabase.from('public_complaints').update(payload).eq('id', id);
-        if (error) throw error;
-        await loadAllData();
+        if (isUuid(id)) {
+          const { error } = await supabase.from('public_complaints').update(payload).eq('id', id);
+          if (error) throw error;
+        }
+        await loadAllData(false);
+        broadcastRealtimeUpdate('complaints_updated');
         showToast('Perubahan pengaduan disimpan ke Supabase!');
       } catch (err) {
         showToast('Pengaduan tersimpan di browser (Supabase: ' + err.message + ')');
@@ -4945,7 +5107,8 @@
         status: 'Baru'
       };
 
-      state.complaints.unshift({ id: 'cmp-' + Date.now(), ...payload });
+      const tempId = 'cmp-' + Date.now();
+      state.complaints.unshift({ id: tempId, ...payload });
       saveCacheToStorage();
       f.reset();
       renderCurrentView();
@@ -4956,9 +5119,15 @@
       }
 
       try {
-        const { error } = await supabase.from('public_complaints').insert([payload]);
+        const { data: inserted, error } = await supabase.from('public_complaints').insert([payload]).select().maybeSingle();
         if (error) throw error;
-        await loadAllData();
+        if (inserted) {
+          const idx = state.complaints.findIndex(c => c.id === tempId);
+          if (idx !== -1) state.complaints[idx] = inserted;
+        }
+        saveCacheToStorage();
+        await loadAllData(false);
+        broadcastRealtimeUpdate('complaints_inserted');
         showToast('Pesan berhasil dikirim ke database sekolah!');
       } catch (err) {
         showToast('Pesan tersimpan lokal (Supabase: ' + err.message + ')');
@@ -4981,9 +5150,12 @@
         return;
       }
       try {
-        const { error } = await supabase.from('public_complaints').update({ response: responseText, status: 'Selesai' }).eq('id', id);
-        if (error) throw error;
-        await loadAllData();
+        if (isUuid(id)) {
+          const { error } = await supabase.from('public_complaints').update({ response: responseText, status: 'Selesai' }).eq('id', id);
+          if (error) throw error;
+        }
+        await loadAllData(false);
+        broadcastRealtimeUpdate('complaints_replied');
         showToast('Tanggapan disimpan ke Supabase!');
       } catch (err) {
         showToast('Tanggapan tersimpan di browser (Supabase: ' + err.message + ')');
@@ -5001,9 +5173,12 @@
         return;
       }
       try {
-        const { error } = await supabase.from('public_complaints').delete().eq('id', id);
-        if (error) throw error;
-        await loadAllData();
+        if (isUuid(id)) {
+          const { error } = await supabase.from('public_complaints').delete().eq('id', id);
+          if (error) throw error;
+        }
+        await loadAllData(false);
+        broadcastRealtimeUpdate('complaints_deleted');
         showToast('Pengaduan dihapus dari Supabase.');
       } catch (err) {
         showToast('Gagal menghapus: ' + err.message);
@@ -5033,11 +5208,11 @@
       };
 
       if (state.editingUserId) {
-        const idx = state.users.findIndex(u => u.id === state.editingUserId);
+        const editId = state.editingUserId;
+        const idx = state.users.findIndex(u => u.id === editId);
         if (idx !== -1) {
           state.users[idx] = { ...state.users[idx], ...payload };
         }
-        const editId = state.editingUserId;
         state.editingUserId = null;
         saveCacheToStorage();
         renderCurrentView();
@@ -5047,9 +5222,12 @@
           return;
         }
         try {
-          const { error } = await supabase.from('school_users').update(payload).eq('id', editId);
-          if (error) throw error;
-          await loadAllData();
+          if (isUuid(editId)) {
+            const { error } = await supabase.from('school_users').update(payload).eq('id', editId);
+            if (error) throw error;
+          }
+          await loadAllData(false);
+          broadcastRealtimeUpdate('users_updated');
           showToast('Perubahan akun staf disimpan ke Supabase!');
         } catch (err) {
           showToast('Gagal memperbarui akun: ' + err.message);
@@ -5057,7 +5235,8 @@
         return;
       }
 
-      state.users.push({ id: 'u-' + Date.now(), ...payload });
+      const tempId = 'u-' + Date.now();
+      state.users.push({ id: tempId, ...payload });
       saveCacheToStorage();
       f.reset();
       renderCurrentView();
@@ -5068,9 +5247,15 @@
       }
 
       try {
-        const { error } = await supabase.from('school_users').insert([payload]);
+        const { data: inserted, error } = await supabase.from('school_users').insert([payload]).select().maybeSingle();
         if (error) throw error;
-        await loadAllData();
+        if (inserted) {
+          const idx = state.users.findIndex(u => u.id === tempId);
+          if (idx !== -1) state.users[idx] = inserted;
+        }
+        saveCacheToStorage();
+        await loadAllData(false);
+        broadcastRealtimeUpdate('users_inserted');
         showToast('Akun staf disimpan ke Supabase!');
       } catch (err) {
         showToast('Gagal membuat akun: ' + err.message);
@@ -5079,16 +5264,21 @@
 
     async function deleteUser(id) {
       if (state.editingUserId === id) state.editingUserId = null;
+      state.users = state.users.filter(u => u.id !== id);
+      saveCacheToStorage();
+      renderCurrentView();
+
       if (IS_PREVIEW) {
-        state.users = state.users.filter(u => u.id !== id);
-        renderCurrentView();
         showToast('Akun staf dihapus.');
         return;
       }
       try {
-        const { error } = await supabase.from('school_users').delete().eq('id', id);
-        if (error) throw error;
-        await loadAllData();
+        if (isUuid(id)) {
+          const { error } = await supabase.from('school_users').delete().eq('id', id);
+          if (error) throw error;
+        }
+        await loadAllData(false);
+        broadcastRealtimeUpdate('users_deleted');
         showToast('Akun staf dihapus dari Supabase.');
       } catch (err) {
         showToast('Gagal menghapus akun: ' + err.message);
@@ -5166,19 +5356,16 @@
     }
 
     // ============================================================================
-    // PWA SERVICE WORKER VIA DYNAMIC BLOB (1-FILE PWA MANDATE)
+    // SERVICE WORKER & CACHE UNREGISTER (MEMASTIKAN SELALU VERSI PRODUKSI TERBARU)
     // ============================================================================
     function registerInlineServiceWorker() {
-      if ('serviceWorker' in navigator) {
-        const swCode = `
-        self.addEventListener('install', (e) => self.skipWaiting());
-        self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()));
-        self.addEventListener('fetch', (e) => {});
-      `;
+      if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
         try {
-          const blob = new Blob([swCode], { type: 'application/javascript' });
-          const swUrl = URL.createObjectURL(blob);
-          navigator.serviceWorker.register(swUrl).catch(() => { });
+          navigator.serviceWorker.getRegistrations().then((registrations) => {
+            for (const registration of registrations) {
+              registration.unregister();
+            }
+          }).catch(() => {});
         } catch (e) { }
       }
     }
@@ -5722,12 +5909,26 @@
       if (state.settings) {
         state.settings.music_config = state.musicConfig;
       }
-      if (!IS_PREVIEW && supabase && state.settings?.id) {
-        const { error } = await supabase
-          .from('school_settings')
-          .update({ music_config: state.musicConfig })
-          .eq('id', state.settings.id);
-        if (error) throw error;
+      saveCacheToStorage();
+      if (!IS_PREVIEW && supabase) {
+        const { data: existing } = await supabase.from('school_settings').select('id').limit(1).maybeSingle();
+        if (existing?.id) {
+          state.settings.id = existing.id;
+          const { error } = await supabase
+            .from('school_settings')
+            .update({ music_config: state.musicConfig, updated_at: new Date().toISOString() })
+            .eq('id', existing.id);
+          if (error) throw error;
+        } else {
+          const { data: inserted, error } = await supabase
+            .from('school_settings')
+            .insert([{ music_config: state.musicConfig }])
+            .select()
+            .maybeSingle();
+          if (error) throw error;
+          if (inserted?.id) state.settings.id = inserted.id;
+        }
+        broadcastRealtimeUpdate('music_config_updated');
       }
     }
 
@@ -6265,13 +6466,13 @@
         // 1. Bersihkan cache versi lama jika ada
         checkCacheVersion();
 
-        // 2. Muat cache data lokal agar tampilan Beranda langsung muncul seketika (0 ms)
+        // 2. Muat cache data lokal agar tampilan Beranda langsung muncul seketika (0 ms) jika ada cache tersimpan
         loadCacheFromStorage();
-        if (!state.settings || !state.posts || state.posts.length === 0 || !state.facilitiesGallery || state.facilitiesGallery.length === 0) {
-          initMinimalPreviewData(true);
+        if (!state.settings) {
+          initMinimalPreviewData(false);
         }
 
-        // 3. Langsung tampilkan antarmuka awal Beranda tanpa layar loading
+        // 3. Tampilkan antarmuka awal seketika jika ada cache data lokal
         state.isLoading = false;
         renderHeaderAndFooter();
         renderNavigation();
@@ -6280,11 +6481,18 @@
         // 4. Periksa sesi aktif admin / staf di latar belakang
         checkActiveSession();
 
-        // 5. Muat data live terbaru dari Supabase di background secara asinkron & mulus
-        loadAllData(false);
-
-        // 6. Sambungkan saluran sinkronisasi real-time Supabase dua arah
+        // 5. Sambungkan saluran sinkronisasi real-time Supabase dua arah
         subscribeRealtimeSync();
+
+        // 6. Muat data live terbaru dari Supabase (Single Source of Truth)
+        await loadAllData(false);
+
+        // 7. Interval sinkronisasi berkala di latar belakang (setiap 60 detik)
+        setInterval(() => {
+          if (!document.hidden && navigator.onLine && !IS_PREVIEW && supabase) {
+            loadAllData(false);
+          }
+        }, 60000);
       }
 
       initChatbotGreeting();
