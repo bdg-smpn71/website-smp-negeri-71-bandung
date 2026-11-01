@@ -9,6 +9,11 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 CREATE TABLE IF NOT EXISTS public.school_settings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   school_name TEXT NOT NULL DEFAULT 'SMP Negeri 71 Kota Bandung',
+  logo_url TEXT DEFAULT '',
+  hero_bg_url TEXT DEFAULT '',
+  highlight_1 TEXT DEFAULT 'Terakreditasi A Unggul',
+  highlight_2 TEXT DEFAULT 'Kelas Digital Cerdas',
+  highlight_3 TEXT DEFAULT 'Sekolah Ramah Anak',
   principal_name TEXT NOT NULL DEFAULT 'Kepala SMP Negeri 71 Kota Bandung',
   principal_photo TEXT,
   principal_welcome TEXT,
@@ -31,6 +36,11 @@ CREATE TABLE IF NOT EXISTS public.school_settings (
 );
 
 -- Migrasi aman jika tabel school_settings sudah dibuat sebelumnya
+ALTER TABLE public.school_settings ADD COLUMN IF NOT EXISTS logo_url TEXT DEFAULT '';
+ALTER TABLE public.school_settings ADD COLUMN IF NOT EXISTS hero_bg_url TEXT DEFAULT '';
+ALTER TABLE public.school_settings ADD COLUMN IF NOT EXISTS highlight_1 TEXT DEFAULT 'Terakreditasi A Unggul';
+ALTER TABLE public.school_settings ADD COLUMN IF NOT EXISTS highlight_2 TEXT DEFAULT 'Kelas Digital Cerdas';
+ALTER TABLE public.school_settings ADD COLUMN IF NOT EXISTS highlight_3 TEXT DEFAULT 'Sekolah Ramah Anak';
 ALTER TABLE public.school_settings ADD COLUMN IF NOT EXISTS instagram_url TEXT DEFAULT 'https://www.instagram.com/smpn71bandung';
 ALTER TABLE public.school_settings ADD COLUMN IF NOT EXISTS youtube_url TEXT DEFAULT 'https://www.youtube.com/@smpn71bandung';
 ALTER TABLE public.school_settings ADD COLUMN IF NOT EXISTS tiktok_url TEXT DEFAULT 'https://www.tiktok.com/@smpn71bandung';
@@ -168,3 +178,58 @@ CREATE POLICY "Allow Hybrid Full Access public_complaints"
   TO anon, authenticated
   USING (true)
   WITH CHECK (true);
+
+-- ============================================================================
+-- INDEKS PERFORMA QUERY & TRIGGER OTOMATIS UPDATED_AT (TERBARU)
+-- ============================================================================
+
+CREATE INDEX IF NOT EXISTS idx_posts_category_created ON public.posts (category, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_staff_category ON public.staff_directory (category, created_at ASC);
+CREATE INDEX IF NOT EXISTS idx_facilities_gallery_type ON public.facilities_gallery (item_type, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_spmb_nisn_reg ON public.spmb_registrations (nisn, reg_number);
+CREATE INDEX IF NOT EXISTS idx_school_users_username ON public.school_users (username);
+
+-- Fungsi & Trigger untuk memperbarui kolom updated_at secara otomatis pada school_settings
+CREATE OR REPLACE FUNCTION public.update_school_settings_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_update_school_settings_timestamp ON public.school_settings;
+CREATE TRIGGER trg_update_school_settings_timestamp
+  BEFORE UPDATE ON public.school_settings
+  FOR EACH ROW
+  EXECUTE FUNCTION public.update_school_settings_timestamp();
+
+-- Pastikan minimal terdapat 1 baris konfigurasi awal pada school_settings agar siap digunakan
+INSERT INTO public.school_settings (
+  school_name,
+  highlight_1,
+  highlight_2,
+  highlight_3,
+  principal_name,
+  address,
+  phone,
+  email,
+  maps_url,
+  instagram_url,
+  youtube_url,
+  tiktok_url
+)
+SELECT
+  'SMP Negeri 71 Kota Bandung',
+  'Terakreditasi A Unggul',
+  'Kelas Digital Cerdas',
+  'Sekolah Ramah Anak',
+  'Dr. H. Ahmad Suryana, M.Pd.',
+  'Jl. Pendidikan Raya No. 71, Kota Bandung, Jawa Barat 40292',
+  '(022) 7100071',
+  'info@smpn71bandung.sch.id',
+  'https://www.google.com/maps?q=SMP+Negeri+71+Kota+Bandung&output=embed',
+  'https://www.instagram.com/smpn71bandung',
+  'https://www.youtube.com/@smpn71bandung',
+  'https://www.tiktok.com/@smpn71bandung'
+WHERE NOT EXISTS (SELECT 1 FROM public.school_settings LIMIT 1);
