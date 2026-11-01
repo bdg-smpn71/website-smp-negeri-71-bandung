@@ -618,96 +618,96 @@
     </div>
 
     <!-- ========================================================================== -->
-    <!-- FLOATING SMART BACKGROUND MUSIC PLAYER & TOMBOL AKTIFKAN MUSIK (KANAN BAWAH) -->
+    <!-- FLOATING SMART WIDGETS DOCK: MUSIK LATAR & AI CHAT BOT (POJOK KANAN BAWAH)  -->
     <!-- ========================================================================== -->
     <div id="floating-music-root"
       class="fixed bottom-20 lg:bottom-5 right-3 sm:right-5 z-40 flex flex-col items-end gap-2.5 pointer-events-none">
       <!-- Banner Prompt "Aktifkan Musik" jika Autoplay diblokir Browser -->
       <button id="autoplay-unlock-btn" onclick="window.app.unlockAutoplayMusic()"
-        class="hidden pointer-events-auto px-4 py-2.5 rounded-full bg-gradient-to-r from-brand-700 via-brand-600 to-emerald-600 hover:from-brand-800 hover:to-brand-700 text-white shadow-xl border-2 border-yellow-300 flex items-center gap-2.5 text-xs font-heading font-bold transition-all duration-300 hover:scale-105 animate-bounce">
-        <span class="w-6 h-6 rounded-full bg-yellow-400 text-slate-900 flex items-center justify-center shrink-0">
+        class="hidden pointer-events-auto px-4 py-2 rounded-full bg-gradient-to-r from-brand-700 via-brand-600 to-emerald-600 hover:from-brand-800 hover:to-brand-700 text-white shadow-xl border-2 border-yellow-300 flex items-center gap-2 text-xs font-heading font-bold transition-all duration-300 hover:scale-105 animate-bounce mb-1">
+        <span class="w-5 h-5 rounded-full bg-yellow-400 text-slate-900 flex items-center justify-center shrink-0">
           <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
         </span>
         <span>Aktifkan Musik Sambutan</span>
       </button>
 
-      <!-- Baris Widget: Floating Music Player & Tombol Chatbot AI -->
-      <div class="flex items-end gap-2.5 pointer-events-auto">
-        <!-- Panel Lengkap Floating Music Player (Glassmorphism) -->
-        <div id="music-player-card"
-          class="glass-panel rounded-3xl p-3.5 shadow-2xl border border-emerald-200/90 w-72 sm:w-80 transition-all duration-300">
-          <div class="flex items-center justify-between gap-2 mb-2.5">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <!-- Ikon Not Musik & Equalizer -->
-              <div
-                class="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-700 to-emerald-600 text-white flex items-center justify-center shadow-sm shrink-0 relative">
-                <i data-lucide="music" class="w-5 h-5 text-yellow-300"></i>
-              </div>
-              <div class="min-w-0 flex-1">
-                <div class="flex items-center gap-1.5">
-                  <span id="music-status-dot" class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                  <span id="music-status-text"
-                    class="text-[10px] font-bold uppercase tracking-wider text-brand-700">Siap Diputar</span>
-                  <!-- Animasi Equalizer -->
-                  <div class="flex items-end gap-0.5 h-4 ml-1" id="music-equalizer">
-                    <span class="w-1 bg-brand-600 rounded-full eq-bar-1 eq-paused"></span>
-                    <span class="w-1 bg-yellow-500 rounded-full eq-bar-2 eq-paused"></span>
-                    <span class="w-1 bg-brand-700 rounded-full eq-bar-3 eq-paused"></span>
-                    <span class="w-1 bg-emerald-500 rounded-full eq-bar-4 eq-paused"></span>
-                  </div>
-                </div>
-                <div id="music-title-display" class="font-heading font-bold text-xs text-slate-900 truncate mt-0.5">
-                  Harmoni Instrumental SMPN 71 Bandung
+      <!-- Panel Lengkap Floating Music Player (Glassmorphism, Mengapung Rapi di Atas Tombol Aksi) -->
+      <div id="music-player-card"
+        class="pointer-events-auto glass-panel rounded-3xl p-3 sm:p-3.5 shadow-2xl border border-emerald-200/90 w-[calc(100vw-2rem)] max-w-xs sm:w-80 transition-all duration-300">
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <!-- Ikon Not Musik & Equalizer -->
+            <div
+              class="w-9 h-9 rounded-2xl bg-gradient-to-br from-brand-700 to-emerald-600 text-white flex items-center justify-center shadow-sm shrink-0 relative">
+              <i data-lucide="music" class="w-4 h-4 text-yellow-300"></i>
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-1.5">
+                <span id="music-status-dot" class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                <span id="music-status-text"
+                  class="text-[10px] font-bold uppercase tracking-wider text-brand-700">Siap Diputar</span>
+                <!-- Animasi Equalizer -->
+                <div class="flex items-end gap-0.5 h-3.5 ml-1" id="music-equalizer">
+                  <span class="w-0.5 sm:w-1 bg-brand-600 rounded-full eq-bar-1 eq-paused"></span>
+                  <span class="w-0.5 sm:w-1 bg-yellow-500 rounded-full eq-bar-2 eq-paused"></span>
+                  <span class="w-0.5 sm:w-1 bg-brand-700 rounded-full eq-bar-3 eq-paused"></span>
+                  <span class="w-0.5 sm:w-1 bg-emerald-500 rounded-full eq-bar-4 eq-paused"></span>
                 </div>
               </div>
-            </div>
-
-            <!-- Tombol Sembunyikan Player -->
-            <button onclick="window.app.toggleMusicPlayerMinimize(true)" title="Sembunyikan Player"
-              class="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition shrink-0">
-              <i data-lucide="chevron-down" class="w-4 h-4"></i>
-            </button>
-          </div>
-
-          <!-- Kontrol Play/Pause, Mute/Unmute, dan Slider Volume -->
-          <div class="flex items-center gap-2.5 bg-slate-50/90 px-3 py-2 rounded-2xl border border-slate-200/80">
-            <button id="music-play-btn" onclick="window.app.toggleMusicPlay()" title="Putar / Jeda Musik"
-              class="w-8 h-8 rounded-xl bg-brand-700 hover:bg-brand-800 text-white flex items-center justify-center shadow-sm transition shrink-0">
-              <i id="music-play-icon" data-lucide="play" class="w-4 h-4 fill-current"></i>
-            </button>
-
-            <button id="music-mute-btn" onclick="window.app.toggleMusicMute()" title="Bisukan / Suarakan"
-              class="w-8 h-8 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 flex items-center justify-center transition shrink-0">
-              <i id="music-mute-icon" data-lucide="volume-2" class="w-4 h-4"></i>
-            </button>
-
-            <div class="flex-1 flex items-center gap-2 min-w-0">
-              <input id="music-volume-slider" type="range" min="0" max="100" value="25"
-                oninput="window.app.changeMusicVolume(this.value)"
-                class="w-full accent-brand-700 h-1.5 bg-slate-200 rounded-lg cursor-pointer" />
-              <span id="music-volume-label"
-                class="text-[10px] font-bold text-slate-600 w-7 text-right shrink-0">25%</span>
+              <div id="music-title-display" class="font-heading font-bold text-xs text-slate-900 truncate mt-0.5">
+                Harmoni Instrumental SMPN 71 Bandung
+              </div>
             </div>
           </div>
+
+          <!-- Tombol Sembunyikan Player -->
+          <button onclick="window.app.toggleMusicPlayerMinimize(true)" title="Sembunyikan Panel Musik"
+            class="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition shrink-0">
+            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+          </button>
         </div>
 
+        <!-- Kontrol Play/Pause, Mute/Unmute, dan Slider Volume -->
+        <div class="flex items-center gap-2 bg-slate-50/90 px-2.5 py-1.5 rounded-2xl border border-slate-200/80">
+          <button id="music-play-btn" onclick="window.app.toggleMusicPlay()" title="Putar / Jeda Musik"
+            class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-brand-700 hover:bg-brand-800 text-white flex items-center justify-center shadow-sm transition shrink-0">
+            <i id="music-play-icon" data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+          </button>
+
+          <button id="music-mute-btn" onclick="window.app.toggleMusicMute()" title="Bisukan / Suarakan"
+            class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 flex items-center justify-center transition shrink-0">
+            <i id="music-mute-icon" data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+          </button>
+
+          <div class="flex-1 flex items-center gap-2 min-w-0">
+            <input id="music-volume-slider" type="range" min="0" max="100" value="25"
+              oninput="window.app.changeMusicVolume(this.value)"
+              class="w-full accent-brand-700 h-1.5 bg-slate-200 rounded-lg cursor-pointer" />
+            <span id="music-volume-label"
+              class="text-[10px] font-bold text-slate-600 w-7 text-right shrink-0">25%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Baris Tombol Aksi di Pojok Kanan Bawah: Tombol Musik Ringkas + Tombol AI Chatbot -->
+      <div class="flex items-center gap-2 pointer-events-auto">
         <!-- Tombol Mini untuk Menampilkan Player Saat Disembunyikan -->
         <button id="music-player-minimized" onclick="window.app.toggleMusicPlayerMinimize(false)"
-          title="Tampilkan Pemutar Musik"
-          class="hidden glass-panel p-3 rounded-2xl shadow-xl border border-emerald-200 hover:bg-emerald-50 text-brand-700 items-center gap-2 transition-all duration-300 hover:scale-105">
+          title="Buka Pengaturan Musik Latar"
+          class="hidden glass-panel px-3.5 py-2.5 rounded-2xl shadow-xl border border-emerald-200 hover:bg-emerald-50 text-brand-700 items-center gap-2 transition-all duration-300 hover:scale-105 active:scale-95">
           <div class="relative flex items-center justify-center">
-            <i data-lucide="music" class="w-5 h-5 text-brand-700"></i>
+            <i data-lucide="music" class="w-4 h-4 text-brand-700"></i>
             <span id="music-mini-dot"
               class="w-2 h-2 rounded-full bg-emerald-500 absolute -top-1 -right-1 hidden animate-ping"></span>
           </div>
-          <span class="text-xs font-heading font-bold hidden sm:inline">Musik</span>
+          <span class="text-xs font-heading font-bold">Musik</span>
         </button>
 
         <!-- Tombol Pembuka Chatbot Interaktif Modern -->
         <button id="chatbot-trigger-btn" onclick="window.app.toggleChatbot()" title="Tanya Asisten AI SMPN 71 Bandung"
-          class="p-3.5 rounded-2xl bg-gradient-to-br from-brand-700 via-brand-600 to-emerald-800 hover:from-brand-800 hover:to-slate-900 text-white shadow-2xl border-2 border-white flex items-center gap-2 transition-all duration-300 hover:scale-105">
-          <div class="relative">
-            <i data-lucide="bot" class="w-6 h-6 text-yellow-300"></i>
+          class="px-4 py-2.5 rounded-2xl bg-gradient-to-br from-brand-700 via-brand-600 to-emerald-800 hover:from-brand-800 hover:to-slate-900 text-white shadow-2xl border-2 border-white flex items-center gap-2 transition-all duration-300 hover:scale-105 active:scale-95">
+          <div class="relative flex items-center justify-center">
+            <i data-lucide="bot" class="w-5 h-5 text-yellow-300"></i>
             <span
               class="w-2.5 h-2.5 rounded-full bg-emerald-400 border border-white absolute -top-0.5 -right-0.5"></span>
           </div>
@@ -730,7 +730,7 @@
     <!-- WINDOW CHATBOT INTERAKTIF MODERN & CANGGIH (SINKRON DATA SEKOLAH)          -->
     <!-- ========================================================================== -->
     <div id="chatbot-window"
-      class="hidden fixed bottom-36 lg:bottom-24 right-3 sm:right-5 z-50 w-[calc(100vw-1.5rem)] sm:w-96 max-h-[78vh] glass-panel rounded-3xl shadow-2xl border border-emerald-200 overflow-hidden flex flex-col transition-all duration-300">
+      class="hidden fixed bottom-36 lg:bottom-20 right-3 sm:right-5 z-50 w-[calc(100vw-1.5rem)] sm:w-96 max-h-[75vh] glass-panel rounded-3xl shadow-2xl border border-emerald-200 overflow-hidden flex flex-col transition-all duration-300">
       <!-- Header Chatbot -->
       <div
         class="bg-gradient-to-r from-brand-700 via-brand-800 to-slate-900 text-white p-4 flex items-center justify-between gap-3 shrink-0">
@@ -902,8 +902,8 @@
       editingUserId: null
     };
 
-    function initMinimalPreviewData() {
-      if (!IS_PREVIEW) return;
+    function initMinimalPreviewData(force = true) {
+      if (!IS_PREVIEW && !force && state.settings) return;
 
       state.settings = {
         id: '11111111-1111-1111-1111-111111111111',
@@ -1539,10 +1539,6 @@
       }
 
       try {
-        if (isInitial && !state.settings) {
-          state.isLoading = true;
-          renderCurrentView();
-        }
 
         // Ambil data terbaru secara simultan (Promise.all paralel) dari seluruh tabel Supabase
         const [
@@ -1994,31 +1990,6 @@
     function renderCurrentView() {
       const container = document.getElementById('app-view-container');
       if (!container) return;
-
-      if (state.isLoading) {
-        container.innerHTML = `
-        <div class="py-16 sm:py-24 text-center space-y-4 max-w-lg mx-auto animate-fade-in">
-          <div class="relative w-14 h-14 mx-auto flex items-center justify-center">
-            <div class="absolute inset-0 rounded-2xl border-4 border-emerald-100"></div>
-            <div class="absolute inset-0 rounded-2xl border-4 border-brand-700 border-t-yellow-400 animate-spin"></div>
-            <div class="font-heading font-extrabold text-brand-700 text-xs">71</div>
-          </div>
-          <div class="space-y-1.5">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-brand-700 font-bold text-[11px] border border-emerald-200 shadow-xs">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              Sinkronisasi Langsung Supabase
-            </span>
-            <h3 class="font-heading font-extrabold text-base sm:text-lg text-slate-900">Menampilkan Tampilan Terupdate...</h3>
-            <p class="text-xs text-slate-500">Memuat profil, berita, fasilitas, dan layanan mutakhir sekolah</p>
-          </div>
-          <div class="w-full max-w-xs mx-auto h-2 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
-            <div class="h-full bg-gradient-to-r from-brand-700 via-emerald-500 to-yellow-400 rounded-full animate-pulse" style="width: 75%"></div>
-          </div>
-        </div>
-      `;
-        refreshIcons();
-        return;
-      }
 
       switch (state.currentView) {
         case 'beranda':
@@ -5437,6 +5408,10 @@
       musicEngine.currentTrack = preferred;
       updateMusicPlayerUI();
 
+      if (window.innerWidth < 768) {
+        toggleMusicPlayerMinimize(true);
+      }
+
       if (autoStart && !musicEngine.isPlaying) {
         startTrackPlayback(preferred);
       }
@@ -5803,6 +5778,9 @@
       state.isChatOpen = typeof forceState === 'boolean' ? forceState : !state.isChatOpen;
       if (state.isChatOpen) {
         win.classList.remove('hidden');
+        if (window.innerWidth < 768) {
+          toggleMusicPlayerMinimize(true);
+        }
         if (state.chatMessages.length === 0) initChatbotGreeting();
         renderChatbotMessages();
         setTimeout(() => document.getElementById('chatbot-input')?.focus(), 100);
@@ -6117,27 +6095,35 @@
       if (IS_PREVIEW) {
         if (previewBanner) previewBanner.classList.remove('hidden');
         loadCacheFromStorage();
-        if (!state.settings) initMinimalPreviewData();
+        if (!state.settings) initMinimalPreviewData(true);
         renderHeaderAndFooter();
         renderNavigation();
         renderCurrentView();
       } else {
         if (previewBanner) previewBanner.remove();
 
-        // 1. Bersihkan cache versi lama agar tidak menampilkan data demo/stale sebelumnya
+        // 1. Bersihkan cache versi lama jika ada
         checkCacheVersion();
 
-        // 2. Langsung tampilkan status sinkronisasi terbaru agar pengunjung tidak melihat data lama
-        state.isLoading = true;
+        // 2. Muat cache data lokal agar tampilan Beranda langsung muncul seketika (0 ms)
+        loadCacheFromStorage();
+        if (!state.settings) {
+          initMinimalPreviewData(true);
+        }
+
+        // 3. Langsung tampilkan antarmuka awal Beranda tanpa layar loading
+        state.isLoading = false;
+        renderHeaderAndFooter();
+        renderNavigation();
         renderCurrentView();
 
-        // 3. Periksa session aktif admin / staf
-        await checkActiveSession();
+        // 4. Periksa sesi aktif admin / staf di latar belakang
+        checkActiveSession();
 
-        // 4. Selalu ambil data live terbaru dari Supabase sebelum menampilkan view
-        await loadAllData(true);
+        // 5. Muat data live terbaru dari Supabase di background secara asinkron & mulus
+        loadAllData(false);
 
-        // 5. Sambungkan saluran sinkronisasi real-time Supabase dua arah
+        // 6. Sambungkan saluran sinkronisasi real-time Supabase dua arah
         subscribeRealtimeSync();
       }
 
