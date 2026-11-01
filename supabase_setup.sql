@@ -251,3 +251,42 @@ SELECT
   'https://www.youtube.com/@smpn71bandung',
   'https://www.tiktok.com/@smpn71bandung'
 WHERE NOT EXISTS (SELECT 1 FROM public.school_settings LIMIT 1);
+
+-- ============================================================================
+-- SINKRONISASI REALTIME SUPABASE DUA ARAH (INSTANT MULTI-DEVICE SYNC)
+-- Mengaktifkan replikasi websocket realtime agar perubahan data langsung tampil
+-- tanpa perlu reload halaman di komputer, laptop, tablet, dan smartphone
+-- ============================================================================
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_publication WHERE pubname = 'supabase_realtime') THEN
+    BEGIN
+      ALTER PUBLICATION supabase_realtime ADD TABLE public.school_settings;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+    BEGIN
+      ALTER PUBLICATION supabase_realtime ADD TABLE public.posts;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+    BEGIN
+      ALTER PUBLICATION supabase_realtime ADD TABLE public.staff_directory;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+    BEGIN
+      ALTER PUBLICATION supabase_realtime ADD TABLE public.facilities_gallery;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+    BEGIN
+      ALTER PUBLICATION supabase_realtime ADD TABLE public.spmb_registrations;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+    BEGIN
+      ALTER PUBLICATION supabase_realtime ADD TABLE public.public_complaints;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+    BEGIN
+      ALTER PUBLICATION supabase_realtime ADD TABLE public.school_users;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+  END IF;
+END $$;
