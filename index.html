@@ -229,10 +229,30 @@
             <!-- Divider -->
             <div class="hidden lg:block h-7 w-px bg-slate-200 shrink-0"></div>
 
-            <!-- MENU NAVIGASI UTAMA MINIMALIS DI ATAS HEADER SAMPING BERANDA -->
-            <nav id="top-minimal-nav" class="hidden lg:flex items-center gap-1 overflow-x-auto no-scrollbar py-1">
-              <!-- Diisi dinamis oleh JS (Beranda + Menu Utama Minimalis) -->
-            </nav>
+            <!-- MENU NAVIGASI UTAMA DENGAN KONTROL SCROLL KIRI & KANAN -->
+            <div class="hidden lg:flex items-center gap-1 min-w-0 flex-1 relative">
+              <button 
+                id="top-nav-scroll-left" 
+                onclick="window.app.scrollNav('desktop', -220)" 
+                title="Scroll Menu ke Kiri" 
+                class="w-7 h-7 rounded-lg bg-white/95 hover:bg-emerald-50 text-slate-600 hover:text-brand-700 border border-slate-200 shadow-sm flex items-center justify-center shrink-0 transition-all duration-200 hover:scale-105 active:scale-95"
+              >
+                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+              </button>
+
+              <nav id="top-minimal-nav" class="flex-1 flex items-center gap-1 overflow-x-auto scroll-smooth py-1 px-1 no-scrollbar">
+                <!-- Diisi dinamis oleh JS (Beranda + Menu Utama Minimalis) -->
+              </nav>
+
+              <button 
+                id="top-nav-scroll-right" 
+                onclick="window.app.scrollNav('desktop', 220)" 
+                title="Scroll Menu ke Kanan" 
+                class="w-7 h-7 rounded-lg bg-white/95 hover:bg-emerald-50 text-slate-600 hover:text-brand-700 border border-slate-200 shadow-sm flex items-center justify-center shrink-0 transition-all duration-200 hover:scale-105 active:scale-95"
+              >
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </button>
+            </div>
           </div>
 
           <!-- Right: Social Icons, SPMB CTA & Portal Admin / Auth Status -->
@@ -285,9 +305,29 @@
           </div>
         </div>
 
-        <!-- Baris Menu Minimalis Mobile/Tablet (Tampil di layar < 1024px tepat di bawah Header) -->
-        <div class="lg:hidden bg-emerald-50/90 border-t border-emerald-100 px-3 py-1.5 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[11px] font-semibold">
-          <div id="mobile-top-minimal-nav" class="flex items-center gap-1.5 whitespace-nowrap"></div>
+        <!-- Baris Menu Minimalis Mobile/Tablet dengan Kontrol Scroll Kiri & Kanan -->
+        <div class="lg:hidden bg-emerald-50/90 border-t border-emerald-100 px-2 py-1.5 flex items-center gap-1.5 text-[11px] font-semibold">
+          <button 
+            id="mob-nav-scroll-left" 
+            onclick="window.app.scrollNav('mobile', -180)" 
+            title="Scroll Menu ke Kiri" 
+            class="w-6 h-6 rounded-lg bg-white text-slate-600 hover:text-brand-700 border border-emerald-200 shadow-xs flex items-center justify-center shrink-0 transition active:scale-95"
+          >
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+          </button>
+
+          <div id="mobile-top-nav-container" class="flex-1 overflow-x-auto scroll-smooth no-scrollbar">
+            <div id="mobile-top-minimal-nav" class="flex items-center gap-1.5 whitespace-nowrap px-0.5"></div>
+          </div>
+
+          <button 
+            id="mob-nav-scroll-right" 
+            onclick="window.app.scrollNav('mobile', 180)" 
+            title="Scroll Menu ke Kanan" 
+            class="w-6 h-6 rounded-lg bg-white text-slate-600 hover:text-brand-700 border border-emerald-200 shadow-xs flex items-center justify-center shrink-0 transition active:scale-95"
+          >
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+          </button>
         </div>
       </header>
 
@@ -1204,7 +1244,7 @@
       topMinimalNav.innerHTML = mainNavItems.map(item => {
         const isActive = state.currentView === item.id;
         return `
-          <button onclick="window.app.navigate('${item.id}')" class="px-2.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap flex items-center gap-1.5 transition-all duration-200 ${
+          <button data-nav-id="${item.id}" onclick="window.app.navigate('${item.id}')" class="px-2.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap flex items-center gap-1.5 transition-all duration-200 shrink-0 ${
             isActive
               ? 'bg-brand-700 text-white shadow-sm ring-1 ring-emerald-300'
               : 'text-slate-600 hover:bg-emerald-50 hover:text-brand-700'
@@ -1220,7 +1260,7 @@
       mobileTopMinimalNav.innerHTML = mainNavItems.map(item => {
         const isActive = state.currentView === item.id;
         return `
-          <button onclick="window.app.navigate('${item.id}')" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1 transition shrink-0 ${
+          <button data-nav-id="${item.id}" onclick="window.app.navigate('${item.id}')" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1 transition shrink-0 whitespace-nowrap ${
             isActive
               ? 'bg-brand-700 text-white shadow-sm'
               : 'bg-white text-slate-700 border border-emerald-200/80 hover:bg-emerald-50'
@@ -1264,6 +1304,95 @@
     });
 
     lucide.createIcons();
+    setupNavScrollListeners();
+    syncNavScrollActive();
+  }
+
+  // Helper Scroll Navigasi Bar Atas (Kiri & Kanan)
+  function scrollNav(target, amount) {
+    let el = null;
+    if (target === 'desktop') {
+      el = document.getElementById('top-minimal-nav');
+    } else if (target === 'mobile') {
+      el = document.getElementById('mobile-top-nav-container') || document.getElementById('mobile-top-minimal-nav');
+    }
+    if (el) {
+      el.scrollBy({ left: amount, behavior: 'smooth' });
+      setTimeout(updateNavScrollIndicators, 200);
+    }
+  }
+
+  function updateNavScrollIndicators() {
+    const desktopNav = document.getElementById('top-minimal-nav');
+    const dLeft = document.getElementById('top-nav-scroll-left');
+    const dRight = document.getElementById('top-nav-scroll-right');
+    if (desktopNav && dLeft && dRight) {
+      const atStart = desktopNav.scrollLeft <= 5;
+      const atEnd = desktopNav.scrollLeft + desktopNav.clientWidth >= desktopNav.scrollWidth - 5;
+      dLeft.classList.toggle('opacity-30', atStart);
+      dLeft.classList.toggle('pointer-events-none', atStart);
+      dRight.classList.toggle('opacity-30', atEnd);
+      dRight.classList.toggle('pointer-events-none', atEnd);
+    }
+
+    const mobNav = document.getElementById('mobile-top-nav-container') || document.getElementById('mobile-top-minimal-nav');
+    const mLeft = document.getElementById('mob-nav-scroll-left');
+    const mRight = document.getElementById('mob-nav-scroll-right');
+    if (mobNav && mLeft && mRight) {
+      const atStart = mobNav.scrollLeft <= 5;
+      const atEnd = mobNav.scrollLeft + mobNav.clientWidth >= mobNav.scrollWidth - 5;
+      mLeft.classList.toggle('opacity-30', atStart);
+      mLeft.classList.toggle('pointer-events-none', atStart);
+      mRight.classList.toggle('opacity-30', atEnd);
+      mRight.classList.toggle('pointer-events-none', atEnd);
+    }
+  }
+
+  function syncNavScrollActive() {
+    setTimeout(() => {
+      const desktopNav = document.getElementById('top-minimal-nav');
+      if (desktopNav) {
+        const activeBtn = desktopNav.querySelector(`[data-nav-id="${state.currentView}"]`);
+        if (activeBtn) {
+          activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      }
+      const mobNav = document.getElementById('mobile-top-nav-container') || document.getElementById('mobile-top-minimal-nav');
+      if (mobNav) {
+        const activeBtn = mobNav.querySelector(`[data-nav-id="${state.currentView}"]`);
+        if (activeBtn) {
+          activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      }
+      updateNavScrollIndicators();
+    }, 100);
+  }
+
+  function setupNavScrollListeners() {
+    const desktopNav = document.getElementById('top-minimal-nav');
+    if (desktopNav && !desktopNav.dataset.wheelSetup) {
+      desktopNav.dataset.wheelSetup = 'true';
+      desktopNav.addEventListener('scroll', updateNavScrollIndicators, { passive: true });
+      desktopNav.addEventListener('wheel', (evt) => {
+        if (evt.deltaY !== 0) {
+          evt.preventDefault();
+          desktopNav.scrollBy({ left: evt.deltaY * 1.5, behavior: 'smooth' });
+        }
+      }, { passive: false });
+    }
+
+    const mobNav = document.getElementById('mobile-top-nav-container') || document.getElementById('mobile-top-minimal-nav');
+    if (mobNav && !mobNav.dataset.wheelSetup) {
+      mobNav.dataset.wheelSetup = 'true';
+      mobNav.addEventListener('scroll', updateNavScrollIndicators, { passive: true });
+      mobNav.addEventListener('wheel', (evt) => {
+        if (evt.deltaY !== 0) {
+          evt.preventDefault();
+          mobNav.scrollBy({ left: evt.deltaY * 1.5, behavior: 'smooth' });
+        }
+      }, { passive: false });
+    }
+    updateNavScrollIndicators();
   }
 
   // ============================================================================
@@ -1276,6 +1405,7 @@
     handlePageSpecificMusicOnNavigate(viewId);
     const wrapper = document.getElementById('smpn71-app-wrapper');
     if (wrapper) wrapper.scrollTo({ top: 0, behavior: 'smooth' });
+    syncNavScrollActive();
   }
 
   function renderCurrentView() {
@@ -4615,6 +4745,7 @@
   // Expose public API to window
   window.app = {
     navigate,
+    scrollNav,
     openAdminPortalWithProgress,
     handleImageUploadInput,
     quickLogin,
