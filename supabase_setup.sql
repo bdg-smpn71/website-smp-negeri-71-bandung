@@ -64,10 +64,16 @@ CREATE TABLE IF NOT EXISTS public.posts (
   title TEXT NOT NULL,
   content TEXT NOT NULL,
   image_url TEXT,
+  file_url TEXT DEFAULT '',
+  file_name TEXT DEFAULT '',
   event_date DATE DEFAULT CURRENT_DATE,
   author_name TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Migrasi kolom file_url dan file_name untuk lampiran dokumen PDF
+ALTER TABLE public.posts ADD COLUMN IF NOT EXISTS file_url TEXT DEFAULT '';
+ALTER TABLE public.posts ADD COLUMN IF NOT EXISTS file_name TEXT DEFAULT '';
 
 -- 4. TABEL DIREKTORI GURU DAN TENAGA KEPENDIDIKAN (GTK)
 CREATE TABLE IF NOT EXISTS public.staff_directory (
@@ -81,16 +87,28 @@ CREATE TABLE IF NOT EXISTS public.staff_directory (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 5. TABEL FASILITAS SEKOLAH & GALERI FOTO/VIDEO
+-- 5. TABEL FASILITAS SEKOLAH & GALERI FOTO/VIDEO/TIKTOK/GOOGLE DRIVE
 CREATE TABLE IF NOT EXISTS public.facilities_gallery (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  item_type TEXT NOT NULL CHECK (item_type IN ('fasilitas', 'foto', 'video')),
+  item_type TEXT NOT NULL CHECK (item_type IN ('fasilitas', 'foto', 'video', 'tiktok', 'gdrive')),
   title TEXT NOT NULL,
   description TEXT,
   media_url TEXT NOT NULL,
   condition_or_tag TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Migrasi constraint item_type fasilitas_gallery agar mendukung link TikTok dan Google Drive
+ALTER TABLE public.facilities_gallery DROP CONSTRAINT IF EXISTS facilities_gallery_item_type_check;
+DO $$ 
+BEGIN
+  BEGIN
+    ALTER TABLE public.facilities_gallery ADD CONSTRAINT facilities_gallery_item_type_check 
+      CHECK (item_type IN ('fasilitas', 'foto', 'video', 'tiktok', 'gdrive'));
+  EXCEPTION
+    WHEN duplicate_object THEN NULL;
+  END;
+END $$;
 
 -- 6. TABEL PENDAFTARAN SPMB (SISTEM PENERIMAAN MURID BARU)
 CREATE TABLE IF NOT EXISTS public.spmb_registrations (
