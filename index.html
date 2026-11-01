@@ -18,6 +18,9 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
     rel="stylesheet">
 
+  <!-- Module Preload Supabase ESM untuk Inisialisasi Kilat (Millisecond Load) -->
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm">
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -1767,6 +1770,15 @@
           const parsed = JSON.parse(s);
           if (parsed && typeof parsed === 'object' && !isDemoItem(parsed)) {
             state.settings = parsed;
+            if (parsed.music_config && typeof parsed.music_config === 'object') {
+              state.musicConfig = {
+                ...DEFAULT_MUSIC_CONFIG,
+                ...parsed.music_config,
+                tracks: Array.isArray(parsed.music_config.tracks) && parsed.music_config.tracks.length > 0
+                  ? parsed.music_config.tracks
+                  : DEFAULT_MUSIC_CONFIG.tracks
+              };
+            }
           } else {
             localStorage.removeItem('smpn71_cache_settings');
           }
@@ -6677,28 +6689,37 @@
         // 1. Bersihkan seluruh cache lama & data demo/bawaan sebelumnya secara total
         purgeDemoCache();
 
-        // 2. Periksa sesi aktif admin / staf di latar belakang
+        // 2. Pulihkan data cache lokal resmi agar website siap tampil dalam hitungan milidetik
+        loadCacheFromStorage();
+        if (!state.settings) {
+          initMinimalPreviewData(false);
+        }
+
+        // 3. Periksa sesi aktif admin / staf di latar belakang
         checkActiveSession();
 
-        // 3. Sambungkan saluran sinkronisasi real-time Supabase dua arah
+        // 4. Sambungkan saluran sinkronisasi real-time Supabase dua arah
         subscribeRealtimeSync();
 
-        // 4. Tampilkan skeleton loading bersih saat pertama kali membuka website
-        // (TIDAK PERNAH memunculkan data demo atau tampilan bawaan sebelumnya)
+        // 5. Tampilkan indikator sinkronisasi awal secara cepat dalam milidetik
         renderHeaderAndFooter();
         renderNavigation();
         renderLoadingSkeletonView();
 
-        // 5. Muat data live terbaru LANGSUNG dari database Supabase (Single Source of Truth)
-        await loadAllData(true);
+        // 6. Muat data live terbaru dari Supabase dengan race milidetik (maksimal 180ms)
+        // agar tampilan indikator sinkronisasi tidak lama dan langsung menyajikan data resmi sekolah
+        const quickDelay = new Promise(resolve => setTimeout(resolve, 180));
+        const syncPromise = loadAllData(true);
 
-        // 6. Langsung sajikan 100% data produksi terbaru dari Supabase ke pengunjung
+        await Promise.race([syncPromise, quickDelay]);
+
+        // 7. Langsung tampilkan antarmuka utama resmi ke pengunjung secara instan
         state.isLoading = false;
         renderHeaderAndFooter();
         renderNavigation();
         renderCurrentView();
 
-        // 7. Interval sinkronisasi berkala di latar belakang (setiap 60 detik)
+        // 8. Interval sinkronisasi berkala di latar belakang (setiap 60 detik)
         setInterval(() => {
           if (!document.hidden && navigator.onLine && !IS_PREVIEW && supabase) {
             loadAllData(false);
