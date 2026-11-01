@@ -252,6 +252,48 @@ SELECT
   'https://www.tiktok.com/@smpn71bandung'
 WHERE NOT EXISTS (SELECT 1 FROM public.school_settings LIMIT 1);
 
+-- Inisialisasi data pos terpadu awal (Berita, Pengumuman, Agenda, Akademik, Layanan, PPID)
+INSERT INTO public.posts (category, title, content, image_url, file_url, file_name, event_date, author_name)
+SELECT d.category, d.title, d.content, d.image_url, d.file_url, d.file_name, d.event_date::date, d.author_name
+FROM (VALUES
+  ('berita', 'Siswa SMPN 71 Kota Bandung Raih Medali Emas Olimpiade Sains Nasional Tingkat Kota', 'Tim Olimpiade IPA dan Matematika SMPN 71 Kota Bandung berhasil menorehkan prestasi membanggakan pada ajang OSN tingkat Kota Bandung tahun ini melalui pembinaan intensif.', 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80', 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Piagam_Penghargaan_OSN_2026.pdf', '2026-05-10', 'Humas SMPN 71'),
+  ('berita', 'Peluncuran Program Kelas Digital Cerdas & Fasilitas Laboratorium Modern Terpadu', 'SMPN 71 Bandung meresmikan integrasi modul pembelajaran digital interaktif dan 40 unit PC modern untuk mendukung akselerasi Kurikulum Nasional berbasis teknologi.', 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=800&q=80', 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Modul_Kelas_Digital_71.pdf', '2026-05-18', 'Tim Kurikulum'),
+  ('berita', 'SMPN 71 Bandung Sabet Juara Umum Pasanggiri Seni Budaya Tradisional Sunda', 'Kontingen ekstrakurikuler seni tari Jaipong dan rampak angklung SMPN 71 berhasil mempertahankan gelar Juara Umum pada festival seni pelajar se-Kota Bandung.', 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80', '', '', '2026-05-25', 'Pembina Kesiswaan'),
+  ('pengumuman', 'Jadwal Pelaksanaan Sistem Penerimaan Murid Baru (SPMB) Tahun Ajaran 2026/2027', 'Pendaftaran SPMB SMPN 71 Kota Bandung dibuka untuk Jalur Zonasi, Afirmasi, Prestasi, dan Perpindahan Tugas Orang Tua. Pastikan seluruh berkas persyaratan telah dipindai.', 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80', 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Juknis_SPMB_SMPN71_2026.pdf', '2026-06-01', 'Panitia SPMB'),
+  ('pengumuman', 'Edaran Pelaksanaan Asesmen Sumatif Akhir Jenjang & Program Pengayaan Terpadu', 'Seluruh peserta didik kelas VII, VIII, dan IX diwajibkan mempersiapkan perangkat asesmen mandiri serta mematuhi tata tertib asesmen yang telah ditetapkan pihak sekolah.', 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80', 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Jadwal_Asesmen_Akhir_Jenjang.pdf', '2026-06-08', 'Wakasek Kurikulum'),
+  ('pengumuman', 'Undangan Sosialisasi Parenting & Pertemuan Komite Sekolah Semester Genap', 'Mengundang seluruh orang tua/wali murid untuk menghadiri pemaparan evaluasi hasil belajar, pembinaan karakter ramah anak, dan transparansi program sekolah.', 'https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=800&q=80', '', '', '2026-06-15', 'Humas & Komite'),
+  ('agenda', 'Gelar Karya Projek Penguatan Profil Pelajar Pancasila (P5) & Pentas Seni Siswa', 'Kegiatan pameran produk kewirausahaan daur ulang, kuliner tradisional Sunda, dan apresiasi seni siswa kelas VII, VIII, dan IX di lapangan utama sekolah.', 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80', '', '', '2026-06-20', 'Tim Fasilitator P5'),
+  ('agenda', 'Latihan Dasar Kepemimpinan Siswa (LDKS) & Musyawarah Besar Pengurus OSIS 71', 'Pembekalan kepemimpinan, manajemen organisasi siswa, kedisiplinan, dan perumusan kalender kerja OSIS SMPN 71 Kota Bandung periode 2026/2027.', 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80', '', '', '2026-06-27', 'Pembina OSIS'),
+  ('agenda', 'Pekan Literasi Digital & Bedah Buku Karya Siswa di Graha Literasi SMPN 71', 'Festival literasi tahunan sekolah menghadirkan bedah buku antologi puisi karya siswa, lokakarya penulisan kreatif, serta penghargaan duta baca sekolah.', 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80', '', '', '2026-07-04', 'Koordinator Literasi'),
+  ('akademik', 'Implementasi Kurikulum Nasional & Modul Pembelajaran Digital Terpadu', 'SMPN 71 Kota Bandung menerapkan pembelajaran terdiferensiasi dengan dukungan Google Workspace for Education, Laboratorium Komputer, dan Klinik Numerasi-Literasi.', 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80', 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Panduan_Kurikulum_Merdeka_71.pdf', '2026-05-02', 'Tim Kurikulum'),
+  ('layanan_siswa', 'Layanan Bimbingan Konseling (BK) Ramah Anak & Pembinaan 12 Ekstrakurikuler', 'Tersedia layanan konseling minat bakat, pencegahan perundungan (Roots Indonesia), serta 12 cabang ekstrakurikuler unggulan seperti Pramuka, Paskibra, Futsal, Robotik, dan Angklung.', 'https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=800&q=80', '', '', '2026-05-05', 'Koordinator Kesiswaan'),
+  ('ppid', 'Laporan Realisasi Penggunaan Dana BOS Reguler & Standar Pelayanan Publik', 'Dokumen informasi publik berkala terkait transparansi anggaran sekolah, RKAS, serta standar operasional prosedur layanan pendidikan gratis tanpa pungutan.', 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80', 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Laporan_Realisasi_BOS_Reguler_2026.pdf', '2026-04-28', 'Pejabat PPID Sekolah')
+) AS d(category, title, content, image_url, file_url, file_name, event_date, author_name)
+WHERE NOT EXISTS (SELECT 1 FROM public.posts LIMIT 1);
+
+-- Inisialisasi data galeri foto, fasilitas, video & TikTok sekolah
+INSERT INTO public.facilities_gallery (item_type, title, description, media_url, condition_or_tag)
+SELECT d.item_type, d.title, d.description, d.media_url, d.condition_or_tag
+FROM (VALUES
+  ('fasilitas', 'Laboratorium Sains & Komputer Terpadu', 'Dilengkapi 40 unit PC modern, jaringan fiber optik cepat, dan alat praktikum IPA berstandar nasional.', 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=800&q=80', 'Kondisi Sangat Baik'),
+  ('fasilitas', 'Perpustakaan Digital Graha Literasi 71', 'Ruang baca berpendingin udara dengan koleksi ribuan buku fisik dan e-book digital Kurikulum Nasional.', 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=800&q=80', 'Fasilitas Unggulan'),
+  ('foto', 'Upacara Peringatan Hari Pendidikan Nasional & Apresiasi Siswa Berprestasi', 'Penyerahan piala kejuaraan tingkat Kota Bandung oleh Kepala Sekolah di lapangan utama sekolah.', 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80', 'Kegiatan Sekolah'),
+  ('foto', 'Pentas Apresiasi Seni Budaya & Kolosal Musik Tradisional Angklung', 'Dokumentasi harmoni angklung kolosal dan tarian daerah Sunda yang dibawakan murid kelas VII & VIII.', 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80', 'Dokumentasi Ekskul'),
+  ('video', 'Video Profil Resmi SMP Negeri 71 Kota Bandung', 'Mengenal lebih dekat budaya akademik, fasilitas modern, dan kegiatan siswa SMPN 71 Kota Bandung.', 'https://www.youtube.com/embed/ScMzIvxBSi4', 'Video Profil YouTube'),
+  ('tiktok', 'Keseruan Pentas Seni & Kreativitas Ekskul Siswa SMPN 71', 'Kompilasi momen seru dan dokumentasi reels/video pendek siswa di TikTok resmi.', 'https://www.tiktok.com/@smpn71bandung', 'Video TikTok Resmi'),
+  ('gdrive', 'Dokumentasi Album Foto Resolusi Tinggi (Google Drive)', 'Akses folder Google Drive resmi untuk mengunduh arsip foto kegiatan sekolah kualitas asli.', 'https://drive.google.com/drive/folders/1SMPN71BandungDokumentasiResmi', 'Google Drive Sekolah')
+) AS d(item_type, title, description, media_url, condition_or_tag)
+WHERE NOT EXISTS (SELECT 1 FROM public.facilities_gallery LIMIT 1);
+
+-- Inisialisasi data direktori GTK awal
+INSERT INTO public.staff_directory (full_name, nip, position, subject, photo_url, category)
+SELECT d.full_name, d.nip, d.position, d.subject, d.photo_url, d.category
+FROM (VALUES
+  ('Dra. Hj. Ratna Ningsih, M.M.Pd.', '197204121998022001', 'Wakil Kepala Sekolah Bidang Kurikulum', 'Matematika', 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=500&q=80', 'Pendidik'),
+  ('Dedi Kusnandar, S.AP.', '198108192009011004', 'Kepala Urusan Tata Usaha', 'Administrasi Kepegawaian & Sarpras', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80', 'Tenaga Kependidikan')
+) AS d(full_name, nip, position, subject, photo_url, category)
+WHERE NOT EXISTS (SELECT 1 FROM public.staff_directory LIMIT 1);
+
 -- ============================================================================
 -- SINKRONISASI REALTIME SUPABASE DUA ARAH (INSTANT MULTI-DEVICE SYNC)
 -- Mengaktifkan replikasi websocket realtime agar perubahan data langsung tampil
