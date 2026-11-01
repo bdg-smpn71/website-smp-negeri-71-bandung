@@ -981,7 +981,7 @@
             school_name: 'SMP Negeri 71 Kota Bandung',
             logo_url: '',
             hero_bg_url: '',
-            highlight_1: 'Terakreditasi A Unggul',
+            highlight_1: 'Terakreditasi B (Baik)',
             highlight_2: 'Kelas Digital Cerdas',
             highlight_3: 'Sekolah Ramah Anak',
             principal_name: 'Kepala SMP Negeri 71 Kota Bandung',
@@ -1019,7 +1019,7 @@
         school_name: 'SMP Negeri 71 Kota Bandung',
         logo_url: '',
         hero_bg_url: '',
-        highlight_1: 'Terakreditasi A Unggul',
+        highlight_1: 'Terakreditasi B (Baik)',
         highlight_2: 'Kelas Digital Cerdas',
         highlight_3: 'Sekolah Ramah Anak',
         principal_name: 'Dr. H. Ahmad Suryana, M.Pd.',
@@ -2203,7 +2203,7 @@
       };
       setTxt('header-school-name', s.school_name);
       setTxt('header-school-address', s.address);
-      setTxt('header-accreditation-badge', s.highlight_1 || 'Terakreditasi A Unggul');
+      setTxt('header-accreditation-badge', s.highlight_1 || 'Terakreditasi B (Baik)');
       setTxt('footer-school-name', s.school_name);
       setTxt('footer-short-desc', s.short_profile);
       setTxt('footer-phone', s.phone);
@@ -2510,7 +2510,7 @@
       const ytUrl = normalizeExternalUrl(s.youtube_url, 'https://www.youtube.com');
       const ttUrl = normalizeExternalUrl(s.tiktok_url, 'https://www.tiktok.com');
       const mapsEmbedUrl = normalizeGoogleMapsEmbedUrl(s.maps_url);
-      const hl1 = s.highlight_1 || 'Terakreditasi A Unggul';
+      const hl1 = s.highlight_1 || 'Terakreditasi B(Baik)';
       const hl2 = s.highlight_2 || 'Kelas Digital Cerdas';
       const hl3 = s.highlight_3 || 'Sekolah Ramah Anak';
 
@@ -3661,7 +3661,7 @@
             </div>
           </div>
 
-          <!-- Input 3 Keunggulan Utama (Terakreditasi A Unggul, Kelas Digital Cerdas, Sekolah Ramah Anak) -->
+          <!-- Input 3 Keunggulan Utama (Terakreditasi B (Baik), Kelas Digital Cerdas, Sekolah Ramah Anak) -->
           <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-3">
             <div class="font-heading font-bold text-sm text-slate-900 flex items-center gap-2">
               <i data-lucide="award" class="w-4 h-4 text-amber-600"></i>
@@ -3670,7 +3670,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">Keunggulan 1 (Akreditasi)</label>
-                <input type="text" name="highlight_1" value="${escapeHtml(s.highlight_1 || 'Terakreditasi A Unggul')}" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white font-semibold" />
+                <input type="text" name="highlight_1" value="${escapeHtml(s.highlight_1 || 'Terakreditasi B (Baik)')}" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white font-semibold" />
               </div>
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">Keunggulan 2 (Program Digital)</label>
@@ -4754,7 +4754,7 @@
         school_name: f.school_name.value.trim(),
         logo_url: (f.logo_url?.value || '').trim(),
         hero_bg_url: (f.hero_bg_url?.value || '').trim(),
-        highlight_1: (f.highlight_1?.value || 'Terakreditasi A Unggul').trim(),
+        highlight_1: (f.highlight_1?.value || 'Terakreditasi B (Baik)').trim(),
         highlight_2: (f.highlight_2?.value || 'Kelas Digital Cerdas').trim(),
         highlight_3: (f.highlight_3?.value || 'Sekolah Ramah Anak').trim(),
         principal_name: f.principal_name.value.trim(),
