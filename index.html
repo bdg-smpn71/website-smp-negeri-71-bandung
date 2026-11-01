@@ -478,7 +478,45 @@
         </header>
 
         <!-- DYNAMIC VIEW CONTAINER (100% FULL LAYAR & PROPORSIONAL) -->
-        <main id="app-view-container" class="flex-1 w-full px-3 sm:px-6 lg:px-10 py-5 sm:py-7"></main>
+        <main id="app-view-container" class="flex-1 w-full px-3 sm:px-6 lg:px-10 py-5 sm:py-7">
+          <div class="space-y-8 sm:space-y-12 animate-pulse">
+            <div class="flex items-center justify-between p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-brand-800 text-xs font-semibold shadow-xs">
+              <div class="flex items-center gap-2.5">
+                <span class="w-3 h-3 rounded-full bg-emerald-600 animate-ping"></span>
+                <span class="font-heading font-bold text-slate-900">Sinkronisasi Database Live SMPN 71 Bandung...</span>
+                <span class="hidden sm:inline text-slate-500">Memuat publikasi dan data resmi terbaru langsung dari server.</span>
+              </div>
+              <div class="w-5 h-5 rounded-full border-2 border-brand-700 border-t-transparent animate-spin"></div>
+            </div>
+            <div class="rounded-3xl bg-gradient-to-r from-emerald-100/60 via-slate-100 to-emerald-50 p-6 sm:p-10 border border-emerald-100 space-y-4">
+              <div class="h-6 w-48 bg-yellow-200/80 rounded-full"></div>
+              <div class="h-10 sm:h-12 w-3/4 max-w-xl bg-slate-200 rounded-2xl"></div>
+              <div class="h-4 w-full max-w-lg bg-slate-200/80 rounded-xl"></div>
+              <div class="h-4 w-2/3 max-w-md bg-slate-200/60 rounded-xl"></div>
+              <div class="flex gap-3 pt-2">
+                <div class="h-11 w-40 bg-emerald-600/30 rounded-full"></div>
+                <div class="h-11 w-36 bg-slate-200 rounded-full"></div>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="h-72 bg-white rounded-2xl border border-slate-200 p-4 space-y-3">
+                <div class="h-40 bg-slate-200 rounded-xl"></div>
+                <div class="h-4 w-3/4 bg-slate-200 rounded"></div>
+                <div class="h-3 w-full bg-slate-100 rounded"></div>
+              </div>
+              <div class="h-72 bg-white rounded-2xl border border-slate-200 p-4 space-y-3">
+                <div class="h-40 bg-slate-200 rounded-xl"></div>
+                <div class="h-4 w-3/4 bg-slate-200 rounded"></div>
+                <div class="h-3 w-full bg-slate-100 rounded"></div>
+              </div>
+              <div class="h-72 bg-white rounded-2xl border border-slate-200 p-4 space-y-3">
+                <div class="h-40 bg-slate-200 rounded-xl"></div>
+                <div class="h-4 w-3/4 bg-slate-200 rounded"></div>
+                <div class="h-3 w-full bg-slate-100 rounded"></div>
+              </div>
+            </div>
+          </div>
+        </main>
 
         <!-- 14. FOOTER BERISI MEDIA SOSIAL DAN ALAMAT SEKOLAH -->
         <footer class="bg-slate-900 text-slate-300 border-t border-slate-800 mt-10">
@@ -1603,7 +1641,7 @@
     // ============================================================================
     // SINKRONISASI DATA SUPABASE, REALTIME CHANNEL & CACHE LOKAL MUTAKHIR
     // ============================================================================
-    const CACHE_VERSION = '2026.11.02_v18_direct_instant_render';
+    const CACHE_VERSION = '2026.11.02_v15_live_direct_sync';
 
     // Daftar judul pos & informasi demo bawaan awal yang wajib disaring agar tidak pernah muncul
     const KNOWN_DEMO_TITLES = [
@@ -1798,13 +1836,21 @@
       }
     }
 
-    // Helper tampilan loading transisi minimal
+    // Helper tampilan loading skeleton bersih saat awal membuka website (Zero Demo Flash)
     function renderLoadingSkeletonView() {
       const container = document.getElementById('app-view-container');
       if (!container) return;
 
       container.innerHTML = `
         <div class="space-y-8 sm:space-y-12 animate-pulse">
+          <div class="flex items-center justify-between p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-brand-800 text-xs font-semibold shadow-xs">
+            <div class="flex items-center gap-2.5">
+              <span class="w-3 h-3 rounded-full bg-emerald-600 animate-ping"></span>
+              <span class="font-heading font-bold text-slate-900">Sinkronisasi Database Live SMPN 71 Bandung...</span>
+              <span class="hidden sm:inline text-slate-500">Memuat publikasi dan data resmi terbaru langsung dari server.</span>
+            </div>
+            <div class="w-5 h-5 rounded-full border-2 border-brand-700 border-t-transparent animate-spin"></div>
+          </div>
           <div class="rounded-3xl bg-gradient-to-r from-emerald-100/60 via-slate-100 to-emerald-50 p-6 sm:p-10 border border-emerald-100 space-y-4">
             <div class="h-6 w-48 bg-yellow-200/80 rounded-full"></div>
             <div class="h-10 sm:h-12 w-3/4 max-w-xl bg-slate-200 rounded-2xl"></div>
@@ -1869,32 +1915,26 @@
       }
 
       try {
-        const isAdmin = !!state.currentUser;
-        const queries = [
+        // Ambil data terbaru secara simultan (Promise.all paralel) dari seluruh tabel Supabase
+        const [
+          settingsRes,
+          postsRes,
+          staffRes,
+          fgRes,
+          spmbRes,
+          complaintsRes,
+          usersRes
+        ] = await Promise.all([
           supabase.from('school_settings').select('*').limit(1).maybeSingle(),
           supabase.from('posts').select('*').order('created_at', { ascending: false }),
           supabase.from('staff_directory').select('*').order('created_at', { ascending: true }),
-          supabase.from('facilities_gallery').select('*').order('created_at', { ascending: false })
-        ];
+          supabase.from('facilities_gallery').select('*').order('created_at', { ascending: false }),
+          supabase.from('spmb_registrations').select('*').order('created_at', { ascending: false }),
+          supabase.from('public_complaints').select('*').order('created_at', { ascending: false }),
+          supabase.from('school_users').select('*').order('created_at', { ascending: true })
+        ]);
 
-        if (isAdmin) {
-          queries.push(
-            supabase.from('spmb_registrations').select('*').order('created_at', { ascending: false }),
-            supabase.from('public_complaints').select('*').order('created_at', { ascending: false }),
-            supabase.from('school_users').select('*').order('created_at', { ascending: true })
-          );
-        }
-
-        const results = await Promise.all(queries);
-        const settingsRes = results[0];
-        const postsRes = results[1];
-        const staffRes = results[2];
-        const fgRes = results[3];
-        const spmbRes = isAdmin ? results[4] : null;
-        const complaintsRes = isAdmin ? results[5] : null;
-        const usersRes = isAdmin ? results[6] : null;
-
-        if (settingsRes && settingsRes.data && !isDemoItem(settingsRes.data)) {
+        if (settingsRes.data && !isDemoItem(settingsRes.data)) {
           state.settings = { ...(state.settings || {}), ...settingsRes.data };
         } else if (!state.settings) {
           initMinimalPreviewData(false);
@@ -1911,27 +1951,27 @@
         }
 
         // Database Supabase sebagai Sumber Data Utama (Single Source of Truth)
-        if (postsRes && Array.isArray(postsRes.data)) {
+        if (Array.isArray(postsRes.data)) {
           state.posts = postsRes.data.filter(p => !isDemoItem(p));
         }
 
-        if (staffRes && Array.isArray(staffRes.data)) {
+        if (Array.isArray(staffRes.data)) {
           state.staff = staffRes.data.filter(s => !isDemoItem(s));
         }
 
-        if (fgRes && Array.isArray(fgRes.data)) {
+        if (Array.isArray(fgRes.data)) {
           state.facilitiesGallery = fgRes.data.filter(f => !isDemoItem(f));
         }
 
-        if (spmbRes && Array.isArray(spmbRes.data)) {
+        if (Array.isArray(spmbRes.data)) {
           state.spmbList = spmbRes.data.filter(s => !isDemoItem(s));
         }
 
-        if (complaintsRes && Array.isArray(complaintsRes.data)) {
+        if (Array.isArray(complaintsRes.data)) {
           state.complaints = complaintsRes.data.filter(c => !isDemoItem(c));
         }
 
-        if (usersRes && Array.isArray(usersRes.data)) {
+        if (Array.isArray(usersRes.data)) {
           state.users = usersRes.data.filter(u => !isDemoItem(u));
         }
 
@@ -6634,29 +6674,29 @@
       } else {
         if (previewBanner) previewBanner.remove();
 
-        // 1. Bersihkan seluruh cache lama bila ada versi lama
+        // 1. Bersihkan seluruh cache lama & data demo/bawaan sebelumnya secara total
         purgeDemoCache();
 
-        // 2. Muat cache bersih lokal (jika ada) dan pastikan settings dasar siap
-        loadCacheFromStorage();
-        if (!state.settings) {
-          initMinimalPreviewData(false);
-        }
-
-        // 3. Periksa sesi aktif admin / staf di latar belakang
+        // 2. Periksa sesi aktif admin / staf di latar belakang
         checkActiveSession();
 
-        // 4. Sambungkan saluran sinkronisasi real-time Supabase dua arah
+        // 3. Sambungkan saluran sinkronisasi real-time Supabase dua arah
         subscribeRealtimeSync();
 
-        // 5. Langsung tampilkan antarmuka sebenarnya seketika (0 milidetik, tanpa banner atau skeleton sinkronisasi)
+        // 4. Tampilkan skeleton loading bersih saat pertama kali membuka website
+        // (TIDAK PERNAH memunculkan data demo atau tampilan bawaan sebelumnya)
+        renderHeaderAndFooter();
+        renderNavigation();
+        renderLoadingSkeletonView();
+
+        // 5. Muat data live terbaru LANGSUNG dari database Supabase (Single Source of Truth)
+        await loadAllData(true);
+
+        // 6. Langsung sajikan 100% data produksi terbaru dari Supabase ke pengunjung
         state.isLoading = false;
         renderHeaderAndFooter();
         renderNavigation();
         renderCurrentView();
-
-        // 6. Sinkronkan dengan data terbaru langsung dari database Supabase secara cepat dan mulus di latar belakang
-        loadAllData(false);
 
         // 7. Interval sinkronisasi berkala di latar belakang (setiap 60 detik)
         setInterval(() => {
