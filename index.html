@@ -44,6 +44,18 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
+    /* Reset & Viewport Optimization untuk Responsif Cepat & Bebas Lag di Semua Perangkat */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      touch-action: manipulation;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
     /* Full Page Wrapper untuk menutupi template bawaan Blogger tanpa edit XML */
     #smpn71-app-wrapper {
       position: fixed;
@@ -55,6 +67,14 @@
       font-family: 'Inter', sans-serif;
       color: #0F172A;
       scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+
+    img, iframe {
+      content-visibility: auto;
     }
 
     h1, h2, h3, h4, .font-heading {
@@ -1131,7 +1151,7 @@
       if (ttId) {
         mediaHtml = `
           <div class="aspect-[9/16] sm:aspect-video w-full bg-black relative flex items-center justify-center overflow-hidden">
-            <iframe src="https://www.tiktok.com/embed/v2/${ttId}" class="w-full h-full border-0" allowfullscreen></iframe>
+            <iframe src="https://www.tiktok.com/embed/v2/${ttId}" class="w-full h-full border-0" allowfullscreen loading="lazy"></iframe>
           </div>
         `;
       } else {
@@ -1159,7 +1179,7 @@
       if (driveInfo.previewUrl) {
         mediaHtml = `
           <div class="aspect-video w-full bg-slate-100 relative">
-            <iframe src="${escapeHtml(driveInfo.previewUrl)}" class="w-full h-full border-0" allow="autoplay"></iframe>
+            <iframe src="${escapeHtml(driveInfo.previewUrl)}" class="w-full h-full border-0" allow="autoplay" loading="lazy"></iframe>
           </div>
         `;
       } else {
@@ -1190,7 +1210,7 @@
       }
       mediaHtml = `
         <div class="aspect-video w-full bg-slate-900">
-          <iframe src="${escapeHtml(embedUrl)}" class="w-full h-full border-0" allowfullscreen></iframe>
+          <iframe src="${escapeHtml(embedUrl)}" class="w-full h-full border-0" allowfullscreen loading="lazy"></iframe>
         </div>
       `;
     } else {
@@ -1198,7 +1218,7 @@
       badgeText = item.item_type === 'fasilitas' ? 'FASILITAS' : 'FOTO';
       mediaHtml = `
         <div class="h-48 bg-slate-100 relative overflow-hidden group">
-          <img src="${escapeHtml(item.media_url)}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=800&q=80'" />
+          <img src="${escapeHtml(item.media_url)}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=800&q=80'" />
         </div>
       `;
     }
@@ -1242,7 +1262,7 @@
     if (!modal) return;
     modal.classList.remove('hidden');
     if (titleEl) titleEl.textContent = titleText;
-    lucide.createIcons();
+    refreshIcons();
 
     for (let i = 0; i < steps.length; i++) {
       const s = steps[i];
@@ -1266,17 +1286,38 @@
   }
 
   // ============================================================================
-  // SINKRONISASI DATA SUPABASE & CACHE LOKAL MUTAKHIR (TAMPILAN TERBARU INSTAN)
+  // SINKRONISASI DATA SUPABASE, REALTIME CHANNEL & CACHE LOKAL MUTAKHIR
   // ============================================================================
+  const CACHE_VERSION = '2026.11.02_v6_fresh_sync';
+
+  // Periksa versi cache agar saat aplikasi dibuka tidak menampilkan data demo/stale sebelumnya
+  function checkCacheVersion() {
+    try {
+      const savedVer = localStorage.getItem('smpn71_cache_version');
+      if (savedVer !== CACHE_VERSION) {
+        localStorage.removeItem('smpn71_cache_settings');
+        localStorage.removeItem('smpn71_cache_posts');
+        localStorage.removeItem('smpn71_cache_staff');
+        localStorage.removeItem('smpn71_cache_facilities');
+        localStorage.removeItem('smpn71_cache_spmb');
+        localStorage.removeItem('smpn71_cache_complaints');
+        localStorage.removeItem('smpn71_cache_users');
+        localStorage.setItem('smpn71_cache_version', CACHE_VERSION);
+      }
+    } catch (e) {}
+  }
+
   function saveCacheToStorage() {
     try {
+      localStorage.setItem('smpn71_cache_version', CACHE_VERSION);
+      localStorage.setItem('smpn71_cache_timestamp', Date.now().toString());
       if (state.settings) localStorage.setItem('smpn71_cache_settings', JSON.stringify(state.settings));
-      if (state.posts && state.posts.length > 0) localStorage.setItem('smpn71_cache_posts', JSON.stringify(state.posts));
-      if (state.staff && state.staff.length > 0) localStorage.setItem('smpn71_cache_staff', JSON.stringify(state.staff));
-      if (state.facilitiesGallery && state.facilitiesGallery.length > 0) localStorage.setItem('smpn71_cache_facilities', JSON.stringify(state.facilitiesGallery));
-      if (state.spmbList && state.spmbList.length > 0) localStorage.setItem('smpn71_cache_spmb', JSON.stringify(state.spmbList));
-      if (state.complaints && state.complaints.length > 0) localStorage.setItem('smpn71_cache_complaints', JSON.stringify(state.complaints));
-      if (state.users && state.users.length > 0) localStorage.setItem('smpn71_cache_users', JSON.stringify(state.users));
+      localStorage.setItem('smpn71_cache_posts', JSON.stringify(state.posts || []));
+      localStorage.setItem('smpn71_cache_staff', JSON.stringify(state.staff || []));
+      localStorage.setItem('smpn71_cache_facilities', JSON.stringify(state.facilitiesGallery || []));
+      localStorage.setItem('smpn71_cache_spmb', JSON.stringify(state.spmbList || []));
+      localStorage.setItem('smpn71_cache_complaints', JSON.stringify(state.complaints || []));
+      localStorage.setItem('smpn71_cache_users', JSON.stringify(state.users || []));
     } catch (e) {
       console.warn('Gagal menyimpan cache lokal:', e);
     }
@@ -1309,8 +1350,22 @@
     }
   }
 
-  async function loadAllData() {
+  // Debounce Icon Creation untuk kinerja 60fps tanpa lag di seluruh perangkat
+  let _lucideRaf = null;
+  function refreshIcons() {
+    if (typeof lucide === 'undefined' || !lucide.createIcons) return;
+    if (_lucideRaf) cancelAnimationFrame(_lucideRaf);
+    _lucideRaf = requestAnimationFrame(() => {
+      try {
+        lucide.createIcons();
+      } catch (e) {}
+    });
+  }
+
+  // Fungsi Pemuat Data Mutakhir Langsung dari Supabase
+  async function loadAllData(isInitial = false) {
     if (IS_PREVIEW) {
+      if (!state.settings) initMinimalPreviewData();
       saveCacheToStorage();
       renderHeaderAndFooter();
       renderNavigation();
@@ -1319,6 +1374,7 @@
     }
 
     if (!supabase) {
+      if (!state.settings) initMinimalPreviewData();
       renderHeaderAndFooter();
       renderNavigation();
       renderCurrentView();
@@ -1326,13 +1382,12 @@
     }
 
     try {
-      // Jika belum ada data dari cache, tampilkan loading sementara
-      if (!state.settings) {
+      if (isInitial && !state.settings) {
         state.isLoading = true;
         renderCurrentView();
       }
 
-      // Selalu ambil data paling mutakhir dari Supabase (diurutkan berdasarkan updated_at DESC)
+      // Ambil data terbaru secara simultan (Promise.all paralel) dari seluruh tabel Supabase
       const [
         settingsRes,
         postsRes,
@@ -1342,7 +1397,7 @@
         complaintsRes,
         usersRes
       ] = await Promise.all([
-        supabase.from('school_settings').select('*').order('updated_at', { ascending: false }).limit(1).maybeSingle(),
+        supabase.from('school_settings').select('*').limit(1).maybeSingle(),
         supabase.from('posts').select('*').order('created_at', { ascending: false }),
         supabase.from('staff_directory').select('*').order('created_at', { ascending: true }),
         supabase.from('facilities_gallery').select('*').order('created_at', { ascending: false }),
@@ -1354,6 +1409,7 @@
       if (settingsRes.data) {
         state.settings = { ...(state.settings || {}), ...settingsRes.data };
       } else if (!state.settings) {
+        // Fallback konfigurasi awal jika tabel database baru dibuat
         initMinimalPreviewData();
       }
 
@@ -1367,23 +1423,145 @@
         };
       }
 
-      if (postsRes.data && postsRes.data.length > 0) state.posts = postsRes.data;
-      if (staffRes.data && staffRes.data.length > 0) state.staff = staffRes.data;
-      if (fgRes.data && fgRes.data.length > 0) state.facilitiesGallery = fgRes.data;
-      if (spmbRes.data && spmbRes.data.length > 0) state.spmbList = spmbRes.data;
-      if (complaintsRes.data && complaintsRes.data.length > 0) state.complaints = complaintsRes.data;
-      if (usersRes.data && usersRes.data.length > 0) state.users = usersRes.data;
+      // Selalu ganti state jika data tabel Supabase dikembalikan (meskipun tabel kosong [])
+      if (Array.isArray(postsRes.data)) state.posts = postsRes.data;
+      if (Array.isArray(staffRes.data)) state.staff = staffRes.data;
+      if (Array.isArray(fgRes.data)) state.facilitiesGallery = fgRes.data;
+      if (Array.isArray(spmbRes.data)) state.spmbList = spmbRes.data;
+      if (Array.isArray(complaintsRes.data)) state.complaints = complaintsRes.data;
+      if (Array.isArray(usersRes.data)) state.users = usersRes.data;
 
-      // Kunci pembaruan mutakhir ke cache lokal agar pembukaan berikutnya langsung menampilkan data terbaru
+      // Simpan pembaruan mutakhir ke cache lokal
       saveCacheToStorage();
     } catch (err) {
-      console.warn('Gagal sinkronisasi data langsung dari Supabase, menggunakan data terbaru dari cache:', err);
+      console.warn('Gagal memuat langsung dari Supabase, memulihkan data dari cache:', err);
+      loadCacheFromStorage();
     } finally {
       state.isLoading = false;
       renderHeaderAndFooter();
       renderNavigation();
       renderCurrentView();
       syncMusicPlayerWithConfig(false);
+    }
+  }
+
+  // ============================================================================
+  // SINKRONISASI DUA ARAH REAL-TIME (SUPABASE WEBSOCKET CHANNEL)
+  // Setiap ada perubahan/edit/hapus/tambah dari perangkat mana pun, langsung tampil!
+  // ============================================================================
+  let realtimeChannel = null;
+
+  function subscribeRealtimeSync() {
+    if (IS_PREVIEW || !supabase) return;
+    if (realtimeChannel) return;
+
+    try {
+      realtimeChannel = supabase.channel('smpn71-realtime-live-sync')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'school_settings' }, (payload) => {
+          if (payload.new && typeof payload.new === 'object') {
+            state.settings = { ...(state.settings || {}), ...payload.new };
+            if (payload.new.music_config && typeof payload.new.music_config === 'object') {
+              state.musicConfig = {
+                ...DEFAULT_MUSIC_CONFIG,
+                ...payload.new.music_config,
+                tracks: Array.isArray(payload.new.music_config.tracks) && payload.new.music_config.tracks.length > 0
+                  ? payload.new.music_config.tracks
+                  : DEFAULT_MUSIC_CONFIG.tracks
+              };
+            }
+            saveCacheToStorage();
+            renderHeaderAndFooter();
+            renderNavigation();
+            renderCurrentView();
+          }
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, async (payload) => {
+          if (payload.eventType === 'INSERT' && payload.new) {
+            state.posts = [payload.new, ...state.posts.filter(p => p.id !== payload.new.id)];
+          } else if (payload.eventType === 'UPDATE' && payload.new) {
+            state.posts = state.posts.map(p => p.id === payload.new.id ? payload.new : p);
+          } else if (payload.eventType === 'DELETE' && payload.old) {
+            state.posts = state.posts.filter(p => p.id !== payload.old.id);
+          } else {
+            const { data } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
+            if (Array.isArray(data)) state.posts = data;
+          }
+          saveCacheToStorage();
+          renderCurrentView();
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'facilities_gallery' }, async (payload) => {
+          if (payload.eventType === 'INSERT' && payload.new) {
+            state.facilitiesGallery = [payload.new, ...state.facilitiesGallery.filter(f => f.id !== payload.new.id)];
+          } else if (payload.eventType === 'UPDATE' && payload.new) {
+            state.facilitiesGallery = state.facilitiesGallery.map(f => f.id === payload.new.id ? payload.new : f);
+          } else if (payload.eventType === 'DELETE' && payload.old) {
+            state.facilitiesGallery = state.facilitiesGallery.filter(f => f.id !== payload.old.id);
+          } else {
+            const { data } = await supabase.from('facilities_gallery').select('*').order('created_at', { ascending: false });
+            if (Array.isArray(data)) state.facilitiesGallery = data;
+          }
+          saveCacheToStorage();
+          renderCurrentView();
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'staff_directory' }, async (payload) => {
+          if (payload.eventType === 'INSERT' && payload.new) {
+            state.staff = [...state.staff.filter(s => s.id !== payload.new.id), payload.new];
+          } else if (payload.eventType === 'UPDATE' && payload.new) {
+            state.staff = state.staff.map(s => s.id === payload.new.id ? payload.new : s);
+          } else if (payload.eventType === 'DELETE' && payload.old) {
+            state.staff = state.staff.filter(s => s.id !== payload.old.id);
+          } else {
+            const { data } = await supabase.from('staff_directory').select('*').order('created_at', { ascending: true });
+            if (Array.isArray(data)) state.staff = data;
+          }
+          saveCacheToStorage();
+          renderCurrentView();
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'spmb_registrations' }, async (payload) => {
+          if (payload.eventType === 'INSERT' && payload.new) {
+            state.spmbList = [payload.new, ...state.spmbList.filter(s => s.id !== payload.new.id)];
+          } else if (payload.eventType === 'UPDATE' && payload.new) {
+            state.spmbList = state.spmbList.map(s => s.id === payload.new.id ? payload.new : s);
+          } else if (payload.eventType === 'DELETE' && payload.old) {
+            state.spmbList = state.spmbList.filter(s => s.id !== payload.old.id);
+          } else {
+            const { data } = await supabase.from('spmb_registrations').select('*').order('created_at', { ascending: false });
+            if (Array.isArray(data)) state.spmbList = data;
+          }
+          saveCacheToStorage();
+          renderCurrentView();
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'public_complaints' }, async (payload) => {
+          if (payload.eventType === 'INSERT' && payload.new) {
+            state.complaints = [payload.new, ...state.complaints.filter(c => c.id !== payload.new.id)];
+          } else if (payload.eventType === 'UPDATE' && payload.new) {
+            state.complaints = state.complaints.map(c => c.id === payload.new.id ? payload.new : c);
+          } else if (payload.eventType === 'DELETE' && payload.old) {
+            state.complaints = state.complaints.filter(c => c.id !== payload.old.id);
+          } else {
+            const { data } = await supabase.from('public_complaints').select('*').order('created_at', { ascending: false });
+            if (Array.isArray(data)) state.complaints = data;
+          }
+          saveCacheToStorage();
+          renderCurrentView();
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'school_users' }, async (payload) => {
+          if (payload.eventType === 'INSERT' && payload.new) {
+            state.users = [...state.users.filter(u => u.id !== payload.new.id), payload.new];
+          } else if (payload.eventType === 'UPDATE' && payload.new) {
+            state.users = state.users.map(u => u.id === payload.new.id ? payload.new : u);
+          } else if (payload.eventType === 'DELETE' && payload.old) {
+            state.users = state.users.filter(u => u.id !== payload.old.id);
+          } else {
+            const { data } = await supabase.from('school_users').select('*').order('created_at', { ascending: true });
+            if (Array.isArray(data)) state.users = data;
+          }
+          saveCacheToStorage();
+          renderCurrentView();
+        })
+        .subscribe();
+    } catch (e) {
+      console.warn('Realtime channel warning:', e);
     }
   }
 
@@ -1554,7 +1732,7 @@
       }
     });
 
-    lucide.createIcons();
+    refreshIcons();
     setupNavScrollListeners();
     syncNavScrollActive();
   }
@@ -1665,11 +1843,26 @@
 
     if (state.isLoading) {
       container.innerHTML = `
-        <div class="py-24 text-center space-y-3">
-          <div class="w-10 h-10 border-4 border-brand-700 border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p class="text-xs font-medium text-slate-500">Menyinkronkan data dengan database...</p>
+        <div class="py-16 sm:py-24 text-center space-y-4 max-w-lg mx-auto animate-fade-in">
+          <div class="relative w-14 h-14 mx-auto flex items-center justify-center">
+            <div class="absolute inset-0 rounded-2xl border-4 border-emerald-100"></div>
+            <div class="absolute inset-0 rounded-2xl border-4 border-brand-700 border-t-yellow-400 animate-spin"></div>
+            <div class="font-heading font-extrabold text-brand-700 text-xs">71</div>
+          </div>
+          <div class="space-y-1.5">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-brand-700 font-bold text-[11px] border border-emerald-200 shadow-xs">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Sinkronisasi Langsung Supabase
+            </span>
+            <h3 class="font-heading font-extrabold text-base sm:text-lg text-slate-900">Menampilkan Tampilan Terupdate...</h3>
+            <p class="text-xs text-slate-500">Memuat profil, berita, fasilitas, dan layanan mutakhir sekolah</p>
+          </div>
+          <div class="w-full max-w-xs mx-auto h-2 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+            <div class="h-full bg-gradient-to-r from-brand-700 via-emerald-500 to-yellow-400 rounded-full animate-pulse" style="width: 75%"></div>
+          </div>
         </div>
       `;
+      refreshIcons();
       return;
     }
 
@@ -1714,7 +1907,7 @@
         container.innerHTML = renderBerandaView();
     }
 
-    lucide.createIcons();
+    refreshIcons();
   }
 
   // ============================================================================
@@ -1831,7 +2024,7 @@
             <!-- Right Image Building & Badge Column -->
             <div class="lg:col-span-5 relative">
               <div class="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white">
-                <img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1000&q=80" alt="Gedung SMPN 71 Kota Bandung" class="w-full h-64 sm:h-80 lg:h-96 object-cover" />
+                <img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1000&q=80" alt="Gedung SMPN 71 Kota Bandung" loading="lazy" decoding="async" class="w-full h-64 sm:h-80 lg:h-96 object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900/75 via-transparent to-transparent flex items-end p-5">
                   <div class="text-white">
                     <span class="px-2.5 py-1 rounded-full bg-yellow-400 text-slate-900 font-extrabold text-[10px] uppercase">Gedung Utama</span>
@@ -1955,7 +2148,7 @@
               <article class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
                 <div>
                   <div class="relative h-44 bg-slate-100">
-                    <img src="${escapeHtml(item.image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80')}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover" />
+                    <img src="${escapeHtml(item.image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80')}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async" class="w-full h-full object-cover" />
                     <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-brand-700 text-white font-bold text-[10px] uppercase">Berita Sekolah</span>
                   </div>
                   <div class="p-5 space-y-2">
@@ -2046,7 +2239,7 @@
             ${fotoList.length > 0 ? fotoList.map(item => `
               <div class="bg-white text-slate-900 rounded-2xl overflow-hidden shadow-sm group">
                 <div class="h-40 overflow-hidden relative">
-                  <img src="${escapeHtml(item.media_url)}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+                  <img src="${escapeHtml(item.media_url)}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
                   <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-slate-900/80 text-yellow-300 text-[10px] font-bold uppercase">${escapeHtml(item.item_type)}</span>
                 </div>
                 <div class="p-3.5">
@@ -2137,6 +2330,8 @@
                 <img 
                   src="${escapeHtml(s.principal_photo || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80')}" 
                   alt="Kepala Sekolah" 
+                  loading="lazy" 
+                  decoding="async" 
                   class="w-full h-full object-cover transition duration-300 hover:scale-105" 
                   style="object-position: 50% 10%;"
                   onerror="this.src='https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80'"
@@ -2246,7 +2441,7 @@
             <article class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm flex flex-col justify-between">
               <div>
                 <div class="h-48 bg-slate-100 relative">
-                  <img src="${escapeHtml(item.image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80')}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover" />
+                  <img src="${escapeHtml(item.image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80')}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async" class="w-full h-full object-cover" />
                   <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-brand-700 text-white font-bold text-[10px] uppercase">${escapeHtml(item.category)}</span>
                 </div>
                 <div class="p-5 space-y-2">
@@ -2449,6 +2644,8 @@
                 <img 
                   src="${escapeHtml(person.photo_url || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=500&q=80')}" 
                   alt="${escapeHtml(person.full_name)}" 
+                  loading="lazy" 
+                  decoding="async" 
                   class="w-full h-full object-cover transition duration-300 group-hover:scale-105" 
                   style="object-position: 50% 10%;"
                   onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=500&q=80'"
@@ -4682,7 +4879,7 @@
     } else {
       drawer.classList.toggle('hidden');
     }
-    lucide.createIcons();
+    refreshIcons();
   }
 
   function setAdminTab(tabKey) {
@@ -5165,7 +5362,7 @@
     if (muteIcon) {
       muteIcon.setAttribute('data-lucide', musicEngine.isMuted ? 'volume-x' : 'volume-2');
     }
-    lucide.createIcons();
+    refreshIcons();
   }
 
   function unlockAutoplayMusic() {
@@ -5528,7 +5725,7 @@
     ` : '');
 
     box.scrollTop = box.scrollHeight;
-    lucide.createIcons();
+    refreshIcons();
   }
 
   // Mesin Penjawab Cerdas Tersinkronisasi dengan State Real-Time Sekolah
@@ -5759,7 +5956,7 @@
   };
 
   // ============================================================================
-  // INISIALISASI SAAT HALAMAN DIMUAT
+  // INISIALISASI SAAT HALAMAN DIMUAT (LANGSUNG TAMPILKAN DATA TERBARU & SINKRON)
   // ============================================================================
   async function bootstrap() {
     const previewBanner = document.getElementById('preview-banner');
@@ -5767,21 +5964,29 @@
       if (previewBanner) previewBanner.classList.remove('hidden');
       loadCacheFromStorage();
       if (!state.settings) initMinimalPreviewData();
-    } else {
-      if (previewBanner) previewBanner.remove();
-      loadCacheFromStorage();
-      await checkActiveSession();
-    }
-
-    // Langsung render tampilan terbaru yang telah tersimpan di browser agar tidak menampilkan tampilan bawaan/demo lama
-    if (state.settings) {
       renderHeaderAndFooter();
       renderNavigation();
       renderCurrentView();
+    } else {
+      if (previewBanner) previewBanner.remove();
+
+      // 1. Bersihkan cache versi lama agar tidak menampilkan data demo/stale sebelumnya
+      checkCacheVersion();
+
+      // 2. Langsung tampilkan status sinkronisasi terbaru agar pengunjung tidak melihat data lama
+      state.isLoading = true;
+      renderCurrentView();
+
+      // 3. Periksa session aktif admin / staf
+      await checkActiveSession();
+
+      // 4. Selalu ambil data live terbaru dari Supabase sebelum menampilkan view
+      await loadAllData(true);
+
+      // 5. Sambungkan saluran sinkronisasi real-time Supabase dua arah
+      subscribeRealtimeSync();
     }
 
-    // Sinkronisasi data live dari Supabase secara real-time
-    await loadAllData();
     initChatbotGreeting();
     // Smart Autoplay System saat pertama kali website dibuka (Volume 25%, Loop, Single Instance WAV/MP3/YT)
     attachSmartAutoplayUnlockListeners();
