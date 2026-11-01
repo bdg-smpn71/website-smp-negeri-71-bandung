@@ -122,42 +122,31 @@
     .eq-bar-4 { animation: eqPulse2 0.65s ease-in-out infinite; }
     .eq-paused { animation: none !important; height: 4px !important; }
 
-    /* Fullscreen & Multi-Device Responsive Layout Shell */
+    /* Fullscreen 100% Layout Shell & Top Minimalist Navigation */
     .app-shell {
       display: flex;
+      flex-direction: column;
       min-height: 100vh;
       width: 100%;
       position: relative;
     }
 
+    .main-content-area {
+      flex: 1;
+      width: 100%;
+      min-width: 0;
+    }
+
     @media (min-width: 1024px) {
-      .desktop-sidebar {
-        display: flex !important;
-        width: 17.5rem;
-        flex-shrink: 0;
-        position: sticky;
-        top: 0;
-        height: 100vh;
-      }
       .mobile-bottom-nav {
         display: none !important;
-      }
-      .main-content-area {
-        flex: 1;
-        min-width: 0;
-        width: calc(100% - 17.5rem);
       }
     }
     @media (max-width: 1023px) {
-      .desktop-sidebar {
-        display: none !important;
-      }
       .mobile-bottom-nav {
         display: flex !important;
       }
       .main-content-area {
-        width: 100%;
-        min-width: 0;
         padding-bottom: 5.75rem;
       }
     }
@@ -166,9 +155,38 @@
 <body>
 
 <div id="smpn71-app-wrapper">
+  <!-- MODAL STATUS PROSES LOGIN (DETERMINATE PROGRESS % & INDETERMINATE SPINNER) -->
+  <div id="auth-progress-modal" class="hidden fixed inset-0 z-[100] bg-slate-900/65 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-emerald-200 text-center space-y-5 animate-fade-in">
+      <!-- Indeterminate Spinner & Icon -->
+      <div class="relative w-16 h-16 mx-auto flex items-center justify-center">
+        <div class="absolute inset-0 rounded-full border-4 border-emerald-100"></div>
+        <div class="absolute inset-0 rounded-full border-4 border-brand-700 border-t-yellow-400 animate-spin"></div>
+        <i data-lucide="shield-check" class="w-7 h-7 text-brand-700"></i>
+      </div>
+
+      <div class="space-y-1">
+        <span id="auth-progress-badge" class="px-3 py-0.5 rounded-full bg-brand-50 text-brand-700 font-bold text-[10px] uppercase tracking-wider">Otentikasi Sistem</span>
+        <h3 id="auth-progress-title" class="font-heading font-extrabold text-lg text-slate-900">Memproses Akses Portal Admin...</h3>
+        <p id="auth-progress-step" class="text-xs text-slate-500">Menghubungkan ke layanan keamanan sekolah...</p>
+      </div>
+
+      <!-- Determinate Progress Bar & Percentage -->
+      <div class="space-y-2 text-left">
+        <div class="flex items-center justify-between text-xs font-bold">
+          <span class="text-brand-700" id="auth-progress-status-label">Memverifikasi sesi...</span>
+          <span class="text-slate-900 font-heading text-sm" id="auth-progress-percent">0%</span>
+        </div>
+        <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200 p-0.5">
+          <div id="auth-progress-bar" class="h-full bg-gradient-to-r from-brand-700 via-emerald-500 to-yellow-400 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- BANNER MODE PREVIEW (Otomatis Hilang 100% Saat IS_PREVIEW = false) -->
   <div id="preview-banner" class="hidden bg-amber-400 text-slate-900 px-3 sm:px-6 py-2 text-xs font-semibold border-b border-amber-500 sticky top-0 z-50 shadow-sm">
-    <div class="w-full max-w-[1600px] mx-auto flex flex-wrap items-center justify-between gap-2">
+    <div class="w-full px-2 sm:px-4 mx-auto flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-2">
         <span class="px-2 py-0.5 rounded-full bg-slate-900 text-amber-300 font-bold uppercase tracking-wider text-[10px] shrink-0">Mode Preview Aktif</span>
         <span class="text-[11px] sm:text-xs">Aplikasi berjalan di memori lokal browser. Ubah <code class="bg-amber-300 px-1 rounded">IS_PREVIEW = false</code> untuk terhubung 100% ke Supabase.</span>
@@ -185,71 +203,44 @@
     </div>
   </div>
 
-  <!-- APP SHELL FULL LAYAR -->
+  <!-- APP SHELL 100% FULL LAYAR -->
   <div class="app-shell">
-    <!-- DESKTOP LEFT STICKY SIDEBAR -->
-    <aside class="desktop-sidebar bg-white border-r border-slate-200 flex-col justify-between z-40 shadow-sm overflow-hidden">
-      <!-- Brand Identity -->
-      <div class="flex-1 flex flex-col min-h-0">
-        <div class="p-4 border-b border-slate-100 flex items-center gap-3 bg-gradient-to-r from-brand-700 to-brand-600 text-white shrink-0">
-          <div class="w-11 h-11 rounded-xl bg-white/95 text-brand-700 flex items-center justify-center font-heading font-extrabold text-lg shadow-sm shrink-0">
-            71
-          </div>
-          <div class="overflow-hidden">
-            <div class="text-[10px] uppercase tracking-widest text-yellow-300 font-bold">Pemerintah Kota Bandung</div>
-            <h1 class="font-heading font-extrabold text-sm leading-tight truncate">SMP NEGERI 71</h1>
-            <p class="text-[11px] text-emerald-100 truncate">Cerdas, Berkarakter & Berprestasi</p>
-          </div>
-        </div>
-
-        <!-- Navigation List (A - L) -->
-        <nav id="desktop-nav-list" class="p-3 space-y-1 overflow-y-auto flex-1">
-          <!-- Diisi dinamis oleh JS -->
-        </nav>
-      </div>
-
-      <!-- Bottom Sidebar User / Login Card -->
-      <div class="p-3 border-t border-slate-200 bg-slate-50 shrink-0">
-        <div id="sidebar-auth-box"></div>
-      </div>
-    </aside>
-
-    <!-- MAIN CONTENT AREA (FULL WIDTH & RESPONSIVE) -->
+    <!-- MAIN CONTENT AREA (100% FULL WIDTH & RESPONSIVE) -->
     <div class="main-content-area min-h-screen flex flex-col justify-between">
-      <!-- 1. TOP HEADER BAR & QUICK NAVIGATION -->
-      <header class="glass-panel sticky top-0 z-30 border-b border-slate-200">
-        <div class="w-full max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
-          <!-- Mobile & Desktop Identity Header -->
-          <div class="flex items-center gap-2.5 sm:gap-3 cursor-pointer min-w-0" onclick="window.app.navigate('beranda')">
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brand-700 text-white flex items-center justify-center font-heading font-extrabold text-sm sm:text-base shadow-sm shrink-0">
-              71
-            </div>
-            <div class="min-w-0">
-              <div class="flex items-center gap-2">
-                <span class="font-heading font-extrabold text-slate-900 text-sm sm:text-base lg:text-lg tracking-tight truncate" id="header-school-name">SMP Negeri 71 Kota Bandung</span>
-                <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-yellow-400 text-slate-900 shrink-0">Terakreditasi A</span>
+      <!-- 1 & 2. TOP HEADER BAR DENGAN LOGO, NAMA SEKOLAH & MENU NAVIGASI UTAMA MINIMALIS DI SAMPING BERANDA -->
+      <header class="glass-panel sticky top-0 z-30 border-b border-slate-200 shadow-sm">
+        <div class="w-full px-3 sm:px-6 lg:px-10 py-2.5 flex items-center justify-between gap-3">
+          <!-- Left: Brand Identity + Minimalist Main Navigation Beside Beranda -->
+          <div class="flex items-center gap-3 xl:gap-5 min-w-0 flex-1">
+            <!-- Logo & Nama Sekolah -->
+            <div class="flex items-center gap-2.5 cursor-pointer shrink-0" onclick="window.app.navigate('beranda')">
+              <div id="header-logo-box" class="w-10 h-10 rounded-xl bg-brand-700 text-white flex items-center justify-center font-heading font-extrabold text-sm sm:text-base shadow-sm overflow-hidden shrink-0">
+                71
               </div>
-              <p class="text-[11px] sm:text-xs text-slate-500 truncate max-w-[220px] sm:max-w-md lg:max-w-xl" id="header-school-address">Jl. Pendidikan Raya No. 71, Kota Bandung, Jawa Barat</p>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-heading font-extrabold text-slate-900 text-sm sm:text-base tracking-tight truncate max-w-[160px] sm:max-w-[220px]" id="header-school-name">SMP Negeri 71 Kota Bandung</span>
+                  <span id="header-accreditation-badge" class="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-yellow-400 text-slate-900 shrink-0">Terakreditasi A Unggul</span>
+                </div>
+                <p class="text-[10px] sm:text-[11px] text-slate-500 truncate max-w-[180px] sm:max-w-[260px]" id="header-school-address">Jl. Pendidikan Raya No. 71, Kota Bandung</p>
+              </div>
             </div>
+
+            <!-- Divider -->
+            <div class="hidden lg:block h-7 w-px bg-slate-200 shrink-0"></div>
+
+            <!-- MENU NAVIGASI UTAMA MINIMALIS DI ATAS HEADER SAMPING BERANDA -->
+            <nav id="top-minimal-nav" class="hidden lg:flex items-center gap-1 overflow-x-auto no-scrollbar py-1">
+              <!-- Diisi dinamis oleh JS (Beranda + Menu Utama Minimalis) -->
+            </nav>
           </div>
 
-          <!-- Right Quick Info, Social Icons & Action Buttons -->
-          <div class="flex items-center gap-2 sm:gap-3 shrink-0 ml-auto sm:ml-0">
-            <div class="hidden 2xl:flex items-center gap-4 text-xs text-slate-600 mr-1">
-              <div class="flex items-center gap-1.5">
-                <i data-lucide="phone-call" class="w-4 h-4 text-brand-700"></i>
-                <span id="header-school-phone">(022) 7100071</span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <i data-lucide="mail" class="w-4 h-4 text-brand-700"></i>
-                <span id="header-school-email">info@smpn71bandung.sch.id</span>
-              </div>
-            </div>
-
-            <!-- Header Social Media Quick Icons (Instagram, YouTube, TikTok dengan Logo Resmi) -->
-            <div class="flex items-center gap-1.5 border-r border-slate-200 pr-2 sm:pr-2.5 mr-0.5">
+          <!-- Right: Social Icons, SPMB CTA & Portal Admin / Auth Status -->
+          <div class="flex items-center gap-2 shrink-0">
+            <!-- Header Social Media Quick Icons -->
+            <div class="hidden sm:flex items-center gap-1.5 border-r border-slate-200 pr-2 mr-0.5">
               <a id="header-ig-link" href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" title="Instagram Resmi SMPN 71 Bandung" class="w-8 h-8 rounded-xl bg-white hover:bg-pink-50 border border-slate-200 flex items-center justify-center transition-all duration-300 shadow-sm hover:scale-105">
-                <svg class="w-5 h-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-4 h-4" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <defs>
                     <radialGradient id="igGradHeader" cx="30%" cy="107%" r="125%">
                       <stop offset="0%" stop-color="#FDF497"/>
@@ -266,61 +257,46 @@
                 </svg>
               </a>
               <a id="header-yt-link" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" title="YouTube Resmi SMPN 71 Bandung" class="w-8 h-8 rounded-xl bg-white hover:bg-red-50 border border-slate-200 flex items-center justify-center transition-all duration-300 shadow-sm hover:scale-105">
-                <svg class="w-5 h-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-4 h-4" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M43.2 13.9C42.7 12.1 41.3 10.7 39.5 10.2C36.2 9.3 24 9.3 24 9.3C24 9.3 11.8 9.3 8.5 10.2C6.7 10.7 5.3 12.1 4.8 13.9C4 17.2 4 24 4 24C4 24 4 30.8 4.8 34.1C5.3 35.9 6.7 37.3 8.5 37.8C11.8 38.7 24 38.7 24 38.7C24 38.7 36.2 38.7 39.5 37.8C41.3 37.3 42.7 35.9 43.2 34.1C44 30.8 44 24 44 24C44 24 44 17.2 43.2 13.9Z" fill="#FF0000"/>
                   <path d="M20 30.5V17.5L31.5 24L20 30.5Z" fill="#FFFFFF"/>
                 </svg>
               </a>
               <a id="header-tt-link" href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer" title="TikTok Resmi SMPN 71 Bandung" class="w-8 h-8 rounded-xl bg-white hover:bg-slate-900 border border-slate-200 text-slate-900 hover:text-white flex items-center justify-center transition-all duration-300 shadow-sm hover:scale-105">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
               </a>
             </div>
 
-            <button onclick="window.app.navigate('spmb')" class="px-3 sm:px-3.5 py-2 rounded-full bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-bold text-[11px] sm:text-xs flex items-center gap-1.5 shadow-sm transition-all duration-300 hover:-translate-y-0.5">
+            <button onclick="window.app.navigate('spmb')" class="px-3 py-2 rounded-full bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-bold text-[11px] flex items-center gap-1.5 shadow-sm transition-all duration-300 hover:-translate-y-0.5">
               <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
-              <span class="hidden xs:inline sm:inline">Daftar SPMB</span>
+              <span class="hidden sm:inline">SPMB</span>
             </button>
 
-            <button id="top-admin-btn" onclick="window.app.navigate('admin')" class="px-3 sm:px-3.5 py-2 rounded-full bg-brand-700 hover:bg-brand-800 text-white font-semibold text-[11px] sm:text-xs flex items-center gap-1.5 shadow-sm transition-all duration-300">
-              <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+            <button id="top-admin-btn" onclick="window.app.openAdminPortalWithProgress()" class="px-3.5 py-2 rounded-full bg-brand-700 hover:bg-brand-800 text-white font-semibold text-[11px] flex items-center gap-1.5 shadow-sm transition-all duration-300">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-yellow-300"></i>
               <span id="top-admin-btn-label">Portal Admin</span>
             </button>
           </div>
         </div>
 
-        <!-- Horizontal Quick Bar (Responsif penuh di PC, Laptop, Tablet, dan Mobile) -->
-        <div class="bg-brand-700 text-white">
-          <div class="w-full max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 py-2 flex items-center justify-between gap-4 text-xs font-medium">
-            <div class="flex items-center gap-4 sm:gap-5 overflow-x-auto no-scrollbar whitespace-nowrap py-0.5">
-              <button onclick="window.app.navigate('beranda')" class="hover:text-yellow-300 transition">Beranda</button>
-              <button onclick="window.app.navigate('profil')" class="hover:text-yellow-300 transition">Profil Sekolah</button>
-              <button onclick="window.app.navigate('akademik')" class="hover:text-yellow-300 transition">Akademik & Kurikulum</button>
-              <button onclick="window.app.navigate('berita')" class="hover:text-yellow-300 transition">Berita & Agenda</button>
-              <button onclick="window.app.navigate('spmb')" class="hover:text-yellow-300 transition font-bold text-yellow-300">SPMB Online</button>
-              <button onclick="window.app.navigate('layanan')" class="hover:text-yellow-300 transition">Layanan Siswa</button>
-              <button onclick="window.app.navigate('gtk')" class="hover:text-yellow-300 transition">Guru & Tendik</button>
-              <button onclick="window.app.navigate('fasilitas')" class="hover:text-yellow-300 transition">Fasilitas</button>
-              <button onclick="window.app.navigate('galeri')" class="hover:text-yellow-300 transition">Galeri</button>
-              <button onclick="window.app.navigate('ppid')" class="hover:text-yellow-300 transition">PPID</button>
-              <button onclick="window.app.navigate('kontak')" class="hover:text-yellow-300 transition">Pengaduan</button>
-            </div>
-            <div class="hidden xl:block text-[11px] text-emerald-100 font-semibold shrink-0">#SMPN71BandungJuara</div>
-          </div>
+        <!-- Baris Menu Minimalis Mobile/Tablet (Tampil di layar < 1024px tepat di bawah Header) -->
+        <div class="lg:hidden bg-emerald-50/90 border-t border-emerald-100 px-3 py-1.5 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[11px] font-semibold">
+          <div id="mobile-top-minimal-nav" class="flex items-center gap-1.5 whitespace-nowrap"></div>
         </div>
       </header>
 
-      <!-- DYNAMIC VIEW CONTAINER (FULL LAYAR & PROPORSIONAL) -->
-      <main id="app-view-container" class="flex-1 w-full max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-7">
+      <!-- DYNAMIC VIEW CONTAINER (100% FULL LAYAR & PROPORSIONAL) -->
+      <main id="app-view-container" class="flex-1 w-full px-3 sm:px-6 lg:px-10 py-5 sm:py-7">
         <!-- Konten Halaman Dirender di Sini oleh JavaScript -->
       </main>
 
       <!-- 14. FOOTER BERISI MEDIA SOSIAL DAN ALAMAT SEKOLAH -->
       <footer class="bg-slate-900 text-slate-300 border-t border-slate-800 mt-10">
-        <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="w-full px-4 sm:px-6 lg:px-10 py-10 sm:py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <!-- Col 1: Identitas -->
           <div class="space-y-3">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center font-heading font-extrabold text-lg">71</div>
+              <div id="footer-logo-box" class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center font-heading font-extrabold text-lg overflow-hidden shrink-0">71</div>
               <div>
                 <h3 class="font-heading font-bold text-white text-base" id="footer-school-name">SMP Negeri 71 Kota Bandung</h3>
                 <p class="text-xs text-emerald-400">Sekolah Penggerak & Ramah Anak</p>
@@ -692,6 +668,11 @@
     state.settings = {
       id: '11111111-1111-1111-1111-111111111111',
       school_name: 'SMP Negeri 71 Kota Bandung',
+      logo_url: '',
+      hero_bg_url: '',
+      highlight_1: 'Terakreditasi A Unggul',
+      highlight_2: 'Kelas Digital Cerdas',
+      highlight_3: 'Sekolah Ramah Anak',
       principal_name: 'Dr. H. Ahmad Suryana, M.Pd.',
       principal_photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80',
       principal_welcome: 'Selamat datang di portal resmi SMP Negeri 71 Kota Bandung. Kami berkomitmen menghadirkan ekosistem pendidikan modern yang ramah anak, unggul dalam karakter, literasi, serta inovasi teknologi bagi seluruh peserta didik.',
@@ -705,7 +686,7 @@
       address: 'Jl. Pendidikan Raya No. 71, Kota Bandung, Jawa Barat 40292',
       phone: '(022) 7100071',
       email: 'info@smpn71bandung.sch.id',
-      maps_url: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.56347862248!2d107.5731168!3d-6.9034443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6398252477f%3A0x146a1f93d3e815b2!2sBandung%2C%20Kota%20Bandung%2C%20Jawa%20Barat!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid',
+      maps_url: 'https://www.google.com/maps?q=SMP+Negeri+71+Kota+Bandung&output=embed',
       instagram_url: 'https://www.instagram.com/smpn71bandung',
       youtube_url: 'https://www.youtube.com/@smpn71bandung',
       tiktok_url: 'https://www.tiktok.com/@smpn71bandung',
@@ -862,6 +843,121 @@
     return 'https://' + trimmed;
   }
 
+  // Helper normalisasi input Lokasi Google Maps (mendukung kode <iframe>, link maps biasa, atau nama lokasi)
+  function normalizeGoogleMapsEmbedUrl(rawInput) {
+    const defaultEmbed = 'https://www.google.com/maps?q=SMP+Negeri+71+Kota+Bandung&output=embed';
+    if (!rawInput || typeof rawInput !== 'string' || !rawInput.trim()) return defaultEmbed;
+    const val = rawInput.trim();
+    // Jika user menempelkan kode <iframe src="...">
+    const iframeMatch = val.match(/src=["']([^"']+)["']/i);
+    if (iframeMatch && iframeMatch[1]) return iframeMatch[1];
+    // Jika sudah berupa URL embed
+    if (val.includes('/maps/embed') || val.includes('output=embed')) return val;
+    // Jika URL biasa google maps atau teks alamat/nama tempat
+    if (/^https?:\/\//i.test(val)) {
+      if (val.includes('google.com/maps') || val.includes('maps.app.goo.gl')) {
+        const qMatch = val.match(/[?&]q=([^&]+)/);
+        if (qMatch && qMatch[1]) {
+          return `https://www.google.com/maps?q=${qMatch[1]}&output=embed`;
+        }
+      }
+      return val;
+    }
+    return `https://www.google.com/maps?q=${encodeURIComponent(val)}&output=embed`;
+  }
+
+  // Helper kompresi & konversi file gambar PNG/JPG/JPEG menjadi Data URL agar ringan & tersinkronisasi
+  function readAndCompressImageFile(file, maxWidth = 900, quality = 0.82) {
+    return new Promise((resolve, reject) => {
+      if (!file) return reject(new Error('File tidak ditemukan'));
+      const allowed = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+      if (!allowed.includes(file.type.toLowerCase())) {
+        return reject(new Error('Format gambar harus PNG, JPG, atau JPEG.'));
+      }
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let w = img.width;
+          let h = img.height;
+          if (w > maxWidth) {
+            h = Math.round((h * maxWidth) / w);
+            w = maxWidth;
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          // Pertahankan transparansi untuk PNG
+          const outMime = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+          ctx.drawImage(img, 0, 0, w, h);
+          resolve(canvas.toDataURL(outMime, quality));
+        };
+        img.onerror = () => reject(new Error('Gagal membaca gambar'));
+        img.src = ev.target.result;
+      };
+      reader.onerror = () => reject(new Error('Gagal memuat file'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function handleImageUploadInput(event, targetInputId, previewImgId = null, maxWidth = 900) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      const dataUrl = await readAndCompressImageFile(file, maxWidth);
+      const targetInput = document.getElementById(targetInputId);
+      if (targetInput) targetInput.value = dataUrl;
+      if (previewImgId) {
+        const prev = document.getElementById(previewImgId);
+        if (prev) {
+          prev.src = dataUrl;
+          prev.classList.remove('hidden');
+        }
+      }
+      showToast('Gambar berhasil diunggah & siap disimpan!');
+    } catch (err) {
+      showToast(err.message || 'Gagal mengunggah gambar.');
+    }
+  }
+
+  // ============================================================================
+  // INDIKATOR PROSES LOGIN (DETERMINATE PROGRESS % & INDETERMINATE SPINNER)
+  // ============================================================================
+  async function runAuthProgressAnimation(titleText, steps) {
+    const modal = document.getElementById('auth-progress-modal');
+    const titleEl = document.getElementById('auth-progress-title');
+    const stepEl = document.getElementById('auth-progress-step');
+    const statusEl = document.getElementById('auth-progress-status-label');
+    const percentEl = document.getElementById('auth-progress-percent');
+    const barEl = document.getElementById('auth-progress-bar');
+
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    if (titleEl) titleEl.textContent = titleText;
+    lucide.createIcons();
+
+    for (let i = 0; i < steps.length; i++) {
+      const s = steps[i];
+      if (stepEl) stepEl.textContent = s.desc;
+      if (statusEl) statusEl.textContent = s.label;
+      if (percentEl) percentEl.textContent = s.percent + '%';
+      if (barEl) barEl.style.width = s.percent + '%';
+      await new Promise(r => setTimeout(r, s.duration || 260));
+    }
+
+    modal.classList.add('hidden');
+  }
+
+  async function openAdminPortalWithProgress() {
+    await runAuthProgressAnimation('Membuka Portal Admin SMPN 71', [
+      { percent: 25, label: 'Memeriksa sesi aktif...', desc: 'Menghubungkan ke modul keamanan Multi-Role...' },
+      { percent: 68, label: 'Memuat komponen CMS...', desc: 'Menyiapkan antarmuka manajemen website...' },
+      { percent: 100, label: 'Selesai!', desc: 'Mengalihkan ke halaman Portal Admin...' }
+    ]);
+    navigate('admin');
+  }
+
   // ============================================================================
   // SINKRONISASI DATA SUPABASE REAL-TIME (SAAT IS_PREVIEW = false)
   // ============================================================================
@@ -902,6 +998,11 @@
 
       state.settings = settingsRes.data || {
         school_name: 'SMP Negeri 71 Kota Bandung',
+        logo_url: '',
+        hero_bg_url: '',
+        highlight_1: 'Terakreditasi A Unggul',
+        highlight_2: 'Kelas Digital Cerdas',
+        highlight_3: 'Sekolah Ramah Anak',
         principal_name: 'Kepala SMP Negeri 71 Kota Bandung',
         principal_photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80',
         principal_welcome: 'Selamat datang di website resmi SMP Negeri 71 Kota Bandung.',
@@ -915,7 +1016,7 @@
         address: 'Kota Bandung, Jawa Barat',
         phone: '-',
         email: '-',
-        maps_url: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.56347862248!2d107.5731168!3d-6.9034443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6398252477f%3A0x146a1f93d3e815b2!2sBandung%2C%20Kota%20Bandung%2C%20Jawa%20Barat!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid',
+        maps_url: 'https://www.google.com/maps?q=SMP+Negeri+71+Kota+Bandung&output=embed',
         instagram_url: 'https://www.instagram.com',
         youtube_url: 'https://www.youtube.com',
         tiktok_url: 'https://www.tiktok.com',
@@ -975,7 +1076,7 @@
   }
 
   // ============================================================================
-  // RENDER HEADER, FOOTER & SIDEBAR NAVIGATION
+  // RENDER HEADER, FOOTER & MINIMALIST TOP NAVIGATION
   // ============================================================================
   function renderHeaderAndFooter() {
     const s = state.settings || {};
@@ -985,14 +1086,31 @@
     };
     setTxt('header-school-name', s.school_name);
     setTxt('header-school-address', s.address);
-    setTxt('header-school-phone', s.phone);
-    setTxt('header-school-email', s.email);
+    setTxt('header-accreditation-badge', s.highlight_1 || 'Terakreditasi A Unggul');
     setTxt('footer-school-name', s.school_name);
     setTxt('footer-short-desc', s.short_profile);
     setTxt('footer-phone', s.phone);
     setTxt('footer-email', s.email);
     setTxt('footer-address', s.address);
     setTxt('footer-year', new Date().getFullYear());
+
+    // Sinkronisasi Logo Sekolah di Header & Footer
+    const headerLogoBox = document.getElementById('header-logo-box');
+    const footerLogoBox = document.getElementById('footer-logo-box');
+    if (headerLogoBox) {
+      if (s.logo_url && s.logo_url.trim()) {
+        headerLogoBox.innerHTML = `<img src="${escapeHtml(s.logo_url)}" alt="Logo SMPN 71" class="w-full h-full object-contain bg-white p-0.5" />`;
+      } else {
+        headerLogoBox.textContent = '71';
+      }
+    }
+    if (footerLogoBox) {
+      if (s.logo_url && s.logo_url.trim()) {
+        footerLogoBox.innerHTML = `<img src="${escapeHtml(s.logo_url)}" alt="Logo SMPN 71" class="w-full h-full object-contain bg-white p-0.5" />`;
+      } else {
+        footerLogoBox.textContent = '71';
+      }
+    }
 
     // Sinkronisasi link Instagram, YouTube, dan TikTok di Header & Footer
     const igUrl = normalizeExternalUrl(s.instagram_url, 'https://www.instagram.com');
@@ -1012,29 +1130,58 @@
 
     const topAdminLabel = document.getElementById('top-admin-btn-label');
     if (topAdminLabel) {
-      topAdminLabel.textContent = state.currentUser ? `Dashboard (${state.currentUser.role.toUpperCase()})` : 'Portal Admin';
+      topAdminLabel.textContent = state.currentUser ? `CMS (${state.currentUser.role.toUpperCase()})` : 'Portal Admin';
     }
   }
 
   function renderNavigation() {
-    const navContainer = document.getElementById('desktop-nav-list');
+    const topMinimalNav = document.getElementById('top-minimal-nav');
+    const mobileTopMinimalNav = document.getElementById('mobile-top-minimal-nav');
     const mobDrawer = document.getElementById('mobile-drawer-list');
-    const authBox = document.getElementById('sidebar-auth-box');
 
-    if (navContainer) {
-      navContainer.innerHTML = MENU_ITEMS.map(item => {
+    const shortLabels = {
+      beranda: 'Beranda',
+      profil: 'Profil',
+      akademik: 'Akademik',
+      berita: 'Berita & Agenda',
+      spmb: 'SPMB',
+      layanan: 'Layanan Siswa',
+      gtk: 'Guru & Tendik',
+      fasilitas: 'Fasilitas',
+      galeri: 'Galeri',
+      ppid: 'PPID',
+      kontak: 'Kontak'
+    };
+
+    const mainNavItems = MENU_ITEMS.filter(m => m.id !== 'admin');
+
+    if (topMinimalNav) {
+      topMinimalNav.innerHTML = mainNavItems.map(item => {
         const isActive = state.currentView === item.id;
         return `
-          <button onclick="window.app.navigate('${item.id}')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 ${
+          <button onclick="window.app.navigate('${item.id}')" class="px-2.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap flex items-center gap-1.5 transition-all duration-200 ${
             isActive
               ? 'bg-brand-700 text-white shadow-sm'
-              : 'text-slate-600 hover:bg-brand-50 hover:text-brand-700'
+              : 'text-slate-600 hover:bg-emerald-50 hover:text-brand-700'
           }">
-            <div class="flex items-center gap-2.5 truncate">
-              <i data-lucide="${item.icon}" class="w-4 h-4 shrink-0 ${isActive ? 'text-yellow-300' : 'text-brand-700'}"></i>
-              <span class="truncate">${item.label}</span>
-            </div>
-            <span class="text-[10px] px-1.5 py-0.5 rounded font-bold ${isActive ? 'bg-brand-800 text-yellow-300' : 'bg-slate-100 text-slate-400'}">${item.code}</span>
+            <i data-lucide="${item.icon}" class="w-3.5 h-3.5 ${isActive ? 'text-yellow-300' : 'text-brand-700'}"></i>
+            <span>${shortLabels[item.id] || item.label}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    if (mobileTopMinimalNav) {
+      mobileTopMinimalNav.innerHTML = mainNavItems.map(item => {
+        const isActive = state.currentView === item.id;
+        return `
+          <button onclick="window.app.navigate('${item.id}')" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1 transition ${
+            isActive
+              ? 'bg-brand-700 text-white shadow-sm'
+              : 'bg-white text-slate-700 border border-emerald-200/80'
+          }">
+            <i data-lucide="${item.icon}" class="w-3 h-3 ${isActive ? 'text-yellow-300' : 'text-brand-700'}"></i>
+            <span>${shortLabels[item.id] || item.label}</span>
           </button>
         `;
       }).join('');
@@ -1065,32 +1212,6 @@
         btn.classList.add('text-slate-600');
       }
     });
-
-    if (authBox) {
-      if (state.currentUser) {
-        const roleMeta = ROLE_LABELS[state.currentUser.role] || ROLE_LABELS.operator;
-        authBox.innerHTML = `
-          <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-sm space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${roleMeta.badge}">${roleMeta.title}</span>
-              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            </div>
-            <div class="text-xs font-bold text-slate-900 truncate">${escapeHtml(state.currentUser.full_name)}</div>
-            <div class="flex gap-1.5 pt-1">
-              <button onclick="window.app.navigate('admin')" class="flex-1 py-1.5 rounded-lg bg-brand-700 text-white text-[11px] font-semibold hover:bg-brand-800 transition">Panel CMS</button>
-              <button onclick="window.app.logout()" class="px-2.5 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 text-[11px] font-semibold transition">Keluar</button>
-            </div>
-          </div>
-        `;
-      } else {
-        authBox.innerHTML = `
-          <button onclick="window.app.navigate('admin')" class="w-full py-2.5 px-3 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-sm transition">
-            <i data-lucide="log-in" class="w-4 h-4 text-yellow-300"></i>
-            <span>Login Staf / Admin</span>
-          </button>
-        `;
-      }
-    }
 
     lucide.createIcons();
   }
@@ -1173,6 +1294,10 @@
     const igUrl = normalizeExternalUrl(s.instagram_url, 'https://www.instagram.com');
     const ytUrl = normalizeExternalUrl(s.youtube_url, 'https://www.youtube.com');
     const ttUrl = normalizeExternalUrl(s.tiktok_url, 'https://www.tiktok.com');
+    const mapsEmbedUrl = normalizeGoogleMapsEmbedUrl(s.maps_url);
+    const hl1 = s.highlight_1 || 'Terakreditasi A Unggul';
+    const hl2 = s.highlight_2 || 'Kelas Digital Cerdas';
+    const hl3 = s.highlight_3 || 'Sekolah Ramah Anak';
 
     const beritaList = state.posts.filter(p => p.category === 'berita').slice(0, 3);
     const pengumumanList = state.posts.filter(p => p.category === 'pengumuman').slice(0, 3);
@@ -1180,10 +1305,14 @@
     const fotoList = state.facilitiesGallery.filter(f => f.item_type === 'foto' || f.item_type === 'fasilitas').slice(0, 4);
     const videoList = state.facilitiesGallery.filter(f => f.item_type === 'video').slice(0, 2);
 
+    const customBgStyle = (s.hero_bg_url && s.hero_bg_url.trim())
+      ? `background-image: linear-gradient(135deg, rgba(232, 248, 238, 0.90) 0%, rgba(255, 255, 255, 0.88) 55%, rgba(209, 241, 222, 0.90) 100%), url('${escapeHtml(s.hero_bg_url)}'); background-size: cover; background-position: center;`
+      : '';
+
     return `
       <div class="space-y-8 sm:space-y-12">
-        <!-- 3. HERO BANNER DENGAN FOTO GEDUNG SEKOLAH, TOMBOL SPMB & IKON MEDIA SOSIAL RESMI -->
-        <section class="hero-pattern rounded-3xl border border-emerald-100 shadow-sm overflow-hidden relative">
+        <!-- 3. HERO BANNER DENGAN FOTO GEDUNG SEKOLAH, BACKGROUND TRANSPARAN, TOMBOL SPMB & IKON MEDIA SOSIAL RESMI -->
+        <section class="hero-pattern rounded-3xl border border-emerald-100 shadow-sm overflow-hidden relative" style="${customBgStyle}">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center p-5 sm:p-8 lg:p-10 xl:p-12">
             <!-- Left Text Column -->
             <div class="lg:col-span-7 space-y-4 sm:space-y-5 z-10">
@@ -1251,19 +1380,19 @@
                 </div>
               </div>
 
-              <!-- Mini Highlight Thumbnails -->
+              <!-- Mini Highlight Thumbnails (Tersinkronisasi dengan Input Admin) -->
               <div class="pt-2 grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                 <div class="p-2.5 rounded-2xl bg-white/90 border border-emerald-100 flex items-center gap-2.5 shadow-sm">
                   <div class="w-8 h-8 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center shrink-0"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
-                  <div class="text-xs font-bold text-slate-800 leading-tight">Terakreditasi A Unggul</div>
+                  <div class="text-xs font-bold text-slate-800 leading-tight">${escapeHtml(hl1)}</div>
                 </div>
                 <div class="p-2.5 rounded-2xl bg-white/90 border border-emerald-100 flex items-center gap-2.5 shadow-sm">
                   <div class="w-8 h-8 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center shrink-0"><i data-lucide="cpu" class="w-4 h-4"></i></div>
-                  <div class="text-xs font-bold text-slate-800 leading-tight">Kelas Digital Cerdas</div>
+                  <div class="text-xs font-bold text-slate-800 leading-tight">${escapeHtml(hl2)}</div>
                 </div>
                 <div class="p-2.5 rounded-2xl bg-white/90 border border-emerald-100 flex items-center gap-2.5 shadow-sm">
                   <div class="w-8 h-8 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center shrink-0"><i data-lucide="heart-handshake" class="w-4 h-4"></i></div>
-                  <div class="text-xs font-bold text-slate-800 leading-tight">Sekolah Ramah Anak</div>
+                  <div class="text-xs font-bold text-slate-800 leading-tight">${escapeHtml(hl3)}</div>
                 </div>
               </div>
             </div>
@@ -1563,7 +1692,7 @@
             </div>
           </div>
           <div class="rounded-2xl overflow-hidden border border-slate-200 h-72 w-full">
-            <iframe src="${escapeHtml(s.maps_url)}" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
+            <iframe src="${escapeHtml(mapsEmbedUrl)}" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
           </div>
         </section>
       </div>
@@ -2078,7 +2207,7 @@
             </div>
 
             <div class="rounded-3xl overflow-hidden border border-slate-200 h-56">
-              <iframe src="${escapeHtml(s.maps_url)}" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
+              <iframe src="${escapeHtml(normalizeGoogleMapsEmbedUrl(s.maps_url))}" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
             </div>
           </div>
         </div>
@@ -2251,26 +2380,81 @@
 
     if (state.adminTab === 'pengaturan') {
       return `
-        <form onsubmit="window.app.saveSettingsForm(event)" class="space-y-4 text-xs">
-          <h3 class="font-heading font-bold text-lg text-slate-900 mb-2">Kelola Profil Sekolah, Tautan Media Sosial (IG, YouTube, TikTok) & Statistik</h3>
+        <form onsubmit="window.app.saveSettingsForm(event)" class="space-y-5 text-xs">
+          <h3 class="font-heading font-bold text-lg text-slate-900 mb-1">Kelola Profil Sekolah, Logo, Background Transparan, Lokasi Maps, Sosmed & Statistik</h3>
+
+          <!-- Identitas Utama & Upload Foto Kepala Sekolah -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block font-semibold mb-1">Nama Sekolah</label>
+              <label class="block font-semibold mb-1">Nama Sekolah *</label>
               <input type="text" name="school_name" value="${escapeHtml(s.school_name)}" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
             </div>
             <div>
-              <label class="block font-semibold mb-1">Nama Kepala Sekolah</label>
+              <label class="block font-semibold mb-1">Nama Kepala Sekolah *</label>
               <input type="text" name="principal_name" value="${escapeHtml(s.principal_name)}" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
             </div>
-            <div>
-              <label class="block font-semibold mb-1">URL Foto Kepala Sekolah</label>
-              <input type="text" name="principal_photo" value="${escapeHtml(s.principal_photo)}" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
+            <div class="space-y-1.5">
+              <label class="block font-semibold">Foto Kepala Sekolah (Upload PNG/JPG/JPEG atau URL)</label>
+              <div class="flex items-center gap-2">
+                <input type="file" accept="image/png,image/jpeg,image/jpg" onchange="window.app.handleImageUploadInput(event, 'input-principal-photo', 'prev-principal-photo', 700)" class="w-full px-2.5 py-1.5 rounded-xl border border-slate-300 bg-slate-50 text-[11px]" />
+                <img id="prev-principal-photo" src="${escapeHtml(s.principal_photo)}" alt="Preview" class="w-10 h-10 rounded-xl object-cover border border-slate-300 shrink-0" />
+              </div>
+              <input type="text" id="input-principal-photo" name="principal_photo" value="${escapeHtml(s.principal_photo)}" placeholder="Atau tempel URL foto..." required class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
             </div>
             <div>
               <label class="block font-semibold mb-1">Telepon & Email Resmi</label>
               <div class="grid grid-cols-2 gap-2">
                 <input type="text" name="phone" value="${escapeHtml(s.phone)}" class="px-3 py-2 rounded-xl border border-slate-300" />
                 <input type="text" name="email" value="${escapeHtml(s.email)}" class="px-3 py-2 rounded-xl border border-slate-300" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Upload Logo Sekolah & Background Latar Belakang Transparan -->
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+            <div class="font-heading font-bold text-sm text-slate-900 flex items-center gap-2">
+              <i data-lucide="image-plus" class="w-4 h-4 text-brand-700"></i>
+              <span>Upload Logo Sekolah & Background Latar Belakang Transparan (PNG/JPG/JPEG)</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-1.5">
+                <label class="block font-semibold text-slate-700">Upload Logo Sekolah (PNG Transparan / JPG)</label>
+                <div class="flex items-center gap-2">
+                  <input type="file" accept="image/png,image/jpeg,image/jpg" onchange="window.app.handleImageUploadInput(event, 'input-logo-url', 'prev-logo-img', 400)" class="w-full px-2.5 py-1.5 rounded-xl border border-slate-300 bg-white text-[11px]" />
+                  <img id="prev-logo-img" src="${escapeHtml(s.logo_url || 'https://cdn-icons-png.flaticon.com/512/2602/2602414.png')}" alt="Logo" class="w-10 h-10 rounded-xl object-contain bg-white border border-slate-300 p-1 shrink-0" />
+                </div>
+                <input type="text" id="input-logo-url" name="logo_url" value="${escapeHtml(s.logo_url || '')}" placeholder="URL / Data Logo Sekolah (Kosongkan untuk teks 71)" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white" />
+              </div>
+
+              <div class="space-y-1.5">
+                <label class="block font-semibold text-slate-700">Upload Background Latar Belakang Transparan</label>
+                <div class="flex items-center gap-2">
+                  <input type="file" accept="image/png,image/jpeg,image/jpg" onchange="window.app.handleImageUploadInput(event, 'input-hero-bg-url', 'prev-hero-bg-img', 1200)" class="w-full px-2.5 py-1.5 rounded-xl border border-slate-300 bg-white text-[11px]" />
+                  <img id="prev-hero-bg-img" src="${escapeHtml(s.hero_bg_url || 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=300&q=60')}" alt="BG" class="w-10 h-10 rounded-xl object-cover bg-white border border-slate-300 shrink-0" />
+                </div>
+                <input type="text" id="input-hero-bg-url" name="hero_bg_url" value="${escapeHtml(s.hero_bg_url || '')}" placeholder="URL / Data Background Transparan Hero" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Input 3 Keunggulan Utama (Terakreditasi A Unggul, Kelas Digital Cerdas, Sekolah Ramah Anak) -->
+          <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-3">
+            <div class="font-heading font-bold text-sm text-slate-900 flex items-center gap-2">
+              <i data-lucide="award" class="w-4 h-4 text-amber-600"></i>
+              <span>Label Keunggulan Sekolah (Tersinkronisasi ke Header & Hero Beranda)</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Keunggulan 1 (Akreditasi)</label>
+                <input type="text" name="highlight_1" value="${escapeHtml(s.highlight_1 || 'Terakreditasi A Unggul')}" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white font-semibold" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Keunggulan 2 (Program Digital)</label>
+                <input type="text" name="highlight_2" value="${escapeHtml(s.highlight_2 || 'Kelas Digital Cerdas')}" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white font-semibold" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Keunggulan 3 (Budaya Sekolah)</label>
+                <input type="text" name="highlight_3" value="${escapeHtml(s.highlight_3 || 'Sekolah Ramah Anak')}" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white font-semibold" />
               </div>
             </div>
           </div>
@@ -2297,12 +2481,14 @@
             </div>
           </div>
 
+          <!-- Statistik Sekolah -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div><label class="block font-semibold mb-1">Jumlah Siswa</label><input type="number" name="stat_students" value="${Number(s.stat_students || 0)}" class="w-full px-3 py-2 rounded-xl border border-slate-300" /></div>
             <div><label class="block font-semibold mb-1">Jumlah Guru/Tendik</label><input type="number" name="stat_teachers" value="${Number(s.stat_teachers || 0)}" class="w-full px-3 py-2 rounded-xl border border-slate-300" /></div>
             <div><label class="block font-semibold mb-1">Jumlah Rombel</label><input type="number" name="stat_classes" value="${Number(s.stat_classes || 0)}" class="w-full px-3 py-2 rounded-xl border border-slate-300" /></div>
             <div><label class="block font-semibold mb-1">Jumlah Prestasi</label><input type="number" name="stat_achievements" value="${Number(s.stat_achievements || 0)}" class="w-full px-3 py-2 rounded-xl border border-slate-300" /></div>
           </div>
+
           <div>
             <label class="block font-semibold mb-1">Sambutan Kepala Sekolah</label>
             <textarea name="principal_welcome" rows="2" class="w-full px-3.5 py-2 rounded-xl border border-slate-300">${escapeHtml(s.principal_welcome)}</textarea>
@@ -2321,11 +2507,22 @@
               <textarea name="mission" rows="2" class="w-full px-3.5 py-2 rounded-xl border border-slate-300">${escapeHtml(s.mission)}</textarea>
             </div>
           </div>
-          <div>
-            <label class="block font-semibold mb-1">Alamat Lengkap Sekolah</label>
-            <input type="text" name="address" value="${escapeHtml(s.address)}" class="w-full px-3.5 py-2 rounded-xl border border-slate-300" />
+
+          <!-- Alamat & Upload/Input Lokasi Google Map -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+            <div>
+              <label class="block font-semibold mb-1">Alamat Lengkap Sekolah</label>
+              <input type="text" name="address" value="${escapeHtml(s.address)}" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
+            <div>
+              <label class="block font-semibold mb-1">Lokasi Google Maps (Link Embed / Nama Lokasi SMPN 71 Bandung)</label>
+              <input type="text" name="maps_url" value="${escapeHtml(s.maps_url || 'https://www.google.com/maps?q=SMP+Negeri+71+Kota+Bandung&output=embed')}" placeholder="Tempel link Google Maps, kode iframe, atau ketik SMP Negeri 71 Kota Bandung" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
           </div>
-          <button type="submit" class="px-6 py-3 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold">Simpan Perubahan Pengaturan & Link Sosmed</button>
+
+          <button type="submit" class="px-6 py-3 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold shadow-sm transition">
+            Simpan Seluruh Pengaturan Profil, Logo, Background & Maps
+          </button>
         </form>
       `;
     }
@@ -2507,21 +2704,38 @@
               <option value="layanan_siswa">Kategori: Layanan Peserta Didik</option>
               <option value="ppid">Kategori: Dokumen PPID</option>
             </select>
-            <input type="text" name="title" required placeholder="Judul Artikel / Informasi *" class="px-3 py-2 rounded-xl border border-slate-300" />
-            <input type="date" name="event_date" required class="px-3 py-2 rounded-xl border border-slate-300" />
-            <input type="text" name="image_url" placeholder="URL Foto Sampul (Opsional)" class="md:col-span-2 px-3 py-2 rounded-xl border border-slate-300" />
-            <input type="text" name="author_name" value="${escapeHtml(state.currentUser.full_name)}" placeholder="Nama Penulis" class="px-3 py-2 rounded-xl border border-slate-300" />
-            <textarea name="content" rows="2" required placeholder="Isi lengkap informasi..." class="md:col-span-3 px-3 py-2 rounded-xl border border-slate-300"></textarea>
-            <button type="submit" class="md:col-span-3 py-2.5 rounded-xl bg-brand-700 text-white font-bold">+ Publikasikan Konten Baru</button>
+            <input type="text" name="title" required placeholder="Judul Artikel / Informasi *" class="px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            <input type="date" name="event_date" required class="px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+
+            <!-- Upload Foto / Gambar PNG/JPG/JPEG untuk Berita, Akademik & PPID -->
+            <div class="md:col-span-2 space-y-1.5 bg-white p-3 rounded-xl border border-slate-200">
+              <label class="block font-semibold text-slate-700">Upload Foto / Gambar Sampul (Format PNG, JPG, JPEG)</label>
+              <div class="flex items-center gap-2">
+                <input type="file" accept="image/png,image/jpeg,image/jpg" onchange="window.app.handleImageUploadInput(event, 'post-image-url-input', 'post-image-preview', 900)" class="w-full text-[11px] file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-brand-50 file:text-brand-700 file:font-bold" />
+                <img id="post-image-preview" src="" alt="Preview" class="hidden w-11 h-11 rounded-lg object-cover border border-slate-300 shrink-0" />
+              </div>
+              <input type="text" id="post-image-url-input" name="image_url" placeholder="Atau tempel URL foto sampul..." class="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-[11px]" />
+            </div>
+
+            <div class="bg-white p-3 rounded-xl border border-slate-200 flex flex-col justify-center">
+              <label class="block font-semibold text-slate-700 mb-1">Nama Penulis / Unit</label>
+              <input type="text" name="author_name" value="${escapeHtml(state.currentUser.full_name)}" placeholder="Nama Penulis" class="w-full px-3 py-2 rounded-lg border border-slate-300" />
+            </div>
+
+            <textarea name="content" rows="3" required placeholder="Isi lengkap informasi / berita / materi..." class="md:col-span-3 px-3 py-2 rounded-xl border border-slate-300 bg-white"></textarea>
+            <button type="submit" class="md:col-span-3 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold shadow-sm transition">+ Publikasikan Konten & Foto Baru</button>
           </form>
 
           <div class="space-y-2.5">
             ${state.posts.map(p => `
               <div class="p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between gap-3 text-xs">
-                <div>
-                  <span class="px-2 py-0.5 rounded bg-brand-50 text-brand-700 font-bold uppercase text-[10px]">${escapeHtml(p.category)}</span>
-                  <span class="font-bold text-slate-900 ml-2">${escapeHtml(p.title)}</span>
-                  <div class="text-[11px] text-slate-500 mt-0.5">${escapeHtml(p.event_date || '-')} • ${escapeHtml(p.author_name || '')}</div>
+                <div class="flex items-center gap-3 min-w-0">
+                  <img src="${escapeHtml(p.image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=200&q=60')}" alt="Thumb" class="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" />
+                  <div class="min-w-0">
+                    <span class="px-2 py-0.5 rounded bg-brand-50 text-brand-700 font-bold uppercase text-[10px]">${escapeHtml(p.category)}</span>
+                    <span class="font-bold text-slate-900 ml-1.5">${escapeHtml(p.title)}</span>
+                    <div class="text-[11px] text-slate-500 mt-0.5">${escapeHtml(p.event_date || '-')} • ${escapeHtml(p.author_name || '')}</div>
+                  </div>
                 </div>
                 <button onclick="window.app.deletePost('${p.id}')" class="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 font-bold hover:bg-red-100 shrink-0">Hapus</button>
               </div>
@@ -2536,24 +2750,37 @@
         <div class="space-y-6">
           <h3 class="font-heading font-bold text-lg text-slate-900">Kelola Direktori Guru & Tenaga Kependidikan</h3>
           <form onsubmit="window.app.addStaffForm(event)" class="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
-            <input type="text" name="full_name" required placeholder="Nama Lengkap & Gelar *" class="px-3 py-2 rounded-xl border border-slate-300" />
-            <input type="text" name="nip" placeholder="NIP / NUPTK" class="px-3 py-2 rounded-xl border border-slate-300" />
+            <input type="text" name="full_name" required placeholder="Nama Lengkap & Gelar *" class="px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            <input type="text" name="nip" placeholder="NIP / NUPTK" class="px-3 py-2 rounded-xl border border-slate-300 bg-white" />
             <select name="category" class="px-3 py-2 rounded-xl border border-slate-300 bg-white">
               <option value="Pendidik">Pendidik (Guru)</option>
               <option value="Tenaga Kependidikan">Tenaga Kependidikan (Staf TU)</option>
             </select>
-            <input type="text" name="position" required placeholder="Jabatan (mis: Guru IPA / Staf TU) *" class="px-3 py-2 rounded-xl border border-slate-300" />
-            <input type="text" name="subject" placeholder="Mata Pelajaran / Bidang" class="px-3 py-2 rounded-xl border border-slate-300" />
-            <input type="text" name="photo_url" placeholder="URL Foto Profil" class="px-3 py-2 rounded-xl border border-slate-300" />
-            <button type="submit" class="md:col-span-3 py-2.5 rounded-xl bg-brand-700 text-white font-bold">+ Tambah Data GTK</button>
+            <input type="text" name="position" required placeholder="Jabatan (mis: Guru IPA / Staf TU) *" class="px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            <input type="text" name="subject" placeholder="Mata Pelajaran / Bidang" class="px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+
+            <!-- Upload Foto Guru & Tendik (PNG/JPG/JPEG) -->
+            <div class="space-y-1.5 bg-white p-2.5 rounded-xl border border-slate-200">
+              <label class="block font-semibold text-slate-700 text-[11px]">Upload Foto Profil (PNG/JPG/JPEG)</label>
+              <div class="flex items-center gap-2">
+                <input type="file" accept="image/png,image/jpeg,image/jpg" onchange="window.app.handleImageUploadInput(event, 'staff-photo-url-input', 'staff-photo-preview', 500)" class="w-full text-[11px] file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-brand-50 file:text-brand-700 file:font-bold" />
+                <img id="staff-photo-preview" src="" alt="Preview" class="hidden w-9 h-9 rounded-full object-cover border border-brand-600 shrink-0" />
+              </div>
+              <input type="text" id="staff-photo-url-input" name="photo_url" placeholder="Atau URL Foto Profil" class="w-full px-2.5 py-1 rounded-lg border border-slate-200 text-[11px]" />
+            </div>
+
+            <button type="submit" class="md:col-span-3 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold shadow-sm transition">+ Tambah Data & Foto GTK</button>
           </form>
 
           <div class="space-y-2.5">
             ${state.staff.map(st => `
               <div class="p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between gap-3 text-xs">
-                <div>
-                  <span class="font-bold text-slate-900">${escapeHtml(st.full_name)}</span>
-                  <span class="text-slate-500"> — ${escapeHtml(st.position)} (${escapeHtml(st.category)})</span>
+                <div class="flex items-center gap-3">
+                  <img src="${escapeHtml(st.photo_url || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=60')}" alt="Foto" class="w-10 h-10 rounded-full object-cover border border-brand-600 shrink-0" />
+                  <div>
+                    <span class="font-bold text-slate-900">${escapeHtml(st.full_name)}</span>
+                    <span class="text-slate-500"> — ${escapeHtml(st.position)} (${escapeHtml(st.category)})</span>
+                  </div>
                 </div>
                 <button onclick="window.app.deleteStaff('${st.id}')" class="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 font-bold">Hapus</button>
               </div>
@@ -2573,19 +2800,36 @@
               <option value="foto">Galeri Foto Kegiatan</option>
               <option value="video">Galeri Video (Embed URL YouTube)</option>
             </select>
-            <input type="text" name="title" required placeholder="Judul Fasilitas / Album *" class="px-3 py-2 rounded-xl border border-slate-300" />
-            <input type="text" name="media_url" required placeholder="URL Gambar atau Embed Video *" class="px-3 py-2 rounded-xl border border-slate-300" />
-            <input type="text" name="condition_or_tag" placeholder="Label Kondisi / Kategori (mis: Kondisi Sangat Baik)" class="px-3 py-2 rounded-xl border border-slate-300" />
-            <textarea name="description" rows="2" placeholder="Deskripsi singkat..." class="md:col-span-2 px-3 py-2 rounded-xl border border-slate-300"></textarea>
-            <button type="submit" class="md:col-span-2 py-2.5 rounded-xl bg-brand-700 text-white font-bold">+ Simpan Fasilitas / Galeri</button>
+            <input type="text" name="title" required placeholder="Judul Fasilitas / Album *" class="px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+
+            <!-- Upload Foto Fasilitas / Galeri (PNG/JPG/JPEG) -->
+            <div class="space-y-1.5 bg-white p-3 rounded-xl border border-slate-200">
+              <label class="block font-semibold text-slate-700">Upload Foto Fasilitas / Galeri (PNG, JPG, JPEG)</label>
+              <div class="flex items-center gap-2">
+                <input type="file" accept="image/png,image/jpeg,image/jpg" onchange="window.app.handleImageUploadInput(event, 'fg-media-url-input', 'fg-media-preview', 900)" class="w-full text-[11px] file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-brand-50 file:text-brand-700 file:font-bold" />
+                <img id="fg-media-preview" src="" alt="Preview" class="hidden w-11 h-11 rounded-lg object-cover border border-slate-300 shrink-0" />
+              </div>
+              <input type="text" id="fg-media-url-input" name="media_url" required placeholder="Atau tempel URL Gambar / Embed Video YouTube *" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-[11px]" />
+            </div>
+
+            <div class="bg-white p-3 rounded-xl border border-slate-200 flex flex-col justify-center">
+              <label class="block font-semibold text-slate-700 mb-1">Label Kondisi / Kategori</label>
+              <input type="text" name="condition_or_tag" placeholder="Contoh: Kondisi Sangat Baik / Kegiatan Sekolah" class="w-full px-3 py-2 rounded-lg border border-slate-300" />
+            </div>
+
+            <textarea name="description" rows="2" placeholder="Deskripsi singkat..." class="md:col-span-2 px-3 py-2 rounded-xl border border-slate-300 bg-white"></textarea>
+            <button type="submit" class="md:col-span-2 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold shadow-sm transition">+ Simpan Fasilitas / Galeri</button>
           </form>
 
           <div class="space-y-2.5">
             ${state.facilitiesGallery.map(fg => `
               <div class="p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between gap-3 text-xs">
-                <div>
-                  <span class="px-2 py-0.5 rounded bg-emerald-50 text-brand-700 font-bold uppercase text-[10px]">${escapeHtml(fg.item_type)}</span>
-                  <span class="font-bold text-slate-900 ml-2">${escapeHtml(fg.title)}</span>
+                <div class="flex items-center gap-3 min-w-0">
+                  ${fg.item_type !== 'video' ? `<img src="${escapeHtml(fg.media_url)}" alt="Thumb" class="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" />` : `<div class="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0"><i data-lucide="video" class="w-5 h-5"></i></div>`}
+                  <div class="min-w-0">
+                    <span class="px-2 py-0.5 rounded bg-emerald-50 text-brand-700 font-bold uppercase text-[10px]">${escapeHtml(fg.item_type)}</span>
+                    <span class="font-bold text-slate-900 ml-2">${escapeHtml(fg.title)}</span>
+                  </div>
                 </div>
                 <button onclick="window.app.deleteFacilityGallery('${fg.id}')" class="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 font-bold">Hapus</button>
               </div>
@@ -2682,13 +2926,19 @@
   }
 
   // ============================================================================
-  // OPERASI AUTENTIKASI HYBRID & CRUD (PREVIEW & PRODUKSI SUPABASE)
+  // OPERASI AUTENTIKASI HYBRID & CRUD (DENGAN PROGRESS BAR DETERMINATE & SPINNER)
   // ============================================================================
   async function handleAdminAuthLogin(e) {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value.trim();
     const password = form.password.value.trim();
+
+    await runAuthProgressAnimation('Login Administrator Utama', [
+      { percent: 25, label: 'Memverifikasi kredensial...', desc: 'Menghubungi layanan autentikasi Admin...' },
+      { percent: 65, label: 'Memuat hak akses penuh...', desc: 'Menyiapkan seluruh modul CMS & Pengaturan Musik...' },
+      { percent: 100, label: 'Verifikasi Berhasil!', desc: 'Membuka Dashboard Administrator...' }
+    ]);
 
     if (IS_PREVIEW) {
       state.currentUser = { id: 'admin-preview', username: email, full_name: 'Administrator Utama', role: 'admin', authType: 'preview' };
@@ -2723,6 +2973,12 @@
     const form = e.target;
     const username = form.username.value.trim();
     const password = form.password.value.trim();
+
+    await runAuthProgressAnimation('Login Staf Pengelola Sekolah', [
+      { percent: 30, label: 'Mencocokkan akun staf...', desc: 'Memeriksa username & kata sandi pada database...' },
+      { percent: 75, label: 'Memuat matriks Multi-Role...', desc: 'Menyesuaikan menu kerja sesuai jabatan...' },
+      { percent: 100, label: 'Otentikasi Selesai!', desc: 'Menampilkan halaman kerja staf...' }
+    ]);
 
     if (IS_PREVIEW) {
       const found = state.users.find(u => u.username === username && u.password === password);
@@ -2764,7 +3020,7 @@
     }
   }
 
-  function quickLogin(roleKey) {
+  async function quickLogin(roleKey) {
     if (!IS_PREVIEW) return;
     const names = {
       admin: 'Administrator Website',
@@ -2774,6 +3030,13 @@
       spmb: 'Hendra Saputra, S.Pd. (Panitia SPMB)',
       humas: 'Fajar Nugraha, M.I.Kom. (Humas)'
     };
+
+    await runAuthProgressAnimation(`Masuk Cepat: ${names[roleKey]}`, [
+      { percent: 35, label: 'Menyiapkan kredensial role...', desc: `Mengaktifkan hak akses ${roleKey.toUpperCase()}...` },
+      { percent: 80, label: 'Menyinkronkan modul CMS...', desc: 'Memuat data sekolah & hak akses...' },
+      { percent: 100, label: 'Siap Digunakan!', desc: 'Membuka Dashboard Multi-Role...' }
+    ]);
+
     state.currentUser = {
       id: 'preview-' + roleKey,
       username: roleKey + '71',
@@ -2802,12 +3065,17 @@
     showToast('Anda telah keluar dari sesi pengelola.');
   }
 
-  // CRUD Settings + Social Media Links (Instagram, YouTube, TikTok)
+  // CRUD Settings + Logo + Background + Highlights + Maps + Social Media Links
   async function saveSettingsForm(e) {
     e.preventDefault();
     const f = e.target;
     const payload = {
       school_name: f.school_name.value.trim(),
+      logo_url: (f.logo_url?.value || '').trim(),
+      hero_bg_url: (f.hero_bg_url?.value || '').trim(),
+      highlight_1: (f.highlight_1?.value || 'Terakreditasi A Unggul').trim(),
+      highlight_2: (f.highlight_2?.value || 'Kelas Digital Cerdas').trim(),
+      highlight_3: (f.highlight_3?.value || 'Sekolah Ramah Anak').trim(),
       principal_name: f.principal_name.value.trim(),
       principal_photo: f.principal_photo.value.trim(),
       phone: f.phone.value.trim(),
@@ -2823,14 +3091,15 @@
       short_profile: f.short_profile.value.trim(),
       vision: f.vision.value.trim(),
       mission: f.mission.value.trim(),
-      address: f.address.value.trim()
+      address: f.address.value.trim(),
+      maps_url: normalizeGoogleMapsEmbedUrl(f.maps_url?.value)
     };
 
     if (IS_PREVIEW) {
       state.settings = { ...state.settings, ...payload };
       renderHeaderAndFooter();
       renderCurrentView();
-      showToast('Pengaturan sekolah & tautan media sosial berhasil diperbarui!');
+      showToast('Profil, Logo, Background, Keunggulan, Maps & Sosmed berhasil diperbarui!');
       return;
     }
 
@@ -2843,7 +3112,7 @@
         if (error) throw error;
       }
       await loadAllData();
-      showToast('Pengaturan & tautan media sosial tersimpan ke Supabase!');
+      showToast('Seluruh pengaturan sekolah tersimpan ke Supabase!');
     } catch (err) {
       showToast('Gagal menyimpan pengaturan: ' + err.message);
     }
@@ -3276,7 +3545,7 @@
 
   // ============================================================================
   // SMART BACKGROUND MUSIC PLAYER ENGINE (SINGLETON INSTANCE)
-  // Mendukung: Instrumental WebAudio Synth, File MP3 / URL, & Link YouTube
+  // Menghasilkan WAV Audio PCM 16-Bit Instrumental + WebAudio + MP3 + YouTube
   // ============================================================================
   const musicEngine = {
     isPlaying: false,
@@ -3289,9 +3558,98 @@
     synthCtx: null,
     synthTimer: null,
     synthGain: null,
+    generatedWavUrls: {},
     autoplayBlocked: false,
     userInteracted: false
   };
+
+  // Membuat file WAV PCM 16-bit in-memory berisi melodi & akor piano/celesta pendidikan
+  // sehingga elemen <audio> HTML5 benar-benar memutar musik nyata dan nyaring!
+  function getOrCreateInstrumentalWavUrl(presetKey = 'synth://educational-inspiration') {
+    if (musicEngine.generatedWavUrls[presetKey]) {
+      return musicEngine.generatedWavUrls[presetKey];
+    }
+
+    const sampleRate = 22050;
+    const durationSeconds = 16; // 16 detik loop mulus
+    const totalSamples = sampleRate * durationSeconds;
+    const pcmData = new Int16Array(totalSamples);
+
+    const isMorning = presetKey.includes('morning-campus');
+    // Progresi 4 bar (masing-masing 4 detik): C - G - Am - F atau D - A - Bm - G
+    const progression = isMorning
+      ? [
+          { root: 293.66, third: 369.99, fifth: 440.00, melody: [587.33, 659.25, 739.99, 587.33] },
+          { root: 220.00, third: 277.18, fifth: 329.63, melody: [554.37, 587.33, 440.00, 554.37] },
+          { root: 246.94, third: 293.66, fifth: 369.99, melody: [493.88, 587.33, 659.25, 493.88] },
+          { root: 196.00, third: 246.94, fifth: 293.66, melody: [392.00, 440.00, 493.88, 587.33] }
+        ]
+      : [
+          { root: 261.63, third: 329.63, fifth: 392.00, melody: [523.25, 659.25, 783.99, 659.25] },
+          { root: 196.00, third: 246.94, fifth: 293.66, melody: [493.88, 587.33, 783.99, 587.33] },
+          { root: 220.00, third: 261.63, fifth: 329.63, melody: [440.00, 523.25, 659.25, 523.25] },
+          { root: 174.61, third: 220.00, fifth: 261.63, melody: [349.23, 440.00, 523.25, 587.33] }
+        ];
+
+    for (let i = 0; i < totalSamples; i++) {
+      const t = i / sampleRate;
+      const barIndex = Math.floor(t / 4) % 4;
+      const barTime = t % 4;
+      const beatIndex = Math.floor(barTime); // 0, 1, 2, 3
+      const beatTime = barTime % 1;
+
+      const chord = progression[barIndex];
+      const melFreq = chord.melody[beatIndex];
+
+      // Envelope hangat untuk akor pad/piano
+      const padEnv = Math.sin((Math.PI * barTime) / 4) * 0.85;
+      // Envelope lonceng/piano lembut untuk setiap ketukan melodi
+      const melEnv = Math.exp(-beatTime * 3.2) * Math.min(1, beatTime * 45);
+
+      const padWave =
+        Math.sin(2 * Math.PI * chord.root * t) * 0.32 +
+        Math.sin(2 * Math.PI * chord.third * t) * 0.25 +
+        Math.sin(2 * Math.PI * chord.fifth * t) * 0.25;
+
+      const melWave =
+        Math.sin(2 * Math.PI * melFreq * t) * 0.48 +
+        Math.sin(2 * Math.PI * (melFreq * 2) * t) * 0.14;
+
+      const mixed = (padWave * padEnv + melWave * melEnv) * 0.65;
+      const clamped = Math.max(-1, Math.min(1, mixed));
+      pcmData[i] = Math.floor(clamped * 32767);
+    }
+
+    // Bungkus PCM16 ke container WAV standar
+    const buffer = new ArrayBuffer(44 + pcmData.length * 2);
+    const view = new DataView(buffer);
+    const writeStr = (offset, str) => {
+      for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+    };
+
+    writeStr(0, 'RIFF');
+    view.setUint32(4, 36 + pcmData.length * 2, true);
+    writeStr(8, 'WAVE');
+    writeStr(12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true); // PCM
+    view.setUint16(22, 1, true); // Mono
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, sampleRate * 2, true);
+    view.setUint16(32, 2, true);
+    view.setUint16(34, 16, true);
+    writeStr(36, 'data');
+    view.setUint32(40, pcmData.length * 2, true);
+
+    for (let i = 0; i < pcmData.length; i++) {
+      view.setInt16(44 + i * 2, pcmData[i], true);
+    }
+
+    const blob = new Blob([buffer], { type: 'audio/wav' });
+    const wavUrl = URL.createObjectURL(blob);
+    musicEngine.generatedWavUrls[presetKey] = wavUrl;
+    return wavUrl;
+  }
 
   function extractYouTubeId(url) {
     if (!url) return null;
@@ -3445,21 +3803,19 @@
 
     try {
       if (targetTrack.source_type === 'synth') {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!musicEngine.synthCtx && AudioCtx) {
-          musicEngine.synthCtx = new AudioCtx();
+        // Gunakan WAV PCM 16-bit yang dihasilkan secara nyata ke dalam elemen <audio> HTML5
+        const wavUrl = getOrCreateInstrumentalWavUrl(targetTrack.source_url || 'synth://educational-inspiration');
+        if (html5Audio.src !== wavUrl) {
+          html5Audio.src = wavUrl;
         }
-        if (musicEngine.synthCtx && musicEngine.synthCtx.state === 'suspended' && !musicEngine.userInteracted) {
-          // Coba resume, jika masih suspended maka browser memblokir autoplay
-          await musicEngine.synthCtx.resume();
-        }
-        if (musicEngine.synthCtx && musicEngine.synthCtx.state === 'suspended') {
-          throw new Error('Autoplay diblokir oleh kebijakan browser');
-        }
+        html5Audio.loop = mc.loop !== false;
+        html5Audio.volume = musicEngine.isMuted ? 0 : musicEngine.volume;
+        await html5Audio.play();
         musicEngine.isPlaying = true;
-        await startInstrumentalSynth(targetTrack.source_url);
       } else if (targetTrack.source_type === 'mp3') {
-        html5Audio.src = targetTrack.source_url;
+        if (html5Audio.src !== targetTrack.source_url) {
+          html5Audio.src = targetTrack.source_url;
+        }
         html5Audio.loop = mc.loop !== false;
         html5Audio.volume = musicEngine.isMuted ? 0 : musicEngine.volume;
         await html5Audio.play();
@@ -3514,6 +3870,21 @@
       musicEngine.autoplayBlocked = true;
       updateMusicPlayerUI();
     }
+  }
+
+  // Listener pintar: begitu pengunjung menyentuh/mengklik area mana saja jika autoplay sempat ditahan browser, langsung jalankan musiknya
+  function attachSmartAutoplayUnlockListeners() {
+    const unlockHandler = () => {
+      musicEngine.userInteracted = true;
+      const mc = state.musicConfig || DEFAULT_MUSIC_CONFIG;
+      if (mc.enabled && !musicEngine.isPlaying && musicEngine.autoplayBlocked) {
+        startTrackPlayback(musicEngine.currentTrack);
+      }
+      window.removeEventListener('pointerdown', unlockHandler);
+      window.removeEventListener('keydown', unlockHandler);
+    };
+    window.addEventListener('pointerdown', unlockHandler, { once: true });
+    window.addEventListener('keydown', unlockHandler, { once: true });
   }
 
   function syncMusicPlayerWithConfig(autoStart = false) {
@@ -4141,6 +4512,8 @@
   // Expose public API to window
   window.app = {
     navigate,
+    openAdminPortalWithProgress,
+    handleImageUploadInput,
     quickLogin,
     logout,
     setAdminTab,
@@ -4201,7 +4574,8 @@
     }
     await loadAllData();
     initChatbotGreeting();
-    // Smart Autoplay System saat pertama kali website dibuka (Volume 25%, Loop, Single Instance)
+    // Smart Autoplay System saat pertama kali website dibuka (Volume 25%, Loop, Single Instance WAV/MP3/YT)
+    attachSmartAutoplayUnlockListeners();
     syncMusicPlayerWithConfig(true);
     registerInlineServiceWorker();
   }
