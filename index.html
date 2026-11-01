@@ -213,27 +213,20 @@
       min-width: 0;
     }
 
-    @media (min-width: 1024px) {
-      .mobile-bottom-nav {
-        display: none !important;
-      }
+    /* Menu navigasi bawah di smartphone/tablet dihilangkan secara permanen karena sudah ada menu di atas header */
+    .mobile-bottom-nav {
+      display: none !important;
     }
 
-    @media (max-width: 1023px) {
-      .mobile-bottom-nav {
-        display: flex !important;
-      }
-
-      .main-content-area {
-        padding-bottom: 5.75rem;
-      }
+    .main-content-area {
+      padding-bottom: 2rem;
     }
 
     /* SISTEM POSISI FLOATING KANAN PALING BAWAH (BOTTOM-RIGHT CORNER) */
     #floating-music-root {
       position: fixed !important;
       right: 0.75rem !important;
-      bottom: 5.25rem !important;
+      bottom: 1rem !important;
       z-index: 10000005 !important;
       pointer-events: none !important;
       transform: none !important;
@@ -242,7 +235,7 @@
     #chatbot-window {
       position: fixed !important;
       right: 0.75rem !important;
-      bottom: 8.75rem !important;
+      bottom: 4.5rem !important;
       z-index: 10000008 !important;
       transform: none !important;
     }
@@ -250,10 +243,12 @@
     @media (min-width: 640px) {
       #floating-music-root {
         right: 1.25rem !important;
+        bottom: 1.25rem !important;
       }
 
       #chatbot-window {
         right: 1.25rem !important;
+        bottom: 4.75rem !important;
       }
     }
 
@@ -634,35 +629,8 @@
       </div>
     </div>
 
-    <!-- MOBILE FLOATING BOTTOM NAVIGATION BAR -->
-    <nav
-      class="mobile-bottom-nav fixed bottom-3 inset-x-3 z-40 glass-panel rounded-2xl shadow-lg border border-slate-200 px-2 py-2 items-center justify-around">
-      <button onclick="window.app.navigate('beranda')" data-mobnav="beranda"
-        class="mob-nav-btn flex flex-col items-center gap-1 px-2.5 py-1 rounded-xl text-brand-700 font-semibold text-[11px]">
-        <i data-lucide="home" class="w-4 h-4"></i>
-        <span>Beranda</span>
-      </button>
-      <button onclick="window.app.navigate('profil')" data-mobnav="profil"
-        class="mob-nav-btn flex flex-col items-center gap-1 px-2.5 py-1 rounded-xl text-slate-600 text-[11px]">
-        <i data-lucide="building-2" class="w-4 h-4"></i>
-        <span>Profil</span>
-      </button>
-      <button onclick="window.app.navigate('spmb')" data-mobnav="spmb"
-        class="mob-nav-btn flex flex-col items-center gap-1 px-3 py-1 rounded-xl bg-yellow-400 text-slate-900 font-bold text-[11px] shadow-sm">
-        <i data-lucide="user-plus" class="w-4 h-4"></i>
-        <span>SPMB</span>
-      </button>
-      <button onclick="window.app.navigate('berita')" data-mobnav="berita"
-        class="mob-nav-btn flex flex-col items-center gap-1 px-2.5 py-1 rounded-xl text-slate-600 text-[11px]">
-        <i data-lucide="newspaper" class="w-4 h-4"></i>
-        <span>Berita</span>
-      </button>
-      <button onclick="window.app.toggleMobileMenuDrawer()"
-        class="flex flex-col items-center gap-1 px-2.5 py-1 rounded-xl text-slate-600 text-[11px]">
-        <i data-lucide="grid" class="w-4 h-4"></i>
-        <span>Menu</span>
-      </button>
-    </nav>
+    <!-- NAVIGASI BAWAH SMARTPHONE/TABLET TELAH DIHAPUS: Navigasi utama telah tersedia lengkap dan responsif di atas Header -->
+
 
     <!-- RESPONSIVE MENU BAR MODAL & DRAWER (DESKTOP & MOBILE) -->
     <div id="mobile-menu-drawer"
@@ -912,12 +880,12 @@
 
     // Hak Akses Multi-Role (Hanya Administrator yang memiliki izin tab 'musik')
     const ROLE_LABELS = {
-      admin: { title: 'Administrator Utama', badge: 'bg-slate-900 text-yellow-300', tabs: ['ringkasan', 'pengaturan', 'musik', 'postingan', 'gtk', 'fasilitas_galeri', 'spmb', 'pengaduan', 'pengguna'] },
+      admin: { title: 'Administrator Utama', badge: 'bg-slate-900 text-yellow-300', tabs: ['ringkasan', 'pengaturan', 'musik', 'postingan', 'ekskul', 'gtk', 'fasilitas_galeri', 'spmb', 'pengaduan', 'pengguna'] },
       kepsek: { title: 'Kepala Sekolah', badge: 'bg-purple-700 text-white', tabs: ['ringkasan', 'spmb', 'pengaduan'] },
-      operator: { title: 'Operator Sekolah', badge: 'bg-blue-700 text-white', tabs: ['ringkasan', 'pengaturan', 'gtk', 'fasilitas_galeri', 'postingan'] },
-      guru: { title: 'Guru / Pendidik', badge: 'bg-emerald-700 text-white', tabs: ['ringkasan', 'postingan'] },
+      operator: { title: 'Operator Sekolah', badge: 'bg-blue-700 text-white', tabs: ['ringkasan', 'pengaturan', 'gtk', 'fasilitas_galeri', 'postingan', 'ekskul'] },
+      guru: { title: 'Guru / Pendidik', badge: 'bg-emerald-700 text-white', tabs: ['ringkasan', 'postingan', 'ekskul'] },
       spmb: { title: 'Panitia SPMB', badge: 'bg-amber-600 text-white', tabs: ['ringkasan', 'spmb'] },
-      humas: { title: 'Humas & Dokumentasi', badge: 'bg-teal-700 text-white', tabs: ['ringkasan', 'postingan', 'fasilitas_galeri', 'pengaduan'] }
+      humas: { title: 'Humas & Dokumentasi', badge: 'bg-teal-700 text-white', tabs: ['ringkasan', 'postingan', 'ekskul', 'fasilitas_galeri', 'pengaduan'] }
     };
 
     // Konfigurasi Default Smart Background Music Player
@@ -967,6 +935,7 @@
       isChatTyping: false,
       // Status ID item yang sedang dalam mode edit (Semua Kelola)
       editingPostId: null,
+      editingEkskulId: null,
       editingStaffId: null,
       editingFacilityGalleryId: null,
       editingSpmbId: null,
@@ -981,7 +950,7 @@
             school_name: 'SMP Negeri 71 Kota Bandung',
             logo_url: '',
             hero_bg_url: '',
-            highlight_1: 'Terakreditasi B (Baik)',
+            highlight_1: 'Terakreditasi B',
             highlight_2: 'Kelas Digital Cerdas',
             highlight_3: 'Sekolah Ramah Anak',
             principal_name: 'Kepala SMP Negeri 71 Kota Bandung',
@@ -1019,10 +988,10 @@
         school_name: 'SMP Negeri 71 Kota Bandung',
         logo_url: '',
         hero_bg_url: '',
-        highlight_1: 'Terakreditasi B (Baik)',
+        highlight_1: 'Terakreditasi B',
         highlight_2: 'Kelas Digital Cerdas',
         highlight_3: 'Sekolah Ramah Anak',
-        principal_name: 'Dr. H. Ahmad Suryana, M.Pd.',
+        principal_name: 'Nuraeni Puspitasari, S.S., M.Ak.',
         principal_photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80',
         principal_welcome: 'Selamat datang di portal resmi SMP Negeri 71 Kota Bandung. Kami berkomitmen menghadirkan ekosistem pendidikan modern yang ramah anak, unggul dalam karakter, literasi, serta inovasi teknologi bagi seluruh peserta didik.',
         short_profile: 'SMP Negeri 71 Kota Bandung merupakan sekolah menengah pertama negeri unggulan di Kota Bandung yang menyelenggarakan Kurikulum Nasional berbasis karakter P5, pembelajaran digital interaktif, serta pembinaan prestasi akademik dan ekstrakurikuler.',
@@ -1180,6 +1149,51 @@
           file_name: 'Laporan_Realisasi_BOS_Reguler_2026.pdf',
           event_date: '2026-04-28',
           author_name: 'Pejabat PPID Sekolah'
+        },
+        // EKSTRAKURIKULER UNGGULAN SEKOLAH (FITUR LAYANAN SISWA CMS)
+        {
+          id: 'ekskul-init-1',
+          category: 'ekskul',
+          title: 'Pramuka & Paskibra',
+          content: 'Membentuk kepemimpinan, kedisiplinan, karakter tangguh, dan ketangkasan baris-berbaris.',
+          image_url: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80',
+          file_url: '',
+          file_name: '',
+          event_date: '2026-05-01',
+          author_name: 'Pembina Pramuka & Paskibra'
+        },
+        {
+          id: 'ekskul-init-2',
+          category: 'ekskul',
+          title: 'Seni Tari & Angklung',
+          content: 'Melestarikan seni budaya tradisional Sunda, harmoni musik angklung kolosal, dan tampil dalam berbagai festival kesenian.',
+          image_url: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80',
+          file_url: '',
+          file_name: '',
+          event_date: '2026-05-01',
+          author_name: 'Pembina Seni Budaya'
+        },
+        {
+          id: 'ekskul-init-3',
+          category: 'ekskul',
+          title: 'KIR & Klub Robotik',
+          content: 'Wadah eksperimen sains terapan, penelitian karya ilmiah remaja, dan otomasi teknologi digital modern.',
+          image_url: 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=800&q=80',
+          file_url: '',
+          file_name: '',
+          event_date: '2026-05-01',
+          author_name: 'Pembina Riset & Robotik'
+        },
+        {
+          id: 'ekskul-init-4',
+          category: 'ekskul',
+          title: 'Futsal, Basket & Pencak Silat',
+          content: 'Pembinaan olahraga prestasi, kebugaran fisik, sportivitas, dan persiapan menuju kejuaraan O2SN tingkat Kota & Jawa Barat.',
+          image_url: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80',
+          file_url: '',
+          file_name: '',
+          event_date: '2026-05-01',
+          author_name: 'Pembina Olahraga Prestasi'
         }
       ];
 
@@ -1291,7 +1305,7 @@
       ];
 
       state.users = [
-        { id: 'u-1', username: 'kepsek71', password: '123', full_name: 'Dr. H. Ahmad Suryana, M.Pd.', role: 'kepsek', is_active: true },
+        { id: 'u-1', username: 'kepsek71', password: '123', full_name: 'Nuraeni Puspitasari, S.S., M.Ak', role: 'kepsek', is_active: true },
         { id: 'u-2', username: 'operator71', password: '123', full_name: 'Rina Marlina, S.Kom.', role: 'operator', is_active: true },
         { id: 'u-3', username: 'guru71', password: '123', full_name: 'Dra. Hj. Ratna Ningsih', role: 'guru', is_active: true },
         { id: 'u-4', username: 'spmb71', password: '123', full_name: 'Hendra Saputra, S.Pd.', role: 'spmb', is_active: true },
@@ -1641,7 +1655,7 @@
     // ============================================================================
     // SINKRONISASI DATA SUPABASE, REALTIME CHANNEL & CACHE LOKAL MUTAKHIR
     // ============================================================================
-    const CACHE_VERSION = '2026.11.02_v15_live_direct_sync';
+    const CACHE_VERSION = '2026.11.02_v16_ekskul_sync';
 
     // Daftar judul pos & informasi demo bawaan awal yang wajib disaring agar tidak pernah muncul
     const KNOWN_DEMO_TITLES = [
@@ -2203,7 +2217,7 @@
       };
       setTxt('header-school-name', s.school_name);
       setTxt('header-school-address', s.address);
-      setTxt('header-accreditation-badge', s.highlight_1 || 'Terakreditasi B (Baik)');
+      setTxt('header-accreditation-badge', s.highlight_1 || 'Terakreditasi B');
       setTxt('footer-school-name', s.school_name);
       setTxt('footer-short-desc', s.short_profile);
       setTxt('footer-phone', s.phone);
@@ -2319,18 +2333,6 @@
         `;
         }).join('');
       }
-
-      document.querySelectorAll('.mob-nav-btn').forEach(btn => {
-        const target = btn.getAttribute('data-mobnav');
-        if (target === 'spmb') return;
-        if (target === state.currentView) {
-          btn.classList.add('text-brand-700', 'font-bold');
-          btn.classList.remove('text-slate-600');
-        } else {
-          btn.classList.remove('text-brand-700', 'font-bold');
-          btn.classList.add('text-slate-600');
-        }
-      });
 
       refreshIcons();
       setupNavScrollListeners();
@@ -2510,7 +2512,7 @@
       const ytUrl = normalizeExternalUrl(s.youtube_url, 'https://www.youtube.com');
       const ttUrl = normalizeExternalUrl(s.tiktok_url, 'https://www.tiktok.com');
       const mapsEmbedUrl = normalizeGoogleMapsEmbedUrl(s.maps_url);
-      const hl1 = s.highlight_1 || 'Terakreditasi B(Baik)';
+      const hl1 = s.highlight_1 || 'Terakreditasi B';
       const hl2 = s.highlight_2 || 'Kelas Digital Cerdas';
       const hl3 = s.highlight_3 || 'Sekolah Ramah Anak';
 
@@ -2615,7 +2617,7 @@
             <!-- Right Image Building & Badge Column -->
             <div class="lg:col-span-5 relative">
               <div class="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white">
-                <img src="https://i.imgur.com/lFxfufn.png" alt="Gedung SMPN 71 Kota Bandung" loading="lazy" decoding="async" class="w-full h-64 sm:h-80 lg:h-96 object-cover" />
+                <img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1000&q=80" alt="Gedung SMPN 71 Kota Bandung" loading="lazy" decoding="async" class="w-full h-64 sm:h-80 lg:h-96 object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900/75 via-transparent to-transparent flex items-end p-5">
                   <div class="text-white">
                     <span class="px-2.5 py-1 rounded-full bg-yellow-400 text-slate-900 font-extrabold text-[10px] uppercase">Gedung Utama</span>
@@ -3158,33 +3160,68 @@
     // ============================================================================
     function renderLayananView() {
       const layananPosts = state.posts.filter(p => p.category === 'layanan_siswa');
+      const ekskulPosts = state.posts.filter(p => p.category === 'ekskul');
+      const canManageEkskul = state.currentUser && ['admin', 'operator', 'guru', 'humas'].includes(state.currentUser.role);
       return `
       <div class="space-y-8">
         ${renderPageHeader('F. Layanan Peserta Didik', 'Bimbingan Konseling (BK), Pembinaan Ekstrakurikuler, dan Prestasi Siswa SMPN 71 Kota Bandung', 'award')}
 
-        <!-- Blok Hijau Ekstrakurikuler (Sesuai Referensi UI) -->
-        <div class="bg-brand-700 text-white rounded-3xl p-6 sm:p-8 space-y-5">
-          <div>
-            <span class="px-3 py-1 rounded-full bg-yellow-400 text-slate-900 font-bold text-xs">Pengembangan Bakat</span>
-            <h3 class="font-heading font-bold text-xl sm:text-2xl mt-2">Ekstrakurikuler Unggulan SMPN 71 Kota Bandung</h3>
+        <!-- Blok Hijau Ekstrakurikuler (Sesuai Referensi UI, Terhubung Realtime ke CMS Admin & Supabase) -->
+        <div class="bg-brand-700 text-white rounded-3xl p-6 sm:p-8 space-y-5 shadow-sm">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <span class="px-3 py-1 rounded-full bg-yellow-400 text-slate-900 font-bold text-xs">Pengembangan Bakat</span>
+              <h3 class="font-heading font-bold text-xl sm:text-2xl mt-2">Ekstrakurikuler Unggulan SMPN 71 Kota Bandung</h3>
+            </div>
+            ${canManageEkskul ? `
+              <button onclick="window.app.navigate('admin'); window.app.setAdminTab('ekskul');" class="px-3.5 py-2 rounded-xl bg-white/20 hover:bg-white text-white hover:text-brand-800 font-bold text-xs flex items-center gap-1.5 transition backdrop-blur-sm">
+                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                <span>Kelola Ekstrakurikuler di CMS</span>
+              </button>
+            ` : ''}
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-slate-900">
-            <div class="bg-white p-4 rounded-2xl space-y-1">
-              <div class="font-heading font-bold text-sm text-brand-700">Pramuka & Paskibra</div>
-              <p class="text-xs text-slate-600">Membentuk kepemimpinan, kedisiplinan, dan ketangkasan baris-berbaris.</p>
-            </div>
-            <div class="bg-white p-4 rounded-2xl space-y-1">
-              <div class="font-heading font-bold text-sm text-brand-700">Seni Tari & Angklung</div>
-              <p class="text-xs text-slate-600">Melestarikan seni budaya Sunda dan tampil dalam berbagai festival kota.</p>
-            </div>
-            <div class="bg-white p-4 rounded-2xl space-y-1">
-              <div class="font-heading font-bold text-sm text-brand-700">KIR & Klub Robotik</div>
-              <p class="text-xs text-slate-600">Wadah eksperimen sains terapan, karya ilmiah remaja, dan otomasi teknologi.</p>
-            </div>
-            <div class="bg-white p-4 rounded-2xl space-y-1">
-              <div class="font-heading font-bold text-sm text-brand-700">Futsal, Basket & Pencak Silat</div>
-              <p class="text-xs text-slate-600">Pembinaan olahraga prestasi menuju kejuaraan O2SN tingkat Kota & Provinsi.</p>
-            </div>
+            ${ekskulPosts.length > 0 ? ekskulPosts.map(e => `
+              <div class="bg-white p-4 rounded-2xl space-y-2 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+                <div class="space-y-2">
+                  ${e.image_url ? `
+                    <div class="w-full h-28 rounded-xl overflow-hidden bg-slate-100 border border-slate-100">
+                      <img src="${escapeHtml(e.image_url)}" alt="${escapeHtml(e.title)}" loading="lazy" class="w-full h-full object-cover" onerror="this.parentElement.style.display='none'" />
+                    </div>
+                  ` : ''}
+                  <div>
+                    <div class="font-heading font-bold text-sm text-brand-700 leading-snug">${escapeHtml(e.title)}</div>
+                    ${e.author_name ? `<div class="text-[11px] font-semibold text-slate-500 mt-0.5"><i data-lucide="user" class="inline w-3 h-3 text-brand-600"></i> ${escapeHtml(e.author_name)}</div>` : ''}
+                  </div>
+                  <p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(e.content)}</p>
+                </div>
+                <div class="pt-2 border-t border-slate-100 space-y-1.5">
+                  ${renderPostPdfDownloadBtn(e)}
+                  ${canManageEkskul ? `
+                    <button onclick="window.app.navigate('admin'); window.app.setAdminTab('ekskul'); window.app.startEditEkskul('${e.id}');" class="w-full text-center py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 text-[10px] font-bold transition flex items-center justify-center gap-1">
+                      <i data-lucide="edit-2" class="w-3 h-3"></i> Edit Data
+                    </button>
+                  ` : ''}
+                </div>
+              </div>
+            `).join('') : `
+              <div class="bg-white p-4 rounded-2xl space-y-1">
+                <div class="font-heading font-bold text-sm text-brand-700">Pramuka & Paskibra</div>
+                <p class="text-xs text-slate-600">Membentuk kepemimpinan, kedisiplinan, dan ketangkasan baris-berbaris.</p>
+              </div>
+              <div class="bg-white p-4 rounded-2xl space-y-1">
+                <div class="font-heading font-bold text-sm text-brand-700">Seni Tari & Angklung</div>
+                <p class="text-xs text-slate-600">Melestarikan seni budaya Sunda dan tampil dalam berbagai festival kota.</p>
+              </div>
+              <div class="bg-white p-4 rounded-2xl space-y-1">
+                <div class="font-heading font-bold text-sm text-brand-700">KIR & Klub Robotik</div>
+                <p class="text-xs text-slate-600">Wadah eksperimen sains terapan, karya ilmiah remaja, dan otomasi teknologi.</p>
+              </div>
+              <div class="bg-white p-4 rounded-2xl space-y-1">
+                <div class="font-heading font-bold text-sm text-brand-700">Futsal, Basket & Pencak Silat</div>
+                <p class="text-xs text-slate-600">Pembinaan olahraga prestasi menuju kejuaraan O2SN tingkat Kota & Provinsi.</p>
+              </div>
+            `}
           </div>
         </div>
 
@@ -3523,6 +3560,7 @@
         pengaturan: { label: 'Profil, Sosmed & Statistik', icon: 'settings' },
         musik: { label: 'Pengaturan Musik Website', icon: 'music' },
         postingan: { label: 'Berita, Akademik & PPID', icon: 'file-text' },
+        ekskul: { label: 'Layanan Ekskul', icon: 'award' },
         gtk: { label: 'Data Guru & Tendik', icon: 'users' },
         fasilitas_galeri: { label: 'Fasilitas & Galeri', icon: 'image' },
         spmb: { label: 'Kelola Pendaftaran SPMB', icon: 'user-check' },
@@ -3577,20 +3615,24 @@
         return `
         <div class="space-y-6">
           <h3 class="font-heading font-bold text-lg text-slate-900">Ringkasan Eksekutif & Laporan Data Website</h3>
-          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
             <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-100">
-              <div class="text-xs text-brand-700 font-semibold">Total Konten & Berita</div>
-              <div class="font-heading font-extrabold text-2xl text-slate-900 mt-1">${state.posts.length}</div>
+              <div class="text-xs text-brand-700 font-semibold">Konten & Berita</div>
+              <div class="font-heading font-extrabold text-2xl text-slate-900 mt-1">${state.posts.filter(p => p.category !== 'ekskul').length}</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-teal-50 border border-teal-100">
+              <div class="text-xs text-teal-700 font-semibold">Layanan Ekskul</div>
+              <div class="font-heading font-extrabold text-2xl text-slate-900 mt-1">${state.posts.filter(p => p.category === 'ekskul').length}</div>
             </div>
             <div class="p-4 rounded-2xl bg-blue-50 border border-blue-100">
-              <div class="text-xs text-blue-700 font-semibold">Data Guru & Tendik</div>
+              <div class="text-xs text-blue-700 font-semibold">Guru & Tendik</div>
               <div class="font-heading font-extrabold text-2xl text-slate-900 mt-1">${state.staff.length}</div>
             </div>
             <div class="p-4 rounded-2xl bg-amber-50 border border-amber-100">
               <div class="text-xs text-amber-700 font-semibold">Pendaftar SPMB</div>
               <div class="font-heading font-extrabold text-2xl text-slate-900 mt-1">${state.spmbList.length}</div>
             </div>
-            <div class="p-4 rounded-2xl bg-purple-50 border border-purple-100">
+            <div class="p-4 rounded-2xl bg-purple-50 border border-purple-100 col-span-2 sm:col-span-1">
               <div class="text-xs text-purple-700 font-semibold">Pengaduan & PPID</div>
               <div class="font-heading font-extrabold text-2xl text-slate-900 mt-1">${state.complaints.length}</div>
             </div>
@@ -3661,7 +3703,7 @@
             </div>
           </div>
 
-          <!-- Input 3 Keunggulan Utama (Terakreditasi B (Baik), Kelas Digital Cerdas, Sekolah Ramah Anak) -->
+          <!-- Input 3 Keunggulan Utama (Terakreditasi B, Kelas Digital Cerdas, Sekolah Ramah Anak) -->
           <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-3">
             <div class="font-heading font-bold text-sm text-slate-900 flex items-center gap-2">
               <i data-lucide="award" class="w-4 h-4 text-amber-600"></i>
@@ -3670,7 +3712,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">Keunggulan 1 (Akreditasi)</label>
-                <input type="text" name="highlight_1" value="${escapeHtml(s.highlight_1 || 'Terakreditasi B (Baik)')}" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white font-semibold" />
+                <input type="text" name="highlight_1" value="${escapeHtml(s.highlight_1 || 'Terakreditasi B')}" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white font-semibold" />
               </div>
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">Keunggulan 2 (Program Digital)</label>
@@ -3951,6 +3993,7 @@
                 <option value="agenda" ${editingPost?.category === 'agenda' ? 'selected' : ''}>Kategori: Agenda Kegiatan</option>
                 <option value="akademik" ${editingPost?.category === 'akademik' ? 'selected' : ''}>Kategori: Info Pembelajaran / Akademik</option>
                 <option value="layanan_siswa" ${editingPost?.category === 'layanan_siswa' ? 'selected' : ''}>Kategori: Layanan Peserta Didik</option>
+                <option value="ekskul" ${editingPost?.category === 'ekskul' ? 'selected' : ''}>Kategori: Layanan Siswa (Ekstrakurikuler)</option>
                 <option value="ppid" ${editingPost?.category === 'ppid' ? 'selected' : ''}>Kategori: Dokumen PPID</option>
               </select>
             </div>
@@ -4062,6 +4105,148 @@
                   </div>
                 </div>
               `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+      }
+
+      if (state.adminTab === 'ekskul') {
+        const ekskulPosts = state.posts.filter(p => p.category === 'ekskul');
+        const editingEkskul = state.editingEkskulId ? state.posts.find(p => p.id === state.editingEkskulId) : null;
+        return `
+        <div class="space-y-6">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div>
+              <h3 class="font-heading font-bold text-lg text-slate-900">Kelola Layanan Peserta Didik (Ekstrakurikuler)</h3>
+              <p class="text-xs text-slate-500">Tambah, edit data pembina, jadwal, foto, materi/panduan PDF, serta hapus ekstrakurikuler sekolah. Data langsung tersinkronkan ke Layanan Siswa dan database Supabase.</p>
+            </div>
+            ${editingEkskul ? `
+              <button onclick="window.app.cancelEditEkskul()" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5">
+                <i data-lucide="x" class="w-4 h-4"></i> Batal Mode Edit
+              </button>
+            ` : ''}
+          </div>
+
+          <!-- Form Tambah / Edit Ekstrakurikuler -->
+          <form onsubmit="window.app.addEkskulForm(event)" class="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 rounded-2xl ${editingEkskul ? 'bg-amber-50/70 border-2 border-amber-300' : 'bg-slate-50 border border-slate-200'} text-xs">
+            ${editingEkskul ? `
+              <div class="md:col-span-3 p-3 rounded-xl bg-amber-100/80 border border-amber-300 flex items-center justify-between text-amber-900 font-bold">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="edit-3" class="w-4 h-4 text-amber-700"></i>
+                  <span>Sedang Mengedit Ekstrakurikuler: "${escapeHtml(editingEkskul.title)}"</span>
+                </div>
+                <span class="text-[11px] px-2 py-0.5 rounded bg-amber-200 text-amber-800">Mode Edit Aktif</span>
+              </div>
+            ` : ''}
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Nama Ekstrakurikuler *</label>
+              <input type="text" name="title" value="${escapeHtml(editingEkskul ? editingEkskul.title : '')}" required placeholder="Contoh: Pramuka & Paskibra" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Guru Pembina / Pelatih</label>
+              <input type="text" name="author_name" value="${escapeHtml(editingEkskul ? (editingEkskul.author_name || '') : '')}" placeholder="Contoh: Budi Santoso, S.Pd. / Pelatih" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Tanggal Mulai / Pembaruan *</label>
+              <input type="date" name="event_date" value="${editingEkskul ? (editingEkskul.event_date || '') : new Date().toISOString().split('T')[0]}" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+            </div>
+
+            <!-- Upload Foto Sampul Kegiatan Ekstrakurikuler -->
+            <div class="md:col-span-3 space-y-1.5 bg-white p-3 rounded-xl border border-slate-200">
+              <label class="block font-semibold text-slate-700 text-[11px]">Foto Sampul Ekstrakurikuler (PNG/JPG/JPEG atau URL)</label>
+              <div class="flex items-center gap-2">
+                <input type="file" accept="image/png,image/jpeg,image/jpg" onchange="window.app.handleImageUploadInput(event, 'ekskul-image-url-input', 'ekskul-image-preview', 800)" class="w-full text-[11px] file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-brand-50 file:text-brand-700 file:font-bold" />
+                <img id="ekskul-image-preview" src="${escapeHtml(editingEkskul?.image_url || '')}" alt="Preview" class="${editingEkskul?.image_url ? '' : 'hidden'} w-14 h-10 rounded-lg object-cover border border-slate-300 shrink-0" />
+              </div>
+              <input type="text" id="ekskul-image-url-input" name="image_url" value="${escapeHtml(editingEkskul ? (editingEkskul.image_url || '') : '')}" placeholder="Atau tempel URL foto kegiatan..." class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 text-[11px]" />
+            </div>
+
+            <!-- Upload Lampiran PDF Formulir / Modul Ekstrakurikuler -->
+            <div class="md:col-span-3 space-y-2 bg-white p-3 rounded-xl border border-slate-200">
+              <div class="flex items-center justify-between">
+                <label class="block font-semibold text-slate-700 flex items-center gap-1.5">
+                  <i data-lucide="file-text" class="w-4 h-4 text-brand-700"></i>
+                  <span>Upload Lampiran PDF (Formulir Pendaftaran / Silabus / Juklak - Format .pdf)</span>
+                </label>
+                <button type="button" onclick="window.app.clearPdfAttachment('ekskul-file-url-input', 'ekskul-file-name-input', 'ekskul-file-badge')" class="text-[11px] text-red-600 hover:underline flex items-center gap-1">
+                  <i data-lucide="trash" class="w-3 h-3"></i> Hapus Lampiran PDF
+                </button>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <input type="file" accept="application/pdf,.pdf" onchange="window.app.handlePdfUploadInput(event, 'ekskul-file-url-input', 'ekskul-file-name-input', 'ekskul-file-badge')" class="w-full text-[11px] file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-brand-50 file:text-brand-700 file:font-bold border border-slate-200 rounded-lg p-1" />
+                </div>
+                <div>
+                  <input type="text" id="ekskul-file-name-input" name="file_name" value="${escapeHtml(editingEkskul?.file_name || '')}" placeholder="Nama Tampilan Berkas (Contoh: Formulir_Pramuka_2026.pdf)" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs" />
+                </div>
+              </div>
+              <input type="text" id="ekskul-file-url-input" name="file_url" value="${escapeHtml(editingEkskul?.file_url || '')}" placeholder="Atau tempel Link Langsung File PDF / Google Drive PDF..." class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs" />
+              <div id="ekskul-file-badge" class="${editingEkskul?.file_url ? '' : 'hidden'} text-xs text-emerald-800 bg-emerald-50 p-2.5 rounded-xl border border-emerald-200 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0">
+                  <i data-lucide="file-check-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                  <span class="truncate">File PDF Siap: <strong id="ekskul-file-badge-text">${escapeHtml(editingEkskul?.file_name || 'Dokumen_Ekskul.pdf')}</strong></span>
+                </div>
+                ${editingEkskul?.file_url ? `
+                  <a href="${escapeHtml(editingEkskul.file_url)}" target="_blank" download="${escapeHtml(editingEkskul.file_name || 'dokumen.pdf')}" class="px-2.5 py-1 rounded-lg bg-emerald-700 text-white font-bold text-[10px] shrink-0 hover:bg-emerald-800">
+                    Cek Unduh
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+
+            <div class="md:col-span-3">
+              <label class="block font-semibold text-slate-700 mb-1">Deskripsi, Tujuan & Jadwal Kegiatan *</label>
+              <textarea name="content" rows="3" required placeholder="Jelaskan deskripsi kegiatan, materi pembinaan, jadwal latihan rutin (misal: Setiap Jumat pkl 15.00), serta target prestasi..." class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white">${escapeHtml(editingEkskul ? editingEkskul.content : '')}</textarea>
+            </div>
+
+            <div class="md:col-span-3 flex flex-wrap gap-2">
+              <button type="submit" class="flex-1 py-2.5 rounded-xl ${editingEkskul ? 'bg-amber-500 hover:bg-amber-600 text-slate-900' : 'bg-brand-700 hover:bg-brand-800 text-white'} font-bold shadow-sm transition flex items-center justify-center gap-2">
+                <i data-lucide="${editingEkskul ? 'check-circle' : 'plus-circle'}" class="w-4 h-4"></i>
+                <span>${editingEkskul ? 'Simpan Perubahan Ekstrakurikuler' : '+ Tambah Ekstrakurikuler Baru ke Layanan Siswa'}</span>
+              </button>
+              ${editingEkskul ? `
+                <button type="button" onclick="window.app.cancelEditEkskul()" class="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold transition">
+                  Batal Edit
+                </button>
+              ` : ''}
+            </div>
+          </form>
+
+          <!-- Daftar Ekstrakurikuler dengan Tombol Edit & Hapus -->
+          <div class="space-y-3">
+            <h4 class="font-heading font-bold text-sm text-slate-900">Daftar Ekstrakurikuler Aktif (${ekskulPosts.length} Kegiatan)</h4>
+            <div class="space-y-2.5">
+              ${ekskulPosts.length > 0 ? ekskulPosts.map(p => `
+                <div class="p-3.5 rounded-2xl border ${state.editingEkskulId === p.id ? 'border-amber-400 bg-amber-50/50' : 'border-slate-200 bg-white'} flex flex-wrap items-center justify-between gap-3 text-xs">
+                  <div class="flex items-center gap-3 min-w-0 flex-1">
+                    <img src="${escapeHtml(p.image_url || 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=200&q=60')}" alt="Thumb" class="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" onerror="this.src='https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=200&q=60'" />
+                    <div class="min-w-0">
+                      <div class="flex flex-wrap items-center gap-1.5">
+                        <span class="px-2 py-0.5 rounded bg-brand-50 text-brand-700 font-bold uppercase text-[10px]">LAYANAN EKSKUL</span>
+                        ${p.file_url ? `
+                          <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px] flex items-center gap-1">
+                            <i data-lucide="paperclip" class="w-3 h-3 text-emerald-600"></i> ${escapeHtml(p.file_name || 'Ada PDF')}
+                          </span>
+                        ` : ''}
+                      </div>
+                      <span class="font-bold text-slate-900 mt-1 block truncate">${escapeHtml(p.title)}</span>
+                      <div class="text-[11px] text-slate-500 mt-0.5">${p.author_name ? 'Pembina: ' + escapeHtml(p.author_name) : 'SMPN 71 Bandung'} • <span class="text-slate-400">${escapeHtml(p.content.slice(0, 70))}${p.content.length > 70 ? '...' : ''}</span></div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <button onclick="window.app.startEditEkskul('${p.id}')" class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold flex items-center gap-1 transition">
+                      <i data-lucide="edit-2" class="w-3.5 h-3.5"></i> Edit
+                    </button>
+                    <button onclick="window.app.deleteEkskul('${p.id}')" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-bold flex items-center gap-1 transition">
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus
+                    </button>
+                  </div>
+                </div>
+              `).join('') : renderEmptyState('Belum ada data ekstrakurikuler. Silakan gunakan formulir di atas untuk menambahkan ekstrakurikuler baru.')}
             </div>
           </div>
         </div>
@@ -4701,7 +4886,7 @@
       if (!IS_PREVIEW) return;
       const names = {
         admin: 'Administrator Website',
-        kepsek: 'Dr. H. Ahmad Suryana, M.Pd. (Kepsek)',
+        kepsek: 'Nuraeni Puspitasari, S.S., M.Ak. (Kepsek)',
         operator: 'Rina Marlina, S.Kom. (Operator)',
         guru: 'Dra. Hj. Ratna Ningsih (Guru)',
         spmb: 'Hendra Saputra, S.Pd. (Panitia SPMB)',
@@ -4754,7 +4939,7 @@
         school_name: f.school_name.value.trim(),
         logo_url: (f.logo_url?.value || '').trim(),
         hero_bg_url: (f.hero_bg_url?.value || '').trim(),
-        highlight_1: (f.highlight_1?.value || 'Terakreditasi B (Baik)').trim(),
+        highlight_1: (f.highlight_1?.value || 'Terakreditasi B').trim(),
         highlight_2: (f.highlight_2?.value || 'Kelas Digital Cerdas').trim(),
         highlight_3: (f.highlight_3?.value || 'Sekolah Ramah Anak').trim(),
         principal_name: f.principal_name.value.trim(),
@@ -4905,6 +5090,110 @@
         await loadAllData(false);
         broadcastRealtimeUpdate('posts_deleted');
         showToast('Konten dihapus dari database Supabase.');
+      } catch (err) {
+        showToast('Gagal menghapus: ' + err.message);
+      }
+    }
+
+    // CRUD Layanan Peserta Didik (Ekstrakurikuler)
+    function startEditEkskul(id) {
+      state.editingEkskulId = id;
+      state.adminTab = 'ekskul';
+      renderCurrentView();
+    }
+
+    function cancelEditEkskul() {
+      state.editingEkskulId = null;
+      renderCurrentView();
+    }
+
+    async function addEkskulForm(e) {
+      e.preventDefault();
+      const f = e.target;
+      const payload = {
+        category: 'ekskul',
+        title: f.title.value.trim(),
+        event_date: f.event_date ? f.event_date.value : new Date().toISOString().split('T')[0],
+        image_url: (f.image_url?.value || '').trim() || 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80',
+        file_url: (f.file_url?.value || '').trim(),
+        file_name: (f.file_name?.value || '').trim(),
+        author_name: (f.author_name?.value || '').trim() || 'Pembina Ekstrakurikuler',
+        content: f.content.value.trim()
+      };
+
+      if (state.editingEkskulId) {
+        const editId = state.editingEkskulId;
+        const idx = state.posts.findIndex(p => p.id === editId);
+        if (idx !== -1) {
+          state.posts[idx] = { ...state.posts[idx], ...payload };
+        }
+        state.editingEkskulId = null;
+        saveCacheToStorage();
+        renderCurrentView();
+
+        if (IS_PREVIEW) {
+          showToast('Data Ekstrakurikuler berhasil diperbarui!');
+          return;
+        }
+        try {
+          if (isUuid(editId)) {
+            const { error } = await supabase.from('posts').update(payload).eq('id', editId);
+            if (error) throw error;
+          }
+          await loadAllData(false);
+          broadcastRealtimeUpdate('posts_updated');
+          showToast('Data Ekstrakurikuler berhasil diperbarui di Supabase!');
+        } catch (err) {
+          showToast('Perubahan tersimpan lokal (Supabase: ' + err.message + ')');
+        }
+        return;
+      }
+
+      const tempId = 'ekskul-' + Date.now();
+      state.posts.unshift({ id: tempId, ...payload });
+      saveCacheToStorage();
+      f.reset();
+      renderCurrentView();
+
+      if (IS_PREVIEW) {
+        showToast('Ekstrakurikuler baru berhasil ditambahkan!');
+        return;
+      }
+
+      try {
+        const { data: inserted, error } = await supabase.from('posts').insert([payload]).select().maybeSingle();
+        if (error) throw error;
+        if (inserted) {
+          const idx = state.posts.findIndex(p => p.id === tempId);
+          if (idx !== -1) state.posts[idx] = inserted;
+        }
+        saveCacheToStorage();
+        await loadAllData(false);
+        broadcastRealtimeUpdate('posts_inserted');
+        showToast('Ekstrakurikuler tersimpan di database Supabase!');
+      } catch (err) {
+        showToast('Tersimpan lokal (Supabase: ' + err.message + ')');
+      }
+    }
+
+    async function deleteEkskul(id) {
+      if (state.editingEkskulId === id) state.editingEkskulId = null;
+      state.posts = state.posts.filter(p => p.id !== id);
+      saveCacheToStorage();
+      renderCurrentView();
+
+      if (IS_PREVIEW) {
+        showToast('Ekstrakurikuler dihapus.');
+        return;
+      }
+      try {
+        if (isUuid(id)) {
+          const { error } = await supabase.from('posts').delete().eq('id', id);
+          if (error) throw error;
+        }
+        await loadAllData(false);
+        broadcastRealtimeUpdate('posts_deleted');
+        showToast('Ekstrakurikuler dihapus dari database Supabase.');
       } catch (err) {
         showToast('Gagal menghapus: ' + err.message);
       }
@@ -6480,10 +6769,21 @@
         };
       }
 
-      if (q.includes('fasilitas') || q.includes('lab') || q.includes('sarana') || q.includes('galeri') || q.includes('foto') || q.includes('ekskul') || q.includes('ekstrakurikuler')) {
+      if (q.includes('ekskul') || q.includes('ekstrakurikuler') || q.includes('pramuka') || q.includes('paskibra') || q.includes('tari') || q.includes('angklung') || q.includes('robotik') || q.includes('futsal') || q.includes('basket') || q.includes('silat')) {
+        const ekskulList = state.posts.filter(p => p.category === 'ekskul');
+        const listText = ekskulList.length > 0
+          ? ekskulList.map(e => `• **${e.title}**${e.author_name ? ` (Pembina: ${e.author_name})` : ''}: ${e.content}`).join('\n')
+          : 'Pramuka & Paskibra, Seni Tari & Angklung, KIR & Klub Robotik, Futsal, Basket & Pencak Silat.';
+        return {
+          text: `🏆 **Layanan Peserta Didik & Ekstrakurikuler SMPN 71 Bandung:**\n${listText}\n\nSeluruh kegiatan dibina secara terarah dan terstruktur untuk menyalurkan bakat, minat, dan prestasi peserta didik.`,
+          actionNav: { id: 'layanan', label: 'Buka Halaman Layanan & Ekskul' }
+        };
+      }
+
+      if (q.includes('fasilitas') || q.includes('lab') || q.includes('sarana') || q.includes('galeri') || q.includes('foto')) {
         const fasList = state.facilitiesGallery.slice(0, 3).map(f => `• **${f.title}**: ${f.description}`).join('\n');
         return {
-          text: `🏛️ **Fasilitas, Galeri & Ekstrakurikuler SMPN 71 Bandung:**\n${fasList}\n\nEkstrakurikuler unggulan meliputi Pramuka, Paskibra, Seni Tari & Angklung, KIR, Klub Robotik, Futsal, Basket, dan Pencak Silat.`,
+          text: `🏛️ **Fasilitas & Galeri SMPN 71 Bandung:**\n${fasList || 'Fasilitas ruang kelas representatif, laboratorium komputer, lab IPA, perpustakaan digital, dan lapangan olahraga.'}`,
           actionNav: { id: 'fasilitas', label: 'Jelajahi Fasilitas & Galeri' }
         };
       }
@@ -6516,6 +6816,7 @@
       Statistik: ${s.stat_students} siswa, ${s.stat_teachers} guru/tendik, ${s.stat_classes} rombel, ${s.stat_achievements} prestasi.
       Data Pendaftar SPMB: ${JSON.stringify(state.spmbList.slice(0, 5))}
       Berita & Pengumuman Terbaru: ${JSON.stringify(state.posts.slice(0, 5).map(p => ({ kategori: p.category, judul: p.title, tanggal: p.event_date })))}
+      Ekstrakurikuler: ${JSON.stringify(state.posts.filter(p => p.category === 'ekskul').map(e => ({ nama: e.title, pembina: e.author_name, ringkasan: e.content })))}
       Data Guru: ${JSON.stringify(state.staff.slice(0, 5).map(g => ({ nama: g.full_name, jabatan: g.position })))}
     `;
       const systemPrompt = `Anda adalah Asisten Virtual AI Resmi dari ${s.school_name}. Jawablah pertanyaan pengunjung dengan ramah, sopan, ringkas, jelas, dan akurat dalam Bahasa Indonesia berdasarkan data real-time sekolah berikut:\n${contextSummary}`;
@@ -6604,6 +6905,11 @@
       deletePost,
       startEditPost,
       cancelEditPost,
+      // Ekskul CRUD & Edit
+      addEkskulForm,
+      deleteEkskul,
+      startEditEkskul,
+      cancelEditEkskul,
       // Staff GTK CRUD & Edit
       addStaffForm,
       deleteStaff,
