@@ -57,10 +57,10 @@ CREATE TABLE IF NOT EXISTS public.school_users (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 3. TABEL POSTINGAN TERPADU (BERITA, PENGUMUMAN, AGENDA, AKADEMIK, LAYANAN SISWA, PPID)
+-- 3. TABEL POSTINGAN TERPADU (BERITA, PENGUMUMAN, AGENDA, AKADEMIK, LAYANAN SISWA, EKSKUL, PPID)
 CREATE TABLE IF NOT EXISTS public.posts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  category TEXT NOT NULL CHECK (category IN ('berita', 'pengumuman', 'agenda', 'akademik', 'layanan_siswa', 'ppid')),
+  category TEXT NOT NULL CHECK (category IN ('berita', 'pengumuman', 'agenda', 'akademik', 'layanan_siswa', 'ekskul', 'ppid')),
   title TEXT NOT NULL,
   content TEXT NOT NULL,
   image_url TEXT,
@@ -74,6 +74,18 @@ CREATE TABLE IF NOT EXISTS public.posts (
 -- Migrasi kolom file_url dan file_name untuk lampiran dokumen PDF
 ALTER TABLE public.posts ADD COLUMN IF NOT EXISTS file_url TEXT DEFAULT '';
 ALTER TABLE public.posts ADD COLUMN IF NOT EXISTS file_name TEXT DEFAULT '';
+
+-- Migrasi constraint category posts agar mendukung 'ekskul' (Ekstrakurikuler)
+ALTER TABLE public.posts DROP CONSTRAINT IF EXISTS posts_category_check;
+DO $$ 
+BEGIN
+  BEGIN
+    ALTER TABLE public.posts ADD CONSTRAINT posts_category_check 
+      CHECK (category IN ('berita', 'pengumuman', 'agenda', 'akademik', 'layanan_siswa', 'ekskul', 'ppid'));
+  EXCEPTION
+    WHEN duplicate_object THEN NULL;
+  END;
+END $$;
 
 -- 4. TABEL DIREKTORI GURU DAN TENAGA KEPENDIDIKAN (GTK)
 CREATE TABLE IF NOT EXISTS public.staff_directory (
@@ -266,7 +278,11 @@ FROM (VALUES
   ('agenda', 'Latihan Dasar Kepemimpinan Siswa (LDKS) & Musyawarah Besar Pengurus OSIS 71', 'Pembekalan kepemimpinan, manajemen organisasi siswa, kedisiplinan, dan perumusan kalender kerja OSIS SMPN 71 Kota Bandung periode 2026/2027.', 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80', '', '', '2026-06-27', 'Pembina OSIS'),
   ('agenda', 'Pekan Literasi Digital & Bedah Buku Karya Siswa di Graha Literasi SMPN 71', 'Festival literasi tahunan sekolah menghadirkan bedah buku antologi puisi karya siswa, lokakarya penulisan kreatif, serta penghargaan duta baca sekolah.', 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80', '', '', '2026-07-04', 'Koordinator Literasi'),
   ('akademik', 'Implementasi Kurikulum Nasional & Modul Pembelajaran Digital Terpadu', 'SMPN 71 Kota Bandung menerapkan pembelajaran terdiferensiasi dengan dukungan Google Workspace for Education, Laboratorium Komputer, dan Klinik Numerasi-Literasi.', 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80', 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Panduan_Kurikulum_Merdeka_71.pdf', '2026-05-02', 'Tim Kurikulum'),
-  ('layanan_siswa', 'Layanan Bimbingan Konseling (BK) Ramah Anak & Pembinaan 12 Ekstrakurikuler', 'Tersedia layanan konseling minat bakat, pencegahan perundungan (Roots Indonesia), serta 12 cabang ekstrakurikuler unggulan seperti Pramuka, Paskibra, Futsal, Robotik, dan Angklung.', 'https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=800&q=80', '', '', '2026-05-05', 'Koordinator Kesiswaan'),
+  ('layanan_siswa', 'Layanan Bimbingan Konseling (BK) Ramah Anak & Konsultasi Minat Bakat', 'Tersedia layanan konseling kepribadian, minat bakat karir, pencegahan perundungan (Roots Indonesia), serta pendampingan psikososial terpadu bagi seluruh peserta didik.', 'https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=800&q=80', '', '', '2026-05-05', 'Koordinator BK'),
+  ('ekskul', 'Pramuka & Paskibra', 'Membentuk kepemimpinan, kedisiplinan, karakter tangguh, dan ketangkasan baris-berbaris.', 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80', '', '', '2026-05-01', 'Pembina Pramuka & Paskibra'),
+  ('ekskul', 'Seni Tari & Angklung', 'Melestarikan seni budaya tradisional Sunda, harmoni musik angklung kolosal, dan tampil dalam berbagai festival kesenian.', 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80', '', '', '2026-05-01', 'Pembina Seni Budaya'),
+  ('ekskul', 'KIR & Klub Robotik', 'Wadah eksperimen sains terapan, penelitian karya ilmiah remaja, dan otomasi teknologi digital modern.', 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=800&q=80', '', '', '2026-05-01', 'Pembina Riset & Robotik'),
+  ('ekskul', 'Futsal, Basket & Pencak Silat', 'Pembinaan olahraga prestasi, kebugaran fisik, sportivitas, dan persiapan menuju kejuaraan O2SN tingkat Kota & Jawa Barat.', 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80', '', '', '2026-05-01', 'Pembina Olahraga Prestasi'),
   ('ppid', 'Laporan Realisasi Penggunaan Dana BOS Reguler & Standar Pelayanan Publik', 'Dokumen informasi publik berkala terkait transparansi anggaran sekolah, RKAS, serta standar operasional prosedur layanan pendidikan gratis tanpa pungutan.', 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80', 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Laporan_Realisasi_BOS_Reguler_2026.pdf', '2026-04-28', 'Pejabat PPID Sekolah')
 ) AS d(category, title, content, image_url, file_url, file_name, event_date, author_name)
 WHERE NOT EXISTS (SELECT 1 FROM public.posts LIMIT 1);
